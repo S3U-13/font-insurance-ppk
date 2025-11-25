@@ -1,0 +1,91 @@
+"use client";
+import { Button } from "@heroui/button";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@heroui/modal";
+import { Tabs, Tab } from "@heroui/tabs";
+import React from "react";
+import useHook from "./useHook";
+import PartA from "./components/part_a";
+import PartB from "./components/part_b";
+
+export default function page({ isOpen, onClose }) {
+  const {
+    sex,
+    choice1,
+    sick,
+    everOrNever,
+    choice2,
+    yesOrNo,
+    choice3,
+    choice4,
+    Anaesthesia,
+    noOrYes,
+    choice5,
+    stepForm,
+  } = useHook();
+  return (
+    <div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onClose}
+        size="5xl"
+        classNames={{
+          body: "max-h-[calc(80vh-50px)] overflow-y-scroll",
+          header: "border-b border-divider",
+          footer: "border-t border-divider",
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <h1 className="text-center">IPD FORM</h1>
+              </ModalHeader>
+              <ModalBody>
+                <Tabs aria-label="Options" variant="underlined" classNames={{base: "mx-auto", tabList: ""}}>
+                  <Tab key="part_a" title="Part A">
+                    <PartA
+                      sex={sex}
+                      choice1={choice1}
+                      sick={sick}
+                      everOrNever={everOrNever}
+                      choice2={choice2}
+                      yesOrNo={yesOrNo}
+                    />
+                  </Tab>
+                  <Tab key="part_b" title="Part B">
+                    <PartB
+                      sex={sex}
+                      choice3={choice3}
+                      choice4={choice4}
+                      sick={sick}
+                      everOrNever={everOrNever}
+                      choice2={choice2}
+                      yesOrNo={yesOrNo}
+                      Anaesthesia={Anaesthesia}
+                      noOrYes={noOrYes}
+                      choice5={choice5}
+                    />
+                  </Tab>
+                </Tabs>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+}
