@@ -1,7 +1,9 @@
 "use client";
 
+import Navbar from "../../components/navbar";
 import Sidebar from "../../components/sidebar";
-import { DrawerProvider, useDrawer } from "../../Context/drawProvider";
+
+import { DrawerProvider, useDrawer } from "../../context/drawProvider";
 
 export default function Layout({ children }) {
   return (
@@ -15,9 +17,10 @@ function Content({ children }) {
   const { openDrawer, setOpenDrawer } = useDrawer();
 
   return (
-    <div className="min-h-screen grid grid-cols-12 gap-4 p-4">
+    <div className="min-h-screen gap-4 p-4">
+      <Navbar />
       <Sidebar isOpen={openDrawer} onClose={() => setOpenDrawer(false)} />
-      <main className="col-span-10 mx-auto w-full">{children}</main>
+      <main className=" mx-auto w-full">{children}</main>
     </div>
   );
 }

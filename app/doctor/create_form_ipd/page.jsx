@@ -43,11 +43,15 @@ export default function page({ isOpen, onClose }) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="flex flex-col gap-1 ">
                 <h1 className="text-center">IPD FORM</h1>
               </ModalHeader>
               <ModalBody>
-                <Tabs aria-label="Options" variant="underlined" classNames={{base: "mx-auto", tabList: ""}}>
+                <Tabs
+                  aria-label="Options"
+                  variant="underlined"
+                  classNames={{ base: "mx-auto", tabList: "" }}
+                >
                   <Tab key="part_a" title="Part A">
                     <PartA
                       sex={sex}

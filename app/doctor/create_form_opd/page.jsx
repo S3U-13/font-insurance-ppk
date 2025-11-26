@@ -12,7 +12,7 @@ import FormOPD from "./components/form_opd";
 import useHook from "./useHook";
 
 export default function page({ isOpen, onClose }) {
-  const { sex, noOrYes, choice2 } = useHook();
+  const { sex, noOrYes, choice2, form, isSubmitting } = useHook();
   return (
     <div>
       <Modal
@@ -27,20 +27,32 @@ export default function page({ isOpen, onClose }) {
       >
         <ModalContent>
           {(onClose) => (
-            <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                form.handleSubmit();
+              }}
+            >
               <ModalHeader className="flex flex-col gap-1">OPD</ModalHeader>
               <ModalBody>
-                <FormOPD sex={sex} noOrYes={noOrYes} choice2={choice2} />
+                <FormOPD
+                  sex={sex}
+                  noOrYes={noOrYes}
+                  choice2={choice2}
+                  form={form}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button color="primary" type="submit" isDisabled={isSubmitting}>
+                  {isSubmitting
+                    ? "กำลังบันทึก..." // ขณะส่งข้อมูล
+                    : "ยืนยัน"}
                 </Button>
               </ModalFooter>
-            </>
+            </form>
           )}
         </ModalContent>
       </Modal>

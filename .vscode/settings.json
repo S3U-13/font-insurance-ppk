@@ -1,3 +1,20 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "172.16.30.53",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "insurance-ppk",
+      "database": "ppkhosp",
+      "username": "nesfrontend",
+      "askForPassword": true
+    }
+  ]
 }
