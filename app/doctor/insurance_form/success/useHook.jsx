@@ -10,7 +10,7 @@ export default function useHook() {
   const handleOpenModal = () => {
     setOpenModalIPD((prev) => !prev);
   };
-  const [form, setForm] = useState();
+  const [form, setForm] = useState([]);
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
     didFetch.current = true;

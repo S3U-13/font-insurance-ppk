@@ -5,7 +5,7 @@ const DrawerContext = createContext();
 
 export function DrawerProvider({ children }) {
   const drawerRef = useRef(null);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(true);
   const handleOpenDrawer = () => {
     setOpenDrawer((prev) => !prev);
   };

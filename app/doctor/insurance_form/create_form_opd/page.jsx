@@ -23,6 +23,7 @@ export default function page({ isOpen, onClose }) {
           body: "max-h-[calc(80vh-50px)] overflow-y-scroll",
           header: "border-b border-divider",
           footer: "border-t border-divider",
+          
         }}
       >
         <ModalContent>

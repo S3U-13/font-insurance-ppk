@@ -6,12 +6,12 @@ import { Button } from "@heroui/button";
 export default function Navbar() {
   const { openDrawer, setOpenDrawer } = useDrawer();
   return (
-    <div className="h-18 w-full p-6 border border-divider rounded-lg flex items-center justify-between px-4">
+    <div className="h-18 w-full p-6 border border-divider rounded-lg flex items-center justify-between px-4 bg-gray-100 dark:bg-[#0e0e11]">
       <Button
         size="md"
         variant="solid"
         onPress={() => {
-          openDrawer === false ? setOpenDrawer(true) : setOpenDrawer(false);
+          openDrawer === true ? setOpenDrawer(false) : setOpenDrawer(true);
         }}
         isIconOnly
       >

@@ -1,9 +1,9 @@
 "use client";
 
-import Navbar from "../../../components/navbar";
-import Sidebar from "../../../components/sidebar";
+import Navbar from "../../components/navbar";
+import Sidebar from "../../components/sidebar";
 
-import { DrawerProvider, useDrawer } from "../../../context/drawProvider";
+import { DrawerProvider, useDrawer } from "../../context/drawProvider";
 
 export default function Layout({ children }) {
   return (
@@ -17,10 +17,10 @@ function Content({ children }) {
   const { openDrawer, setOpenDrawer, drawerRef } = useDrawer();
 
   return (
-    <div className="min-h-screen grid grid-cols-12 grid-rows-[auto_1fr] p-4">
+    <div className="min-h-screen grid grid-cols-12 grid-rows-[auto_1fr] p-4 bg-gray-50 dark:bg-[#0e0e11]">
       <div
         className={
-          openDrawer ? "col-span-2 transition-all delay-1000" : "hidden"
+          openDrawer ? "col-span-2 transition-all" : "hidden"
         }
       >
         <Sidebar

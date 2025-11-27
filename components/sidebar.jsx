@@ -1,17 +1,17 @@
 "use client";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { Button } from "@heroui/button";
-import { Tab, Tabs } from "@heroui/tabs";
-import { label, p } from "framer-motion/client";
-import Link from "next/link";
+import { Link } from "@heroui/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { ThemeSwitch } from "./theme-switch";
+import { div } from "framer-motion/client";
 
 export default function Sidebar({ isOpen }) {
   const [selectMenu, setSelectMenu] = useState(1);
   const pathname = usePathname();
   const router = useRouter();
-  console.log(selectMenu);
+  const [currentTheme, setCurrentTheme] = useState("light");
   const [menu, setMenu] = useState([
     {
       id: 1,
@@ -64,11 +64,6 @@ export default function Sidebar({ isOpen }) {
           label_name: "CHART INSURANCE",
           link: "/doctor/insurance_form/",
         },
-        // {
-        //   label_id: 2,
-        //   label_name: "INSURANCE FORM SUCCESS",
-        //   link: "/doctor/insurance_form/success",
-        // },
       ],
     },
     {
@@ -92,7 +87,12 @@ export default function Sidebar({ isOpen }) {
         {
           label_id: 4,
           label_name: "THEME SETTING",
-          link: "/doctor/insurance_form/",
+          icon_theme: (
+            <ThemeSwitch
+              theme={currentTheme} // ส่งค่า theme เข้าไป
+              onChange={(newTheme) => setCurrentTheme(newTheme)} // รับค่ากลับ
+            />
+          ),
         },
         // {
         //   label_id: 2,
@@ -119,21 +119,23 @@ export default function Sidebar({ isOpen }) {
   };
 
   return (
-    <div>
+    <div className="">
       <div
-        className={`fixed top-0 left-0 h-full w-78 bg-white shadow-md p-4 pt-8 transition-transform duration-300 z-20 border border-divider ${
+        className={`fixed top-0 left-0 h-full w-78 shadow-md p-4 pt-8 transition-transform duration-300 z-20 border border-divider bg-gray-100 dark:bg-[#0e0e11] ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col gap-4 h-full">
-          <h1 className="text-center font-bold">Side Bar</h1>
+          <h1 className="text-center font-bold text-black dark:text-white">
+            Side Bar
+          </h1>
 
-          <div className="w-full h-200 bg-gray-100 mx-auto mt-4 rounded-xl p-4 space-y-2">
+          <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl p-4 space-y-2 border border-divider">
             {menu.map((item) => (
-              <Accordion key={item.id} variant="shadow">
+              <Accordion key={item?.id} variant="shadow">
                 <AccordionItem
                   aria-label={item.name}
-                  classNames={{ content: "grid grid-cols-1 gap-1", }}
+                  classNames={{ content: "grid grid-cols-1 gap-1" }}
                   title={
                     <p className="text-xs flex items-center justify-between">
                       {item.name} {item.icon}
@@ -145,25 +147,33 @@ export default function Sidebar({ isOpen }) {
                     return (
                       // ถ้าไม่ต้องการ control navigation timing ให้ใช้ <Link> ปกติ
                       // แต่ถ้าต้องการให้ state เปลี่ยนก่อน navigation ให้ใช้ onClick แบบด้านล่าง
-                      <a
-                        // ใช้ <a> เพราะเรเรียก router.push เอง (หรือเปลี่ยนเป็น <Link> แล้วใช้ onClick และ preventDefault)
-                        key={item_label.label_id}
-                        href={item_label.link}
-                        onClick={(e) =>
-                          handleClickAndNavigate(
-                            e,
-                            item_label.link,
-                            item_label.label_id
-                          )
-                        }
-                        className={
-                          isActive
-                            ? "text-xs bg-gray-100 border border-divider rounded-lg p-1.5 flex items-center justify-between"
-                            : "text-xs hover:bg-gray-100 rounded-lg p-1.5 flex items-center justify-between"
-                        }
-                      >
-                        {item_label.label_name}
-                      </a>
+                      <div key={item_label.label_id}>
+                        {item_label.icon_theme ? (
+                          <div className="hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between">
+                            {item_label.icon_theme}
+                          </div>
+                        ) : (
+                          <Link
+                            color="foreground"
+                            // ใช้ <a> เพราะเรเรียก router.push เอง (หรือเปลี่ยนเป็น <Link> แล้วใช้ onClick และ preventDefault)
+                            href={item_label.link}
+                            onClick={(e) =>
+                              handleClickAndNavigate(
+                                e,
+                                item_label.link,
+                                item_label.label_id
+                              )
+                            }
+                            className={
+                              isActive
+                                ? "text-xs bg-gray-100 dark:bg-[#0e0e11] border border-divider rounded-lg p-1.5 flex items-center justify-between"
+                                : "text-xs hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between"
+                            }
+                          >
+                            {item_label.label_name}
+                          </Link>
+                        )}
+                      </div>
                     );
                   })}
                 </AccordionItem>

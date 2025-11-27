@@ -36,15 +36,14 @@ export default function page() {
         <strong>Hospital PPK Insurance Form</strong>
       </h1>
 
-      <div className="p-4 space-y-3 border border-divider rounded-xl">
+      <div className="p-4 space-y-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#0e0e11]">
         <div className="flex justify-between gap-2 items-center">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[30rem] h-10",
               mainWrapper: "h-full",
               input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+              inputWrapper: "h-full font-normal text-default-500",
             }}
             placeholder="Type to search..."
             size="sm"
@@ -124,7 +123,7 @@ export default function page() {
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
           </TableHeader>
-          <TableBody>
+          <TableBody emptyContent={"ไม่มีข้อมูล"}>
             {form?.map((item, index) => (
               <TableRow key={item.id}>
                 <TableCell>{index + 1}</TableCell>
