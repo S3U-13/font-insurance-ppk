@@ -1,16 +1,17 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 
 const DrawerContext = createContext();
 
 export function DrawerProvider({ children }) {
+  const drawerRef = useRef(null);
   const [openDrawer, setOpenDrawer] = useState(false);
   const handleOpenDrawer = () => {
     setOpenDrawer((prev) => !prev);
   };
 
   return (
-    <DrawerContext.Provider value={{ openDrawer, setOpenDrawer }}>
+    <DrawerContext.Provider value={{ openDrawer, setOpenDrawer, drawerRef }}>
       {children}
     </DrawerContext.Provider>
   );

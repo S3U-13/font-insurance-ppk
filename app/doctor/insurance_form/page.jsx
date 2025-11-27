@@ -15,12 +15,13 @@ import {
   TableRow,
 } from "@heroui/table";
 import { Chip } from "@heroui/chip";
+import { Pagination } from "@heroui/pagination";
 
 export default function page() {
   const { openModalIPD, setOpenModalIPD, openModalOPD, setOpenModalOPD, form } =
     useHook();
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-6">
       <ModalIPD isOpen={openModalIPD} onClose={() => setOpenModalIPD(false)} />
       <ModalOPD isOpen={openModalOPD} onClose={() => setOpenModalOPD(false)} />
 
@@ -28,7 +29,7 @@ export default function page() {
         <strong>Hospital PPK Insurance Form</strong>
       </h1>
 
-      <div className="p-6 space-y-4 border border-divider rounded-xl">
+      <div className="p-4 space-y-3 border border-divider rounded-xl">
         <div className="flex justify-end gap-2 items-center">
           <Button onPress={() => setOpenModalIPD(true)}>OpenIPD</Button>
           <Button onPress={() => setOpenModalOPD(true)}>OpenOPD</Button>
@@ -36,7 +37,11 @@ export default function page() {
 
         <Table
           aria-label="Example static collection table"
-          classNames={{ th: "p-4", td: "p-4 border-b border-divider pt-2" }}
+          classNames={{
+            th: "p-4",
+            td: "px-4 py-3.5 border-b border-divider pt-2",
+            base: "max-h-[calc(80vh-130px)]",
+          }}
         >
           <TableHeader>
             <TableColumn>NO</TableColumn>
@@ -64,7 +69,7 @@ export default function page() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="size-5.5 animate-spin"
+                        className="size-5.5"
                       >
                         <path
                           fillRule="evenodd"
@@ -73,7 +78,7 @@ export default function page() {
                         />
                       </svg>
                     }
-                    variant="faded"
+                    variant="flat"
                   >
                     รอดำเนินการ
                   </Chip>
@@ -123,6 +128,9 @@ export default function page() {
             ))}
           </TableBody>
         </Table>
+        <div className="flex justify-end ">
+          <Pagination isCompact showControls initialPage={1} total={10} />
+        </div>
       </div>
     </div>
   );

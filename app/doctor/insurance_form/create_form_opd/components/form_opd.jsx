@@ -77,14 +77,14 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
             size="sm"
             variant="bordered"
           />
-          <div className="flex gap-2 items-center col-span-1">
+          <div className="flex gap-1 items-center col-span-1">
             <Input
               className="col-span-2"
               label="อายุ"
               size="sm"
               variant="bordered"
             />
-            <span>ปี</span>
+            <span className="text-gray-500">ปี</span>
           </div>
 
           <Input
