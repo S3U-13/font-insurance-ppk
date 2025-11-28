@@ -18,11 +18,7 @@ function Content({ children }) {
 
   return (
     <div className="min-h-screen grid grid-cols-12 grid-rows-[auto_1fr] p-4 bg-gray-50 dark:bg-[#0e0e11]">
-      <div
-        className={
-          openDrawer ? "col-span-2 transition-all" : "hidden"
-        }
-      >
+      <div className={openDrawer ? "col-span-2 transition-all" : "hidden"}>
         <Sidebar
           isOpen={openDrawer}
           onClose={() => setOpenDrawer(false)}
@@ -38,13 +34,11 @@ function Content({ children }) {
       >
         <Navbar />
       </div>
-      <div
-        className={openDrawer ? "col-span-2 transition-all" : "hidden"}
-      ></div>
+
       <main
         className={
           openDrawer
-            ? "col-span-10 transition-all mt-0 pt-0"
+            ? "col-start-3 col-span-10 transition-all mt-0 pt-0"
             : "col-span-12 transition-all mt-0 pt-0"
         }
       >

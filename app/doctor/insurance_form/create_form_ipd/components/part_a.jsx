@@ -15,26 +15,12 @@ export default function page({
   yesOrNo,
 }) {
   return (
-    <div className="space-y-4">
-      <div className="mt-2 border border-divider rounded-xl p-4 space-y-2">
-        <div className="text-center">
-          <h1>
-            <strong>Admission Notification Form (all cases)</strong>
-          </h1>
-          <p>
-            <strong>Hospital Name</strong> พระปกเกล้า จันทบุรี
-          </p>
-          <p>
-            <strong>Company Name</strong>
-          </p>
-          <p>
-            <strong>Part A</strong>
-          </p>
-        </div>
-        <h1 className="text-md text-center">
-          <strong>สำหรับผู้เอาประกัน</strong>
-        </h1>
-        <p>1.ผู้เอาประกันภัย</p>
+    <div className="space-y-3 ">
+      <div className=" border border-divider rounded-xl p-4 space-y-2 mb-6">
+        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          สำหรับผู้เอาประกัน
+        </h2>
         <div className="grid grid-cols-10 gap-2 items-center">
           <Input
             className="col-span-4"
@@ -121,7 +107,12 @@ export default function page({
             variant="bordered"
           />
         </div>
-        <p>2.กรมธรรม์</p>
+      </div>
+      <div className=" border border-divider rounded-xl p-4 space-y-2">
+        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          กรมธรรม์
+        </h2>
         <div className="grid grid-cols-8 gap-2 items-center">
           <Input
             className="col-span-4"
@@ -166,7 +157,12 @@ export default function page({
             variant="bordered"
           />
         </div>
-        <p>3.สาเหตุของการเรียกร้องครั้งนี้</p>
+        <hr className="border-b-1 border-divider mt-4" />
+        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
+          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          สาเหตุของการเรียกร้องครั้งนี้
+        </h2>
+
         <div className="grid grid-cols-8 gap-2 items-center">
           <CheckboxGroup
             className="col-span-2"
@@ -229,7 +225,11 @@ export default function page({
             variant="bordered"
           />
         </div>
-        <p>4.สำหรับการเกิดอุบัติเหตุครั้งนี้ เคยรักษาที่ใดไป </p>
+        <hr className="border-b-1 border-divider mt-4" />
+        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
+          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          สำหรับการเกิดอุบัติเหตุครั้งนี้ เคยรักษาที่ใดไป
+        </h2>
         <div className="grid grid-cols-8 gap-2 items-center">
           <CheckboxGroup
             className="col-span-2"
@@ -267,119 +267,166 @@ export default function page({
         </div>
       </div>
 
-      <div className="mt-2 border border-divider rounded-xl p-4 space-y-2">
-        <h1 className="text-md text-center">For Hospital</h1>
-        <p>1.</p>
-        <div className="grid grid-cols-12 gap-2 items-center">
-          <Input
-            className="col-span-2"
-            label="Visit date :"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-2"
-            label="Time :"
-            size="sm"
-            variant="bordered"
-          />
-
-          <Input
-            className="col-span-2"
-            label="Vital signs : T :"
-            size="sm"
-            variant="bordered"
-          />
-
-          <Input
-            className="col-span-2"
-            label="P:"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-2"
-            label="R:"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-2"
-            label="BP:"
-            size="sm"
-            variant="bordered"
-          />
+      <div className="mt-4 bg-white border border-divider rounded-xl p-6 space-y-6 shadow-sm">
+        {/* Title */}
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-6 bg-violet-600 rounded-full" />
+          <h1 className="text-lg font-semibold text-gray-800">For Hospital</h1>
         </div>
-        <div className="grid grid-cols-8 gap-2 items-center">
-          <h1 className="col-span-8">2.</h1>
+
+        {/* 1. Visit */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            1. Visit Information
+          </p>
+          <div className="grid grid-cols-12 gap-4 items-center">
+            <Input
+              className="col-span-2"
+              label="Visit date :"
+              size="sm"
+              variant="bordered"
+            />
+            <Input
+              className="col-span-2"
+              label="Time :"
+              size="sm"
+              variant="bordered"
+            />
+
+            <Input
+              label="T :"
+              size="sm"
+              variant="bordered"
+              className="col-span-2"
+            />
+            <Input
+              label="P :"
+              size="sm"
+              variant="bordered"
+              className="col-span-2"
+            />
+            <Input
+              label="R :"
+              size="sm"
+              variant="bordered"
+              className="col-span-2"
+            />
+            <Input
+              label="BP :"
+              size="sm"
+              variant="bordered"
+              className="col-span-2"
+            />
+          </div>
+        </div>
+
+        {/* 2. Chief complaint */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            2. Chief Complaint
+          </p>
           <Input
             className="col-span-8"
             label="Chief complaint and duration :"
             size="sm"
             variant="bordered"
           />
-          <h1 className="col-span-8">3.</h1>
+        </div>
+
+        {/* 3. Present illness */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            3. Present Illness
+          </p>
           <Textarea
             label="Present illness or cause of injury"
-            className="col-span-8"
             variant="bordered"
           />
-          <h1 className="col-span-8">4.</h1>
-          <Textarea
-            label="Physical exam :"
-            className="col-span-8"
-            variant="bordered"
-          />
-          <h1 className="col-span-8">5.</h1>
+        </div>
+
+        {/* 4. Physical exam */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            4. Physical Exam
+          </p>
+          <Textarea label="Physical exam :" variant="bordered" />
+        </div>
+
+        {/* 5. Previous treatment */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            5. Previous Treatment
+          </p>
           <Input
-            className="col-span-8"
             label="Previous treatment for this illness or injury (Date & Place) :"
             size="sm"
             variant="bordered"
           />
-          <h1 className="col-span-8">6.</h1>
-          <CheckboxGroup
-            label="Is the illness related to : (please tick ☑ if yes) "
-            className="col-span-8 "
-            size="sm"
-            classNames={{ wrapper: "px-6 grid grid-cols-2 gap-2" }}
-          >
-            {choice2.map((c2) => (
-              <Checkbox key={c2.id} value={c2.id}>
-                <p className="text-xs ">
-                  {c2.id}.{c2.value}
-                </p>
-              </Checkbox>
-            ))}
-          </CheckboxGroup>
-          <h1 className="col-span-8">7.</h1>
-          <Input
-            className="col-span-8"
-            label="Underlying condition :"
-            size="sm"
-            variant="bordered"
-          />
-          <h1 className="col-span-8">8.</h1>
-          <Input
-            className="col-span-4"
-            label="Provisional diagnosis :"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-4"
-            label="AdjRW="
-            size="sm"
-            variant="bordered"
-          />
-          <h1 className="col-span-8">9.</h1>
+        </div>
+
+        {/* 6. Illness related */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            6. Related Conditions
+          </h3>
+
+          {/* <form.Field name="relatedConditions">
+            {(field) => ( */}
+              <CheckboxGroup
+                label="Is the illness related to:"
+                className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
+                size="sm"
+                // value={field.state.value || []}
+                // onChange={(values) => field.handleChange(values)}
+              >
+                {choice2.map((c2) => (
+                  <Checkbox key={c2.id} value={String(c2.id)}>
+                    <span className="text-sm">
+                      {c2.id}. {c2.value}
+                    </span>
+                  </Checkbox>
+                ))}
+              </CheckboxGroup>
+            {/* )}
+          </form.Field> */}
+        </div>
+
+        {/* 7. Underlying condition */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            7. Underlying Condition
+          </p>
+          <Input label="Underlying condition :" size="sm" variant="bordered" />
+        </div>
+
+        {/* 8. Diagnosis */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">8. Diagnosis</p>
+          <div className="grid grid-cols-8 gap-4">
+            <Input
+              className="col-span-4"
+              label="Provisional diagnosis :"
+              size="sm"
+              variant="bordered"
+            />
+            <Input
+              className="col-span-4"
+              label="AdjRW ="
+              size="sm"
+              variant="bordered"
+            />
+          </div>
+        </div>
+
+        {/* 9. OPD or not */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            9. OPD Management
+          </p>
           <RadioGroup
-            className="col-span-8"
-            label="Can the condition be managed under Out Patient basis :"
-            variant="bordered"
             orientation="horizontal"
             size="sm"
-            classNames={{ wrapper: "pl-2 text-xs", label: "test-xs" }}
+            classNames={{ wrapper: "pl-2 text-xs" }}
           >
             {yesOrNo.map((yon) => (
               <Radio key={yon.id} value={yon.id}>
@@ -388,25 +435,27 @@ export default function page({
             ))}
           </RadioGroup>
           <Input
-            className="col-span-8"
+            className="mt-2"
             label="(If No please provide more information)"
             size="sm"
             variant="bordered"
           />
-          <h1 className="col-span-8">10.</h1>
-          <Input
-            className="col-span-8"
-            label="Reasons of admission"
-            size="sm"
-            variant="bordered"
-          />
-          <h1 className="col-span-8">11.</h1>
-          <Input
-            className="col-span-8"
-            label="Plan of treatment"
-            size="sm"
-            variant="bordered"
-          />
+        </div>
+
+        {/* 10. Reason of admission */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            10. Reason of Admission
+          </p>
+          <Input label="Reasons of admission" size="sm" variant="bordered" />
+        </div>
+
+        {/* 11. Plan of treatment */}
+        <div>
+          <p className="text-sm font-medium text-gray-500 mb-2">
+            11. Plan of Treatment
+          </p>
+          <Input label="Plan of treatment" size="sm" variant="bordered" />
         </div>
       </div>
     </div>

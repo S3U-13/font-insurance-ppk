@@ -158,7 +158,11 @@ export default function useHook() {
     },
   ]);
 
-  const [stepForm, setStepForm] = useState(["part_a", "part_b"]);
+  const [selectTabs, setSelectTabs] = useState(1);
+
+  const handleSelectTabs = (id) => {
+    setSelectTabs(id);
+  };
 
   return {
     sex,
@@ -172,6 +176,8 @@ export default function useHook() {
     Anaesthesia,
     noOrYes,
     choice5,
-    stepForm,
+
+    selectTabs,
+    handleSelectTabs,
   };
 }

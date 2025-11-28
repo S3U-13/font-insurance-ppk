@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useApiRequest } from "../../../hooks/useApi";
+import { useApiRequest } from "../../hooks/useApi";
 
 export default function useHook() {
   const { FetchAllForm } = useApiRequest();

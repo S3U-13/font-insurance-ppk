@@ -1,56 +1,56 @@
-import { Link } from "@heroui/link";
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
-import { button as buttonStyles } from "@heroui/theme";
-
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
-
-export default function Home() {
+"use client";
+import { Button } from "@heroui/button";
+import React, { useState } from "react";
+import useHook from "./useHook";
+import LoginDrawer from "./login/page";
+export default function page() {
+  const { drawerLogin, setDrawerLogin } = useHook();
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title()}>Make&nbsp;</span>
-        <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
-        <br />
-        <span className={title()}>
-          websites regardless of your design experience.
-        </span>
-        <div className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
+    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="bg-white shadow-xl rounded-2xl border border-gray-200 p-10 w-full max-w-md space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-1">
+          <h1 className="text-3xl font-bold tracking-wide text-gray-800">
+            PPK PAPERLESS
+          </h1>
+          <p className="text-gray-500 text-sm">โรงพยาบาลพระปกเกล้า</p>
         </div>
-      </div>
 
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-          href={siteConfig.links.docs}
+        {/* Login Button */}
+        <Button
+          className="w-full py-6 text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
+          color="primary"
+          variant="solid"
+          onPress={() => setDrawerLogin(true)}
+          endContent={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
+            </svg>
+          }
         >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
-      </div>
+          Login
+        </Button>
 
-      <div className="mt-8">
-        <Snippet hideCopyButton hideSymbol variant="bordered">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
+        {/* Optional Footer */}
+        <p className="text-center text-xs text-gray-400">
+          © {new Date().getFullYear()} PPK Hospital — All rights reserved
+        </p>
+        <LoginDrawer
+          isOpen={drawerLogin}
+          onClose={() => setDrawerLogin(false)}
+        />
       </div>
-    </section>
+    </div>
   );
 }

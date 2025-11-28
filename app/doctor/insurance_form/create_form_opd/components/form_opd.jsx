@@ -12,13 +12,7 @@ import { TimeInput } from "@heroui/date-input";
 export default function FormOPD({ sex, noOrYes, choice2, form }) {
   return (
     <div>
-      <div className="text-center">
-        <h1>
-          <strong>
-            เเบบฟอร์มการเรียกร้องค่าสินไหมกรณีผู้ป่วยนอก Outpatient (OPD) and
-            Accident Claim Form
-          </strong>
-        </h1>
+      <div className="text-center pt-2">
         <p>
           <strong>Hospital Name</strong> พระปกเกล้า จันทบุรี
         </p>
@@ -30,9 +24,11 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
         <strong>Part A</strong>
       </p>
       <div className="mt-2 border border-divider rounded-xl p-4 space-y-4">
-        <h1 className="text-md text-center">สำหรับผู้เอาประกัน</h1>
-        <p>1.ผู้เอาประกันภัย</p>
         <div className="grid grid-cols-10 gap-2 items-center">
+          <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+            <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+            สำหรับผู้เอาประกัน
+          </h2>
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
@@ -130,7 +126,12 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
             variant="bordered"
           />
         </div>
-        <p>2.กรมธรรม์เลขที่</p>
+      </div>
+      <div className="mt-6 border border-divider rounded-xl p-4 space-y-4">
+        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          กรมธรรม์เลขที่
+        </h2>
         <div className="grid grid-cols-12 gap-2 items-center">
           <Input
             className="col-span-12"
@@ -182,97 +183,107 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
         </div>
       </div>
 
-      <div className="mt-6 border border-divider rounded-xl p-4 space-y-2">
-        <h1 className="text-md text-center">For Hospital</h1>
-        <form.Field name="visitid">
-          {(field) => (
-            <Input
+      <div className="mt-6 border border-divider rounded-2xl p-6 space-y-8 bg-white dark:bg-[#0e0e11] shadow-sm">
+        <h2 className="text-gray-800 dark:text-gray-100 font-bold text-lg flex items-center gap-3">
+          <span className="w-1.5 h-6 bg-violet-500 rounded-full"></span>
+          For Hospital
+        </h2>
+
+        {/* Section 1: Visit Information */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            1. Visit Information
+          </h3>
+          <div className="grid grid-cols-3 gap-2">
+            <form.Field name="visitid">
+              {(field) => (
+                <Input
+                  label="Visit id :"
+                  size="sm"
+                  variant="bordered"
+                  type="text"
+                  value={field.state.value || ""}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
+            <form.Field name="claimId">
+              {(field) => (
+                <Input
+                  label="claim id :"
+                  size="sm"
+                  variant="bordered"
+                  type="text"
+                  value={field.state.value || ""}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
+            <form.Field name="vitalsignId">
+              {(field) => (
+                <Input
+                  label="vital sign id :"
+                  size="sm"
+                  variant="bordered"
+                  type="text"
+                  value={field.state.value || ""}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
+          </div>
+          <div className="grid grid-cols-12 gap-4 items-end">
+            <DatePicker
               className="col-span-2"
-              label="Visit id :"
+              label="Visit date"
               size="sm"
               variant="bordered"
-              type="text"
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
             />
-          )}
-        </form.Field>
-        <form.Field name="claimId">
-          {(field) => (
-            <Input
+            <TimeInput
               className="col-span-2"
-              label="claim id :"
+              label="Time"
               size="sm"
               variant="bordered"
-              type="text"
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
             />
-          )}
-        </form.Field>
-        <form.Field name="vitalsignId">
-          {(field) => (
+
             <Input
               className="col-span-2"
-              label="vital sign id :"
+              label="T (Temp)"
               size="sm"
               variant="bordered"
-              type="text"
-              value={field.state.value || ""}
-              onChange={(e) => field.handleChange(e.target.value)}
             />
-          )}
-        </form.Field>
-
-        <p>1.</p>
-        <div className="grid grid-cols-12 gap-2 items-center">
-          <DatePicker
-            label="Visit date"
-            className="col-span-2"
-            size="sm"
-            variant="bordered"
-          />
-
-          <TimeInput
-            label="Time :"
-            size="sm"
-            className="col-span-2"
-            variant="bordered"
-            radius="sm"
-          />
-          <Input
-            className="col-span-2"
-            label="Vital signs : T :"
-            size="sm"
-            variant="bordered"
-          />
-
-          <Input
-            className="col-span-2"
-            label="P:"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-2"
-            label="R:"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-2"
-            label="BP:"
-            size="sm"
-            variant="bordered"
-          />
+            <Input
+              className="col-span-2"
+              label="P (Pulse)"
+              size="sm"
+              variant="bordered"
+            />
+            <Input
+              className="col-span-2"
+              label="R (Resp.)"
+              size="sm"
+              variant="bordered"
+            />
+            <Input
+              className="col-span-2"
+              label="BP"
+              size="sm"
+              variant="bordered"
+            />
+          </div>
         </div>
-        <div className="grid grid-cols-8 gap-2 items-center">
-          <h1 className="col-span-8">2.</h1>
+
+        {/* Section 2: Chief Complaint */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            2. Chief Complaint
+          </h3>
+
           <form.Field name="chiefComplaint">
             {(field) => (
               <Input
-                className="col-span-8"
-                label="Chief complaint and duration :"
+                className="w-full"
+                label="Chief complaint and duration"
                 size="sm"
                 variant="bordered"
                 value={field.state.value || ""}
@@ -280,51 +291,75 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
               />
             )}
           </form.Field>
+        </div>
 
-          <h1 className="col-span-8">3.</h1>
+        {/* Section 3: Present Illness */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            3. Present Illness
+          </h3>
+
           <form.Field name="presentIllness">
             {(field) => (
               <Textarea
+                className="w-full"
                 label="Present illness or cause of injury"
-                className="col-span-8"
                 variant="bordered"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
           </form.Field>
-          <h1 className="col-span-8">4.</h1>
-          <form.Field name="accidentDateTime">
-            {(field) => (
-              <DatePicker
-                className="col-span-3"
-                label="An accident; Date of accident :"
-                size="sm"
-                variant="bordered"
-                value={field.state.value ? parseDate(field.state.value) : null}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-            )}
-          </form.Field>
+        </div>
 
-          <Input
-            className="col-span-5"
-            label="Time :"
-            size="sm"
-            variant="bordered"
-          />
-          <Input
-            className="col-span-8"
-            label="Place :"
-            size="sm"
-            variant="bordered"
-          />
-          <h1 className="col-span-8">5.</h1>
+        {/* Section 4: Accident Details */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            4. Accident Details
+          </h3>
+
+          <div className="grid grid-cols-12 gap-4 items-end">
+            <form.Field name="accidentDateTime">
+              {(field) => (
+                <DatePicker
+                  className="col-span-2"
+                  label="Date of accident"
+                  size="sm"
+                  variant="bordered"
+                  value={
+                    field.state.value ? parseDate(field.state.value) : null
+                  }
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
+
+            <Input
+              className="col-span-2"
+              label="Time"
+              size="sm"
+              variant="bordered"
+            />
+            <Input
+              className="col-span-8"
+              label="Place"
+              size="sm"
+              variant="bordered"
+            />
+          </div>
+        </div>
+
+        {/* Section 5: Physical Exam */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            5. Physical Examination
+          </h3>
+
           <form.Field name="physicalExam">
             {(field) => (
               <Input
-                className="col-span-8"
-                label="Physical exam :"
+                className="w-full"
+                label="Physical exam"
                 size="sm"
                 variant="bordered"
                 value={field.state.value || ""}
@@ -332,36 +367,46 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
               />
             )}
           </form.Field>
-          <h1 className="col-span-8">6.</h1>
+        </div>
+
+        {/* Section 6: Related Conditions */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            6. Related Conditions
+          </h3>
+
           <form.Field name="relatedConditions">
             {(field) => (
               <CheckboxGroup
-                label="Is the illness related to : (please tick ☑ if yes)"
-                className="col-span-8"
+                label="Is the illness related to:"
+                className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
                 size="sm"
-                classNames={{ wrapper: "px-6 grid grid-cols-2 gap-2" }}
                 value={field.state.value || []}
-                onChange={(values) => {
-                  field.handleChange(values); // <-- อัปเดต array ให้ zod form
-                }}
+                onChange={(values) => field.handleChange(values)}
               >
                 {choice2.map((c2) => (
                   <Checkbox key={c2.id} value={String(c2.id)}>
-                    <p className="text-xs">
+                    <span className="text-sm">
                       {c2.id}. {c2.value}
-                    </p>
+                    </span>
                   </Checkbox>
                 ))}
               </CheckboxGroup>
             )}
           </form.Field>
+        </div>
 
-          <h1 className="col-span-8">7.</h1>
+        {/* Section 7: Underlying Condition */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            7. Underlying Condition
+          </h3>
+
           <form.Field name="underlyingCondition">
             {(field) => (
               <Input
-                className="col-span-8"
-                label="Underlying condition :"
+                className="w-full"
+                label="Underlying condition"
                 size="sm"
                 variant="bordered"
                 value={field.state.value || ""}
@@ -369,38 +414,47 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
               />
             )}
           </form.Field>
-          <h1 className="col-span-8">8.</h1>
-          {/* <form.Field name="relatedConditions">
-            {(field) => ( */}
+        </div>
+
+        {/* Section 8: Diagnosis */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            8. Diagnosis
+          </h3>
+
           <Input
-            className="col-span-4"
-            label="Diagnosis :"
+            className="w-full"
+            label="Diagnosis"
             size="sm"
             variant="bordered"
-            // value={field.state.value || ""}
-            // onChange={(e) => field.handleChange(e.target.value)}
           />
-          {/* )}
-          </form.Field> */}
-          <h1 className="col-span-8">9.</h1>
-          {/* <form.Field name="relatedConditions">
-            {(field) => ( */}
+        </div>
+
+        {/* Section 9: Investigation */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            9. Investigation & Result
+          </h3>
+
           <Input
-            className="col-span-8"
+            className="w-full"
             label="Investigation & Result (Lab, EKG, X-ray, etc.)"
             size="sm"
             variant="bordered"
-            // value={field.state.value || ""}
-            // onChange={(e) => field.handleChange(e.target.value)}
           />
-          {/* )}
-          </form.Field> */}
-          <h1 className="col-span-8">10.</h1>
+        </div>
+
+        {/* Section 10: Treatment */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            10. Plan of Treatment
+          </h3>
+
           <form.Field name="planOfTreatment">
             {(field) => (
               <Input
-                className="col-span-8"
-                label="treatment"
+                className="w-full"
+                label="Treatment"
                 size="sm"
                 variant="bordered"
                 value={field.state.value || ""}

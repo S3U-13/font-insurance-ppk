@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ThemeSwitch } from "./theme-switch";
 import { div } from "framer-motion/client";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
 export default function Sidebar({ isOpen }) {
   const [selectMenu, setSelectMenu] = useState(1);
@@ -62,7 +63,7 @@ export default function Sidebar({ isOpen }) {
         {
           label_id: 3,
           label_name: "CHART INSURANCE",
-          link: "/doctor/insurance_form/",
+          link: "/doctor/chart/",
         },
       ],
     },
@@ -130,55 +131,58 @@ export default function Sidebar({ isOpen }) {
             Side Bar
           </h1>
 
-          <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl p-4 space-y-2 border border-divider">
-            {menu.map((item) => (
-              <Accordion key={item?.id} variant="shadow">
-                <AccordionItem
-                  aria-label={item.name}
-                  classNames={{ content: "grid grid-cols-1 gap-1" }}
-                  title={
-                    <p className="text-xs flex items-center justify-between">
-                      {item.name} {item.icon}
-                    </p>
-                  }
-                >
-                  {item.label.map((item_label) => {
-                    const isActive = selectMenu === item_label.label_id;
-                    return (
-                      // ถ้าไม่ต้องการ control navigation timing ให้ใช้ <Link> ปกติ
-                      // แต่ถ้าต้องการให้ state เปลี่ยนก่อน navigation ให้ใช้ onClick แบบด้านล่าง
-                      <div key={item_label.label_id}>
-                        {item_label.icon_theme ? (
-                          <div className="hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between">
-                            {item_label.icon_theme}
-                          </div>
-                        ) : (
-                          <Link
-                            color="foreground"
-                            // ใช้ <a> เพราะเรเรียก router.push เอง (หรือเปลี่ยนเป็น <Link> แล้วใช้ onClick และ preventDefault)
-                            href={item_label.link}
-                            onClick={(e) =>
-                              handleClickAndNavigate(
-                                e,
-                                item_label.link,
-                                item_label.label_id
-                              )
-                            }
-                            className={
-                              isActive
-                                ? "text-xs bg-gray-100 dark:bg-[#0e0e11] border border-divider rounded-lg p-1.5 flex items-center justify-between"
-                                : "text-xs hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between"
-                            }
-                          >
-                            {item_label.label_name}
-                          </Link>
-                        )}
-                      </div>
-                    );
-                  })}
-                </AccordionItem>
-              </Accordion>
-            ))}
+          <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl   border border-divider">
+            <ScrollShadow hideScrollBar className="space-y-2 w-full h-full p-4" >
+              {" "}
+              {menu.map((item) => (
+                <Accordion key={item?.id} variant="shadow">
+                  <AccordionItem
+                    aria-label={item.name}
+                    classNames={{ content: "grid grid-cols-1 gap-1" }}
+                    title={
+                      <p className="text-xs flex items-center justify-between">
+                        {item.name} {item.icon}
+                      </p>
+                    }
+                  >
+                    {item.label.map((item_label) => {
+                      const isActive = selectMenu === item_label.label_id;
+                      return (
+                        // ถ้าไม่ต้องการ control navigation timing ให้ใช้ <Link> ปกติ
+                        // แต่ถ้าต้องการให้ state เปลี่ยนก่อน navigation ให้ใช้ onClick แบบด้านล่าง
+                        <div key={item_label.label_id}>
+                          {item_label.icon_theme ? (
+                            <div className="hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between">
+                              {item_label.icon_theme}
+                            </div>
+                          ) : (
+                            <Link
+                              color="foreground"
+                              // ใช้ <a> เพราะเรเรียก router.push เอง (หรือเปลี่ยนเป็น <Link> แล้วใช้ onClick และ preventDefault)
+                              href={item_label.link}
+                              onClick={(e) =>
+                                handleClickAndNavigate(
+                                  e,
+                                  item_label.link,
+                                  item_label.label_id
+                                )
+                              }
+                              className={
+                                isActive
+                                  ? "text-xs bg-gray-100 dark:bg-[#0e0e11] border border-divider rounded-lg p-1.5 flex items-center justify-between"
+                                  : "text-xs hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between"
+                              }
+                            >
+                              {item_label.label_name}
+                            </Link>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </ScrollShadow>
           </div>
 
           <div className="mt-auto">

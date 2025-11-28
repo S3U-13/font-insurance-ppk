@@ -26,7 +26,8 @@ export default function page({ isOpen, onClose }) {
     Anaesthesia,
     noOrYes,
     choice5,
-    stepForm,
+    selectTabs,
+    handleSelectTabs,
   } = useHook();
   return (
     <div>
@@ -43,16 +44,39 @@ export default function page({ isOpen, onClose }) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 ">
-                <h1 className="text-center">IPD FORM</h1>
+              <ModalHeader className="flex flex-col gap-1 text-center">
+                {selectTabs === 1 && (
+                  <>
+                    <h1>
+                      <strong>Admission Notification Form (all cases)</strong>
+                    </h1>
+                    <p>
+                      <strong>Hospital Name</strong> พระปกเกล้า จันทบุรี
+                    </p>
+                  </>
+                )}
+                {selectTabs === 2 && (
+                  <>
+                    <h1>
+                      <strong>Discharge Notification Form</strong>
+                    </h1>
+                    <p>
+                      <strong>Hospital Name</strong> พระปกเกล้า จันทบุรี
+                    </p>
+                  </>
+                )}
               </ModalHeader>
               <ModalBody>
                 <Tabs
                   aria-label="Options"
                   variant="underlined"
-                  classNames={{ base: "mx-auto", tabList: "" }}
+                  classNames={{ base: "mx-auto" }}
                 >
-                  <Tab key="part_a" title="Part A">
+                  <Tab
+                    key={1}
+                    title="PART A"
+                    onClick={() => handleSelectTabs(1)}
+                  >
                     <PartA
                       sex={sex}
                       choice1={choice1}
@@ -62,7 +86,11 @@ export default function page({ isOpen, onClose }) {
                       yesOrNo={yesOrNo}
                     />
                   </Tab>
-                  <Tab key="part_b" title="Part B">
+                  <Tab
+                    key={2}
+                    title="PART B"
+                    onClick={() => handleSelectTabs(2)}
+                  >
                     <PartB
                       sex={sex}
                       choice3={choice3}

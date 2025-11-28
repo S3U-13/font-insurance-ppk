@@ -23,7 +23,6 @@ export default function page({ isOpen, onClose }) {
           body: "max-h-[calc(80vh-50px)] overflow-y-scroll",
           header: "border-b border-divider",
           footer: "border-t border-divider",
-          
         }}
       >
         <ModalContent>
@@ -34,7 +33,14 @@ export default function page({ isOpen, onClose }) {
                 form.handleSubmit();
               }}
             >
-              <ModalHeader className="flex flex-col gap-1">OPD</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                <h1 className="text-center">
+                  <strong>
+                    เเบบฟอร์มการเรียกร้องค่าสินไหมกรณีผู้ป่วยนอก Outpatient
+                    (OPD) and Accident Claim Form
+                  </strong>
+                </h1>
+              </ModalHeader>
               <ModalBody>
                 <FormOPD
                   sex={sex}

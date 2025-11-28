@@ -4,8 +4,8 @@ import React from "react";
 import useHook from "./useHook";
 import { Button } from "@heroui/button";
 
-import ModalIPD from "./create_form_ipd/page";
-import ModalOPD from "./create_form_opd/page";
+import ModalIPD from "./insurance_form/create_form_ipd/page";
+import ModalOPD from "./insurance_form/create_form_opd/page";
 import {
   Table,
   TableBody,
