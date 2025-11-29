@@ -2,6 +2,9 @@
 import { div } from "framer-motion/client";
 import React, { useState } from "react";
 import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { Checkbox } from "@heroui/checkbox";
+import Link from "next/link";
 export const EyeSlashFilledIcon = (props) => {
   return (
     <svg
@@ -68,51 +71,129 @@ export default function page({ isOpen, onClose }) {
   const toggleVisibility = () => setIsVisible(!isVisible);
   return (
     <div
-      className={`fixed top-0 right-0 h-full w-78 shadow-md  transition-transform duration-300 z-20 border border-divider bg-gray-100 dark:bg-[#0e0e11] space-y-2 p-4 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      }`}
+      className={`fixed top-0 right-0 h-full w-full md:w-1/2 
+    bg-gradient-to-b from-[#8B5CF6]/20 via-white/60 to-white/80
+    dark:from-[#5B21B6]/30 dark:via-gray-900/40 dark:to-gray-900/60
+    backdrop-blur-2xl shadow-2xl
+    border-l border-white/40 dark:border-purple-900/40
+    transition-transform duration-300 z-50 p-8
+    bg-cover bg-right bg-no-repeat
+    ${isOpen ? "translate-x-0" : "translate-x-full"}`}
     >
-      <button className="relative top-0 left-0" onClick={onClose}>
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-5 left-5 p-2 rounded-full 
+      bg-white/80 dark:bg-gray-900/70 shadow-lg border border-purple-200/50
+      hover:bg-white hover:scale-105 transition"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-6"
+          className="size-5 text-purple-600 dark:text-purple-300"
         >
           <path
             fillRule="evenodd"
-            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
-            clipRule="evenodd"
+            d="M12 2.25c-5.385 
+        0-9.75 4.365-9.75 9.75s4.365 9.75 
+        9.75 9.75 9.75-4.365 
+        9.75-9.75S17.385 2.25 12 
+        2.25Zm-1.72 6.97a.75.75 0 1 
+        0-1.06 1.06L10.94 12l-1.72 
+        1.72a.75.75 0 1 0 1.06 
+        1.06L12 13.06l1.72 
+        1.72a.75.75 0 1 0 1.06-1.06L13.06 
+        12l1.72-1.72a.75.75 0 1 
+        0-1.06-1.06L12 10.94l-1.72-1.72Z"
           />
         </svg>
       </button>
-      <Input
-        label="Email"
-        placeholder="Enter your email"
-        type="email"
-        variant="bordered"
-      />
-      <Input
-        className="max-w-xs"
-        endContent={
-          <button
-            aria-label="toggle password visibility"
-            className="focus:outline-solid outline-transparent"
-            type="button"
-            onClick={toggleVisibility}
+
+      {/* Content Center */}
+      <div className="flex items-center justify-center h-full relative">
+        {/* Doctor image behind login */}
+        <div className="absolute -bottom-18 -right-60 w-5/5 h-5/5 z-0 opacity-100">
+          <img
+            src="/images/doctor.png"
+            alt="doctor"
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        {/* Login Box (front) */}
+        <div
+          className="space-y-4 w-[380px] 
+      bg-white/50 dark:bg-gray-900/60 
+      border border-purple-200/40 dark:border-purple-900/40 
+      rounded-2xl p-8 shadow-xl backdrop-blur-xl
+      relative z-10"
+        >
+          <h1
+            className="text-3xl font-extrabold bg-gradient-to-r 
+      from-purple-600 to-indigo-500 bg-clip-text text-transparent"
           >
-            {isVisible ? (
-              <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-            ) : (
-              <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-            )}
-          </button>
-        }
-        label="Password"
-        placeholder="Enter your password"
-        type={isVisible ? "text" : "password"}
-        variant="bordered"
-      />
+            Welcome Back
+          </h1>
+
+          <p className="text-gray-700 dark:text-gray-300">
+            เข้าสู่ระบบ{" "}
+            <span className="font-semibold text-purple-600">PPK Paperless</span>
+          </p>
+
+          {/* Inputs */}
+          <Input
+            label="Email"
+            placeholder="Enter your email"
+            type="email"
+            variant="bordered"
+            classNames={{
+              inputWrapper:
+                "border-purple-300/60 hover:border-purple-400 transition",
+            }}
+          />
+
+          <Input
+            endContent={
+              <button
+                aria-label="toggle password visibility"
+                type="button"
+                className="focus:outline-none"
+                onClick={toggleVisibility}
+              >
+                {isVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-purple-400" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-purple-400" />
+                )}
+              </button>
+            }
+            label="Password"
+            placeholder="Enter your password"
+            type={isVisible ? "text" : "password"}
+            variant="bordered"
+            classNames={{
+              inputWrapper:
+                "border-purple-300/60 hover:border-purple-400 transition",
+            }}
+          />
+
+          <Checkbox color="secondary">Remember me</Checkbox>
+
+          <Button
+            as={Link}
+            href="/doctor/"
+            color="secondary"
+            className="w-full py-6 text-base font-semibold 
+        bg-gradient-to-r from-purple-600 to-indigo-500 
+        shadow-[0_5px_25px_rgba(140,107,255,0.45)]
+        hover:shadow-[0_5px_30px_rgba(140,107,255,0.65)]
+        text-white rounded-xl mt-4"
+          >
+            Login
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

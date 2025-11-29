@@ -186,7 +186,7 @@ export default function Sidebar({ isOpen }) {
           </div>
 
           <div className="mt-auto">
-            <Button className="w-full" color="danger">
+            <Button className="w-full" color="danger" as={Link} href="/">
               Logout
             </Button>
           </div>

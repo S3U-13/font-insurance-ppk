@@ -6,11 +6,17 @@ import LoginDrawer from "./login/page";
 export default function page() {
   const { drawerLogin, setDrawerLogin } = useHook();
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-xl rounded-2xl border border-gray-200 p-10 w-full max-w-md space-y-8">
+    <div
+      className={
+        drawerLogin
+          ? "w-1/2 h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 flex items-center justify-center transition-all duration-500"
+          : "w-full h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 flex items-center justify-center transition-all duration-500"
+      }
+    >
+      <div className="bg-white/80 backdrop-blur-xl shadow-2xl rounded-3xl border border-purple-200/40 p-12 w-full max-w-md space-y-10">
         {/* Header */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-bold tracking-wide text-gray-800">
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl font-extrabold tracking-wide bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">
             PPK PAPERLESS
           </h1>
           <p className="text-gray-500 text-sm">โรงพยาบาลพระปกเกล้า</p>
@@ -18,9 +24,11 @@ export default function page() {
 
         {/* Login Button */}
         <Button
-          className="w-full py-6 text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
-          color="primary"
-          variant="solid"
+          className="w-full py-6 text-xl font-semibold rounded-2xl 
+      bg-gradient-to-r from-purple-600 to-indigo-500 
+      shadow-[0_8px_30px_rgba(110,80,255,0.35)]
+      hover:shadow-[0_10px_35px_rgba(110,80,255,0.55)]
+      text-white transition-all"
           onPress={() => setDrawerLogin(true)}
           endContent={
             <svg
@@ -42,15 +50,12 @@ export default function page() {
           Login
         </Button>
 
-        {/* Optional Footer */}
+        {/* Footer */}
         <p className="text-center text-xs text-gray-400">
           © {new Date().getFullYear()} PPK Hospital — All rights reserved
         </p>
-        <LoginDrawer
-          isOpen={drawerLogin}
-          onClose={() => setDrawerLogin(false)}
-        />
       </div>
+      <LoginDrawer isOpen={drawerLogin} onClose={() => setDrawerLogin(false)} />
     </div>
   );
 }
