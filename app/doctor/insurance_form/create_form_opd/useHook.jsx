@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { useForm } from "@tanstack/react-form";
 
 import * as z from "zod";
 
-export default function useHook() {
+export default function useHook({ patData }) {
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -143,12 +143,20 @@ export default function useHook() {
     },
   });
 
+  useEffect(() => {
+    if (!patData) return;
+
+    // ตัวอย่าง: ใช้ค่าจาก patData.map
+    form.setValue("patientId", patData.pat.hn || null);
+
+    // เติมค่าฟิลด์อื่น ๆ ตามที่มี
+  }, [patData]);
+
   return {
     sex,
     noOrYes,
     choice2,
     form,
     isSubmitting,
-
   };
 }

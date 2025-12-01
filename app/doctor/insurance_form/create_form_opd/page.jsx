@@ -12,7 +12,7 @@ import FormOPD from "./components/form_opd";
 import useHook from "./useHook";
 
 export default function page({ isOpen, onClose, patData }) {
-  const { sex, noOrYes, choice2, form, isSubmitting } = useHook();
+  const { sex, noOrYes, choice2, form, isSubmitting } = useHook({ patData });
   return (
     <div>
       <Modal
