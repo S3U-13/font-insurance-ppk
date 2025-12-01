@@ -13,7 +13,7 @@ import useHook from "./useHook";
 import PartA from "./components/part_a";
 import PartB from "./components/part_b";
 
-export default function page({ isOpen, onClose }) {
+export default function page({ isOpen, onClose, patData }) {
   const {
     sex,
     choice1,
@@ -84,6 +84,7 @@ export default function page({ isOpen, onClose }) {
                       everOrNever={everOrNever}
                       choice2={choice2}
                       yesOrNo={yesOrNo}
+                      patData={patData}
                     />
                   </Tab>
                   <Tab

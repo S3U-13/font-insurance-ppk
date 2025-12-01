@@ -11,7 +11,7 @@ import {
 import FormOPD from "./components/form_opd";
 import useHook from "./useHook";
 
-export default function page({ isOpen, onClose }) {
+export default function page({ isOpen, onClose, patData }) {
   const { sex, noOrYes, choice2, form, isSubmitting } = useHook();
   return (
     <div>
@@ -47,6 +47,7 @@ export default function page({ isOpen, onClose }) {
                   noOrYes={noOrYes}
                   choice2={choice2}
                   form={form}
+                  patData={patData}
                 />
               </ModalBody>
               <ModalFooter>

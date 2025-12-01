@@ -17,7 +17,21 @@ export const useApiRequest = () => {
       console.error;
     }
   };
-  const FetchAllForm = () => apiRequest("/hospital-forms", "GET");
+  const FetchAllForm = () => apiRequest("/api/claims", "GET");
+  const pullData = async (hn, setPatData) => {
+    try {
+      const payload = { hn: hn }; // ชัดเจน & ปลอดภัย
+      const data = await apiRequest(`/hospital-forms/get`, "POST", payload);
+
+      if (!data) {
+        console.warn("⚠ ไม่มีข้อมูลจาก API");
+      }
+      return data;
+    } catch (err) {
+      console.error("pullData error:", err);
+      setPatData(null);
+    }
+  };
   const CreateOrderInsuranceOPD = async (value) => {
     try {
       const data = await apiRequest(`/hospital-forms`, "POST", value);
@@ -26,5 +40,5 @@ export const useApiRequest = () => {
       console.error(err);
     }
   };
-  return { CreateOrderInsuranceOPD, FetchAllForm };
+  return { CreateOrderInsuranceOPD, pullData, FetchAllForm };
 };

@@ -13,6 +13,7 @@ export default function page({
   everOrNever,
   choice2,
   yesOrNo,
+  patData,
 }) {
   return (
     <div className="space-y-3 ">
@@ -22,6 +23,7 @@ export default function page({
           สำหรับผู้เอาประกัน
         </h2>
         <div className="grid grid-cols-10 gap-2 items-center">
+          <p className="col-span-10">{patData?.pat?.hn || ""}</p>
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
@@ -372,22 +374,22 @@ export default function page({
 
           {/* <form.Field name="relatedConditions">
             {(field) => ( */}
-              <CheckboxGroup
-                label="Is the illness related to:"
-                className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
-                size="sm"
-                // value={field.state.value || []}
-                // onChange={(values) => field.handleChange(values)}
-              >
-                {choice2.map((c2) => (
-                  <Checkbox key={c2.id} value={String(c2.id)}>
-                    <span className="text-sm">
-                      {c2.id}. {c2.value}
-                    </span>
-                  </Checkbox>
-                ))}
-              </CheckboxGroup>
-            {/* )}
+          <CheckboxGroup
+            label="Is the illness related to:"
+            className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
+            size="sm"
+            // value={field.state.value || []}
+            // onChange={(values) => field.handleChange(values)}
+          >
+            {choice2.map((c2) => (
+              <Checkbox key={c2.id} value={String(c2.id)}>
+                <span className="text-sm">
+                  {c2.id}. {c2.value}
+                </span>
+              </Checkbox>
+            ))}
+          </CheckboxGroup>
+          {/* )}
           </form.Field> */}
         </div>
 

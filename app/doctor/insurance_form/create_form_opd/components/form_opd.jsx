@@ -9,7 +9,7 @@ import React from "react";
 import { parseDate, getLocalTimeZone } from "@internationalized/date";
 import { TimeInput } from "@heroui/date-input";
 
-export default function FormOPD({ sex, noOrYes, choice2, form }) {
+export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
   return (
     <div>
       <div className="text-center pt-2">
@@ -32,6 +32,9 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
+            value={
+              `${patData?.pat?.prename}${patData?.pat?.firstname} ${patData?.pat?.lastname}`
+            }
             size="sm"
             variant="bordered"
           />
@@ -42,7 +45,10 @@ export default function FormOPD({ sex, noOrYes, choice2, form }) {
             variant="bordered"
           >
             {sex.map((sex) => (
-              <SelectItem key={sex.id} value={sex.value}>
+              <SelectItem
+                key={sex.id}
+                value={sex.value}
+              >
                 {sex.name}
               </SelectItem>
             ))}

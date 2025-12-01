@@ -83,7 +83,7 @@ export default function page({ isOpen, onClose }) {
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-5 left-5 p-2 rounded-full 
+        className=" p-1 rounded-full 
       bg-white/80 dark:bg-gray-900/70 shadow-lg border border-purple-200/50
       hover:bg-white hover:scale-105 transition"
       >
@@ -91,7 +91,7 @@ export default function page({ isOpen, onClose }) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-5 text-purple-600 dark:text-purple-300"
+          className="size-8 text-purple-600 dark:text-purple-300"
         >
           <path
             fillRule="evenodd"
