@@ -30,7 +30,7 @@ export default function useHook() {
 
     const fetchData = async () => {
       const data = await pullData(hn, setPatData);
-      console.log("data loaded:", data); // ดูค่าที่ได้จาก API
+      setPatData(data);
     };
 
     fetchData();
@@ -46,5 +46,6 @@ export default function useHook() {
     order,
     patData,
     setHn,
+    setPatData,
   };
 }

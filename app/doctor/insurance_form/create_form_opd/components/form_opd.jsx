@@ -6,10 +6,29 @@ import { Radio, RadioGroup } from "@heroui/radio";
 import { Select, SelectItem } from "@heroui/select";
 import { div } from "framer-motion/client";
 import React from "react";
-import { parseDate, getLocalTimeZone } from "@internationalized/date";
-import { TimeInput } from "@heroui/date-input";
+import {
+  parseDate,
+  getLocalTimeZone,
+  parseAbsoluteToLocal,
+} from "@internationalized/date";
+import { DateInput, TimeInput } from "@heroui/date-input";
 
-export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
+export default function FormOPD({
+  sex,
+  noOrYes,
+  choice2,
+  form,
+  patData,
+  setPatData,
+  calculateAge,
+  formatThaiDateNoTime,
+  convertISOToTime,
+  formatAddress,
+  accidentTime,
+  setAccidentTime,
+  accidentDate,
+  setAccidentDate,
+}) {
   return (
     <div>
       <div className="text-center pt-2">
@@ -32,24 +51,37 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
-            value={
-              `${patData?.pat?.prename}${patData?.pat?.firstname} ${patData?.pat?.lastname}`
-            }
+            value={`${patData?.pat?.prename}${patData?.pat?.firstname} ${patData?.pat?.lastname}`}
             size="sm"
             variant="bordered"
+            disabled
           />
           <Select
             className="col-span-1"
             label="เพศ"
             size="sm"
             variant="bordered"
+            disabled
+            selectedKeys={
+              patData?.pat?.sex ? new Set([String(patData.pat.sex)]) : new Set()
+            }
+            onSelectionChange={(keys) => {
+              const selected = Array.from(keys)[0];
+              setPatData((prev) => ({
+                ...prev,
+                pat: {
+                  ...prev.pat,
+                  sex: selected ? Number(selected) : null,
+                },
+              }));
+            }}
           >
-            {sex.map((sex) => (
+            {sex.map((item) => (
               <SelectItem
-                key={sex.id}
-                value={sex.value}
+                key={String(item.value)} // ต้องเป็น string
+                value={String(item.value)} // ต้องเป็น string
               >
-                {sex.name}
+                {item.name}
               </SelectItem>
             ))}
           </Select>
@@ -57,7 +89,9 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             className="col-span-3"
             label="เลขประจำตัวประชาชน"
             size="sm"
+            value={patData?.pat?.citizencardno}
             variant="bordered"
+            disabled
           />
           <form.Field name="patientId">
             {(field) => (
@@ -66,6 +100,7 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
                 label="HN"
                 size="sm"
                 variant="bordered"
+                disabled
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -74,26 +109,30 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
           <Input
+            disabled
             className="col-span-3"
             label="วัน/เดือน/ปีเกิด"
             size="sm"
             variant="bordered"
+            value={formatThaiDateNoTime(patData?.pat?.birthdatetime)}
           />
-          <div className="flex gap-1 items-center col-span-1">
-            <Input
-              className="col-span-2"
-              label="อายุ"
-              size="sm"
-              variant="bordered"
-            />
-            <span className="text-gray-500">ปี</span>
-          </div>
+
+          <Input
+            className="col-span-1"
+            label="อายุ"
+            size="sm"
+            variant="bordered"
+            disabled
+            value={`${calculateAge(patData?.pat?.birthdatetime).years} ปี`}
+          />
 
           <Input
             className="col-span-1"
             label="เดือน"
             size="sm"
             variant="bordered"
+            value={`${calculateAge(patData?.pat?.birthdatetime).months} เดือน`}
+            disabled
           />
 
           <Input
@@ -101,6 +140,8 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             label="อาชีพ"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.occupationName}
+            disabled
           />
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
@@ -109,12 +150,15 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             label="โทรศัพท์มือถือ"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.pat_address[0]?.phone ?? "-"}
+            disabled
           />
           <Input
             className="col-span-2"
             label="โทรศัพท์บ้าน"
             size="sm"
             variant="bordered"
+            disabled
           />
 
           <Input
@@ -122,6 +166,8 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             label="อีเมล"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.pat_address[0]?.email ?? "-"}
+            disabled
           />
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
@@ -130,6 +176,8 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             label="ที่อยู่ปัจจุบัน"
             size="sm"
             variant="bordered"
+            value={formatAddress(patData?.pat?.pat_address)}
+            disabled
           />
         </div>
       </div>
@@ -200,56 +248,68 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
           <h3 className="font-semibold text-gray-700 dark:text-gray-200">
             1. Visit Information
           </h3>
-          <div className="grid grid-cols-3 gap-2">
-            <form.Field name="visitid">
-              {(field) => (
-                <Input
-                  label="Visit id :"
-                  size="sm"
-                  variant="bordered"
-                  type="text"
-                  value={field.state.value || ""}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              )}
-            </form.Field>
-            <form.Field name="claimId">
-              {(field) => (
-                <Input
-                  label="claim id :"
-                  size="sm"
-                  variant="bordered"
-                  type="text"
-                  value={field.state.value || ""}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              )}
-            </form.Field>
-            <form.Field name="vitalsignId">
-              {(field) => (
-                <Input
-                  label="vital sign id :"
-                  size="sm"
-                  variant="bordered"
-                  type="text"
-                  value={field.state.value || ""}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              )}
-            </form.Field>
-          </div>
+          {/* <div className="grid grid-cols-3 gap-2"> */}
+          <form.Field name="visitid">
+            {(field) => (
+              <Input
+                label="Visit id :"
+                size="sm"
+                variant="bordered"
+                type="hidden"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+            )}
+          </form.Field>
+          <form.Field name="claimId">
+            {(field) => (
+              <Input
+                label="claim id :"
+                size="sm"
+                variant="bordered"
+                type="text"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+            )}
+          </form.Field>
+          <form.Field name="vitalsignId">
+            {(field) => (
+              <Input
+                label="vital sign id :"
+                size="sm"
+                variant="bordered"
+                type="hidden"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+            )}
+          </form.Field>
+          {/* </div> */}
           <div className="grid grid-cols-12 gap-4 items-end">
             <DatePicker
               className="col-span-2"
               label="Visit date"
               size="sm"
               variant="bordered"
+              value={
+                patData?.visitdatetime
+                  ? parseDate(patData?.visitdatetime.split("T")[0])
+                  : null
+              }
+              disabled
             />
             <TimeInput
               className="col-span-2"
               label="Time"
               size="sm"
               variant="bordered"
+              value={
+                patData?.visitdatetime
+                  ? convertISOToTime(patData.visitdatetime)
+                  : null
+              }
+              disabled
             />
 
             <Input
@@ -257,24 +317,52 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
               label="T (Temp)"
               size="sm"
               variant="bordered"
+              value={
+                patData?.vitalsign[0]?.temperature
+                  ? `${patData?.vitalsign[0]?.temperature} °C`
+                  : ""
+              }
+              disabled
             />
+
             <Input
               className="col-span-2"
               label="P (Pulse)"
               size="sm"
               variant="bordered"
+              value={
+                patData?.vitalsign[0]?.pulse
+                  ? `${patData?.vitalsign[0]?.pulse} bpm`
+                  : ""
+              }
+              disabled
             />
+
             <Input
               className="col-span-2"
               label="R (Resp.)"
               size="sm"
               variant="bordered"
+              value={
+                patData?.vitalsign[0]?.respiration
+                  ? `${patData?.vitalsign[0]?.respiration} /min`
+                  : ""
+              }
+              disabled
             />
+
             <Input
               className="col-span-2"
               label="BP"
               size="sm"
               variant="bordered"
+              value={
+                patData?.vitalsign[0]?.bp_systolic &&
+                patData?.vitalsign[0]?.bp_diastolic
+                  ? `${patData?.vitalsign[0]?.bp_systolic}/${patData?.vitalsign[0]?.bp_diastolic} mmHg`
+                  : ""
+              }
+              disabled
             />
           </div>
         </div>
@@ -327,31 +415,70 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
           <div className="grid grid-cols-12 gap-4 items-end">
             <form.Field name="accidentDateTime">
               {(field) => (
-                <DatePicker
-                  className="col-span-2"
-                  label="Date of accident"
+                <div className="col-span-4 flex items-center gap-2">
+                  {/* Date */}
+                  <DateInput
+                    label="Date of accident"
+                    size="sm"
+                    variant="bordered"
+                    value={accidentDate}
+                    onChange={(d) => {
+                      setAccidentDate(d);
+
+                      if (accidentTime) {
+                        const iso = `${d.year}-${String(d.month).padStart(2, "0")}-${String(
+                          d.day
+                        ).padStart(2, "0")}T${String(
+                          accidentTime.hour
+                        ).padStart(
+                          2,
+                          "0"
+                        )}:${String(accidentTime.minute).padStart(2, "0")}:00Z`;
+
+                        field.handleChange(iso);
+                      }
+                    }}
+                  />
+
+                  {/* Time */}
+                  <TimeInput
+                    label="Time of accident"
+                    size="sm"
+                    variant="bordered"
+                    value={accidentTime}
+                    onChange={(t) => {
+                      setAccidentTime(t);
+
+                      if (accidentDate) {
+                        const iso = `${accidentDate.year}-${String(
+                          accidentDate.month
+                        ).padStart(2, "0")}-${String(accidentDate.day).padStart(
+                          2,
+                          "0"
+                        )}T${String(t.hour).padStart(2, "0")}:${String(
+                          t.minute
+                        ).padStart(2, "0")}:00Z`;
+
+                        field.handleChange(iso);
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </form.Field>
+
+            <form.Field name="accidentPlace">
+              {(field) => (
+                <Input
+                  className="col-span-8"
+                  label="Place"
                   size="sm"
                   variant="bordered"
-                  value={
-                    field.state.value ? parseDate(field.state.value) : null
-                  }
+                  value={field.state.value || ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
               )}
             </form.Field>
-
-            <Input
-              className="col-span-2"
-              label="Time"
-              size="sm"
-              variant="bordered"
-            />
-            <Input
-              className="col-span-8"
-              label="Place"
-              size="sm"
-              variant="bordered"
-            />
           </div>
         </div>
 
@@ -433,6 +560,7 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
             label="Diagnosis"
             size="sm"
             variant="bordered"
+            value={patData?.diagnosis[0]?.diagtext}
           />
         </div>
 
@@ -441,19 +569,24 @@ export default function FormOPD({ sex, noOrYes, choice2, form, patData }) {
           <h3 className="font-semibold text-gray-700 dark:text-gray-200">
             9. Investigation & Result
           </h3>
-
-          <Input
-            className="w-full"
-            label="Investigation & Result (Lab, EKG, X-ray, etc.)"
-            size="sm"
-            variant="bordered"
-          />
+          <form.Field name="investigations">
+            {(field) => (
+              <Input
+                className="w-full"
+                label="Investigation & Result (Lab, EKG, X-ray, etc.)"
+                size="sm"
+                variant="bordered"
+                value={field.state.value || ""}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+            )}
+          </form.Field>
         </div>
 
         {/* Section 10: Treatment */}
         <div className="space-y-4">
           <h3 className="font-semibold text-gray-700 dark:text-gray-200">
-            10. Plan of Treatment
+            10.Treatment
           </h3>
 
           <form.Field name="planOfTreatment">

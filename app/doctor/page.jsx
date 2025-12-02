@@ -34,6 +34,7 @@ export default function page() {
     order,
     patData,
     setHn,
+    setPatData,
   } = useHook();
   return (
     <div className="space-y-6 mt-6 ">
@@ -44,6 +45,7 @@ export default function page() {
       />
       <ModalOPD
         patData={patData}
+        setPatData={setPatData}
         isOpen={openModalOPD}
         onClose={() => setOpenModalOPD(false)}
       />

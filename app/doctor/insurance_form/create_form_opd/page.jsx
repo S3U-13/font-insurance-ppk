@@ -11,8 +11,22 @@ import {
 import FormOPD from "./components/form_opd";
 import useHook from "./useHook";
 
-export default function page({ isOpen, onClose, patData }) {
-  const { sex, noOrYes, choice2, form, isSubmitting } = useHook({ patData });
+export default function page({ isOpen, onClose, patData, setPatData }) {
+  const {
+    sex,
+    noOrYes,
+    choice2,
+    form,
+    isSubmitting,
+    calculateAge,
+    formatThaiDateNoTime,
+    convertISOToTime,
+    formatAddress,
+    accidentTime,
+    setAccidentTime,
+    accidentDate,
+    setAccidentDate,
+  } = useHook({ patData, setPatData, onClose });
   return (
     <div>
       <Modal
@@ -48,6 +62,15 @@ export default function page({ isOpen, onClose, patData }) {
                   choice2={choice2}
                   form={form}
                   patData={patData}
+                  setPatData={setPatData}
+                  calculateAge={calculateAge}
+                  formatThaiDateNoTime={formatThaiDateNoTime}
+                  convertISOToTime={convertISOToTime}
+                  formatAddress={formatAddress}
+                  accidentTime={accidentTime}
+                  setAccidentTime={setAccidentTime}
+                  accidentDate={accidentDate}
+                  setAccidentDate={setAccidentDate}
                 />
               </ModalBody>
               <ModalFooter>

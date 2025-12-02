@@ -35,6 +35,7 @@ export const useApiRequest = () => {
   const CreateOrderInsuranceOPD = async (value) => {
     try {
       const data = await apiRequest(`/hospital-forms`, "POST", value);
+
       return data;
     } catch (err) {
       console.error(err);

@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { useForm } from "@tanstack/react-form";
+import { Time } from "@internationalized/date";
 
 import * as z from "zod";
+import { addToast } from "@heroui/toast";
 
-export default function useHook({ patData }) {
+export default function useHook({ patData, setPatData, onClose }) {
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -61,16 +63,18 @@ export default function useHook({ patData }) {
     patientId: null,
     claimId: null,
     visitid: null,
-    vitalsignid: null,
+    vitalsignId: null,
     chiefComplaint: "",
     presentIllness: "",
     physicalExam: "",
     accidentDateTime: null,
+    accidentPlace: "",
     underlyingCondition: "",
     provisionalDx: "",
     adjRW: "",
     manageOPDNote: "",
     planOfTreatment: "",
+    investigations: "",
     physicianid: 1001,
     approvebyphysician: null,
     signatureid: 5001,
@@ -80,27 +84,43 @@ export default function useHook({ patData }) {
   });
 
   const [field, setField] = useState(initialField());
+  const [relatedConditions, setRelatedConditions] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // อัปเดต field
     setField((prev) => ({
       ...prev,
       [name]: value,
     }));
 
     form.setValue(name, value);
-    form.setFieldValue(
-      "relatedConditions",
-      [...relatedConditions].sort((a, b) => a - b)
-    );
+
+    // 🟣 จัดเรียงและตั้งค่าลงฟอร์มจาก state ล่าสุด
+    setRelatedConditions((prev) => {
+      const sorted = [...prev].sort((a, b) => a - b);
+      form.setFieldValue("relatedConditions", sorted);
+      return sorted;
+    });
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (value) => {
     if (isSubmitting) return;
     try {
-      await CreateOrderInsuranceOPD(value);
+      const data = await CreateOrderInsuranceOPD(value);
+      setPatData(null);
       form.reset();
+      onClose();
+      if ((data.status = 200)) {
+        addToast({
+          title: "สำเร็จ",
+          description: "เพิ่มข้อมูลสำเร็จ",
+          color: "success",
+          variant: "flat",
+        });
+      }
     } catch (err) {
       console.error();
     } finally {
@@ -114,16 +134,18 @@ export default function useHook({ patData }) {
     patientId: z.coerce.number().nullable(),
     claimId: z.coerce.number().nullable(),
     visitid: z.coerce.number().nullable(),
-    vitalsignid: z.coerce.number().nullable(),
+    vitalsignId: z.coerce.number().nullable(),
     chiefComplaint: z.string().optional(),
     presentIllness: z.string().optional(),
     physicalExam: z.string().optional(),
 
     accidentDateTime: z.string().nullable(),
+    accidentPlace: z.string().optional(),
     underlyingCondition: z.string().optional(),
     provisionalDx: z.string().optional(),
     adjRW: z.string().optional(),
     planOfTreatment: z.string().optional(),
+    investigations: z.string().optional(),
     relatedConditions: z.array(z.coerce.number()).nullable(),
   });
 
@@ -147,10 +169,91 @@ export default function useHook({ patData }) {
     if (!patData) return;
 
     // ตัวอย่าง: ใช้ค่าจาก patData.map
-    form.setValue("patientId", patData.pat.hn || null);
+    form.setFieldValue("patientId", patData?.pat?.hn || null);
+    form.setFieldValue("visitid", patData?.patvisitid || null);
+    form.setFieldValue("vitalsignId", patData?.vitalsign[0].id || null);
+    form.setFieldValue(
+      "chiefComplaint",
+      patData?.chief_complaint_and_duration || null
+    );
+    form.setFieldValue("presentIllness", patData?.presentIllness || null);
+    form.setFieldValue(
+      "underlyingCondition",
+      patData?.underlyingcondition || null
+    );
+    form.setFieldValue("planOfTreatment", patData?.treatment || null);
 
     // เติมค่าฟิลด์อื่น ๆ ตามที่มี
   }, [patData]);
+  const formatThaiDateNoTime = (isoString) => {
+    if (!isoString) return "";
+
+    const date = new Date(isoString);
+
+    return new Intl.DateTimeFormat("th-TH", {
+      timeZone: "Asia/Bangkok",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const calculateAge = (birthdate) => {
+    if (!birthdate) return "";
+
+    const birth = new Date(birthdate);
+    const today = new Date();
+
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+
+    // ถ้ายังไม่ถึงวันเกิดของเดือนนี้ → เดือนติดลบ
+    if (days < 0) {
+      months--;
+    }
+
+    // ถ้าเดือนติดลบ → ลดปีลง 1 และเพิ่มเดือนให้กลับมาเป็นบวก
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    return { years, months };
+  };
+
+  const convertISOToTime = (isoString) => {
+    if (!isoString) return null;
+
+    const d = new Date(isoString);
+    return new Time(d.getHours(), d.getMinutes(), d.getSeconds());
+  };
+
+  const formatAddress = (pat_address) => {
+    if (!pat_address) return "";
+
+    // ถ้าเป็น string แล้ว → คืนค่าเลย
+    if (typeof pat_address === "string") return pat_address;
+
+    let address = "";
+
+    if (pat_address[0]?.house) address += `${pat_address[0]?.house}`;
+    if (pat_address[0]?.moo) address += ` หมู่ ${pat_address[0]?.moo}`;
+    if (pat_address[0]?.soy) address += ` ซอย ${pat_address[0]?.soy}`;
+    if (pat_address[0]?.road) address += ` ถนน ${pat_address[0]?.road}`;
+
+    // ใช้รหัสแทน detail (เพราะ detail = null)
+    if (pat_address[0]?.tambonName?.detailtext)
+      address += ` ต.${pat_address[0]?.tambonName.detailtext}`;
+    if (pat_address[0]?.amphurName?.detailtext)
+      address += ` อ.${pat_address[0]?.amphurName.detailtext}`;
+    if (pat_address[0]?.provinceName?.detailtext)
+      address += ` จ.${pat_address[0]?.provinceName.detailtext}`;
+
+    return address.trim();
+  };
+  const [accidentDate, setAccidentDate] = useState(null); // year, month, day
+  const [accidentTime, setAccidentTime] = useState(new Time(0, 0));
 
   return {
     sex,
@@ -158,5 +261,13 @@ export default function useHook({ patData }) {
     choice2,
     form,
     isSubmitting,
+    formatThaiDateNoTime,
+    calculateAge,
+    convertISOToTime,
+    formatAddress,
+    accidentTime,
+    setAccidentTime,
+    accidentDate,
+    setAccidentDate,
   };
 }
