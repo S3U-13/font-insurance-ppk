@@ -360,7 +360,7 @@ export default function FormOPD({
               variant="bordered"
               value={
                 patData?.vitalsign?.[0]?.bp_systolic &&
-                patData?.vitalsign?.[0]?.bp_diastolic
+                  patData?.vitalsign?.[0]?.bp_diastolic
                   ? `${patData.vitalsign[0].bp_systolic}/${patData.vitalsign[0].bp_diastolic} mmHg`
                   : ""
               }
@@ -573,6 +573,52 @@ export default function FormOPD({
               />
             )}
           </form.Field>
+        </div>
+        <div className="space-y-4  ">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+            11.Doctor Signature
+          </h3>
+          <div className="flex justify-between border border-divider rounded-xl p-4">
+            <div className="space-y-2">
+              <Input
+                label="Physician's name"
+                variant="bordered"
+                size="sm"
+              />
+              <Input
+                label="Doctor signature"
+                variant="bordered"
+                size="sm"
+              />
+
+            </div>
+            <div className="space-y-2">
+              <Input
+                label="Medical license No."
+                variant="bordered"
+                size="sm"
+              />
+
+              <DateInput
+                label="DATE"
+                variant="bordered"
+                size="sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <Input
+                label="Specialty"
+                variant="bordered"
+                size="sm"
+              />
+            </div>
+          </div>
+
+        </div>
+        <div className="space-y-4">
+          <h3 className="text-xs text-center font-semibold text-gray-700 dark:text-gray-200">
+            Remark : Doctor who issue this report must be a doctor who is licensed to practice medicine and correctly registered by the Thai Medical Council
+          </h3>
         </div>
       </div>
     </div>

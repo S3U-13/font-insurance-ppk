@@ -6,7 +6,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
 
   // โหลด user จาก localStorage (token อ่านไม่ได้)
   useEffect(() => {
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (data) => {
-    console.log(data.data.user);
     setUser(data.data.user);
     localStorage.setItem("user", JSON.stringify(data.data.user));
   };

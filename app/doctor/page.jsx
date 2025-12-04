@@ -231,7 +231,10 @@ export default function page() {
                     <Button isIconOnly size="sm" color="default" variant="flat">
                       <Eye size={20} />
                     </Button>
-                    <Button isIconOnly size="sm" color="default" variant="flat">
+                    {/* <Button color="primary">
+                      ปริ้น PDF
+                    </Button> */}
+                    <Button isIconOnly size="sm" color="default" variant="flat" as="a" href="/api/generate-opd-pdf" target="_blank">
                       <FileText size={20} />
                     </Button>
                   </div>
