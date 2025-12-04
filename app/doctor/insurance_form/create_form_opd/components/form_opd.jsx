@@ -28,6 +28,8 @@ export default function FormOPD({
   setAccidentTime,
   accidentDate,
   setAccidentDate,
+  handleAccidentDateChange,
+  handleAccidentTimeChange,
 }) {
   return (
     <div>
@@ -51,7 +53,7 @@ export default function FormOPD({
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
-            value={`${patData?.pat?.prename}${patData?.pat?.firstname} ${patData?.pat?.lastname}`}
+            value={`${patData?.pat?.prename || ""}${patData?.pat?.firstname || ""} ${patData?.pat?.lastname || ""}`}
             size="sm"
             variant="bordered"
             disabled
@@ -89,7 +91,7 @@ export default function FormOPD({
             className="col-span-3"
             label="เลขประจำตัวประชาชน"
             size="sm"
-            value={patData?.pat?.citizencardno}
+            value={patData?.pat?.citizencardno || ""}
             variant="bordered"
             disabled
           />
@@ -114,7 +116,7 @@ export default function FormOPD({
             label="วัน/เดือน/ปีเกิด"
             size="sm"
             variant="bordered"
-            value={formatThaiDateNoTime(patData?.pat?.birthdatetime)}
+            value={formatThaiDateNoTime(patData?.pat?.birthdatetime || "")}
           />
 
           <Input
@@ -123,7 +125,7 @@ export default function FormOPD({
             size="sm"
             variant="bordered"
             disabled
-            value={`${calculateAge(patData?.pat?.birthdatetime).years} ปี`}
+            value={`${calculateAge(patData?.pat?.birthdatetime).years || ""} ปี`}
           />
 
           <Input
@@ -131,7 +133,7 @@ export default function FormOPD({
             label="เดือน"
             size="sm"
             variant="bordered"
-            value={`${calculateAge(patData?.pat?.birthdatetime).months} เดือน`}
+            value={`${calculateAge(patData?.pat?.birthdatetime).month || ""} เดือน`}
             disabled
           />
 
@@ -318,8 +320,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign[0]?.temperature
-                  ? `${patData?.vitalsign[0]?.temperature} °C`
+                patData?.vitalsign?.[0]?.temperature
+                  ? `${patData.vitalsign[0].temperature} °C`
                   : ""
               }
               disabled
@@ -331,8 +333,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign[0]?.pulse
-                  ? `${patData?.vitalsign[0]?.pulse} bpm`
+                patData?.vitalsign?.[0]?.pulse
+                  ? `${patData.vitalsign[0].pulse} bpm`
                   : ""
               }
               disabled
@@ -344,8 +346,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign[0]?.respiration
-                  ? `${patData?.vitalsign[0]?.respiration} /min`
+                patData?.vitalsign?.[0]?.respiration
+                  ? `${patData.vitalsign[0].respiration} /min`
                   : ""
               }
               disabled
@@ -357,9 +359,9 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign[0]?.bp_systolic &&
-                patData?.vitalsign[0]?.bp_diastolic
-                  ? `${patData?.vitalsign[0]?.bp_systolic}/${patData?.vitalsign[0]?.bp_diastolic} mmHg`
+                patData?.vitalsign?.[0]?.bp_systolic &&
+                patData?.vitalsign?.[0]?.bp_diastolic
+                  ? `${patData.vitalsign[0].bp_systolic}/${patData.vitalsign[0].bp_diastolic} mmHg`
                   : ""
               }
               disabled
@@ -413,59 +415,25 @@ export default function FormOPD({
           </h3>
 
           <div className="grid grid-cols-12 gap-4 items-end">
-            <form.Field name="accidentDateTime">
-              {(field) => (
-                <div className="col-span-4 flex items-center gap-2">
-                  {/* Date */}
-                  <DateInput
-                    label="Date of accident"
-                    size="sm"
-                    variant="bordered"
-                    value={accidentDate}
-                    onChange={(d) => {
-                      setAccidentDate(d);
+            <div className="col-span-4 flex items-center gap-2">
+              {/* Date */}
+              <DateInput
+                label="Date of accident"
+                size="sm"
+                variant="bordered"
+                value={accidentDate}
+                onChange={handleAccidentDateChange}
+              />
 
-                      if (accidentTime) {
-                        const iso = `${d.year}-${String(d.month).padStart(2, "0")}-${String(
-                          d.day
-                        ).padStart(2, "0")}T${String(
-                          accidentTime.hour
-                        ).padStart(
-                          2,
-                          "0"
-                        )}:${String(accidentTime.minute).padStart(2, "0")}:00Z`;
-
-                        field.handleChange(iso);
-                      }
-                    }}
-                  />
-
-                  {/* Time */}
-                  <TimeInput
-                    label="Time of accident"
-                    size="sm"
-                    variant="bordered"
-                    value={accidentTime}
-                    onChange={(t) => {
-                      setAccidentTime(t);
-
-                      if (accidentDate) {
-                        const iso = `${accidentDate.year}-${String(
-                          accidentDate.month
-                        ).padStart(2, "0")}-${String(accidentDate.day).padStart(
-                          2,
-                          "0"
-                        )}T${String(t.hour).padStart(2, "0")}:${String(
-                          t.minute
-                        ).padStart(2, "0")}:00Z`;
-
-                        field.handleChange(iso);
-                      }
-                    }}
-                  />
-                </div>
-              )}
-            </form.Field>
+              {/* Time */}
+              <TimeInput
+                label="Time of accident"
+                size="sm"
+                variant="bordered"
+                value={accidentTime}
+                onChange={handleAccidentTimeChange}
+              />
+            </div>
 
             <form.Field name="accidentPlace">
               {(field) => (
@@ -554,14 +522,18 @@ export default function FormOPD({
           <h3 className="font-semibold text-gray-700 dark:text-gray-200">
             8. Diagnosis
           </h3>
-
-          <Input
-            className="w-full"
-            label="Diagnosis"
-            size="sm"
-            variant="bordered"
-            value={patData?.diagnosis[0]?.diagtext}
-          />
+          <form.Field name="provisionalDx">
+            {(field) => (
+              <Input
+                className="w-full"
+                label="Diagnosis"
+                size="sm"
+                variant="bordered"
+                value={field.state.value}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+            )}
+          </form.Field>
         </div>
 
         {/* Section 9: Investigation */}

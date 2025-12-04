@@ -7,8 +7,10 @@ import React, { useEffect, useState } from "react";
 import { ThemeSwitch } from "./theme-switch";
 import { div } from "framer-motion/client";
 import { ScrollShadow } from "@heroui/scroll-shadow";
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar({ isOpen }) {
+  const { logout } = useAuth();
   const [selectMenu, setSelectMenu] = useState(1);
   const pathname = usePathname();
   const router = useRouter();
@@ -37,7 +39,7 @@ export default function Sidebar({ isOpen }) {
         {
           label_id: 1,
           label_name: "INSURANCE FORM CREATE",
-          link: "/doctor/insurance_form/",
+          link: "/doctor/",
         },
         {
           label_id: 2,
@@ -107,7 +109,7 @@ export default function Sidebar({ isOpen }) {
     // ตัวอย่างแม็ป path -> label_id (ปรับได้ตามโครงสร้างของคุณ)
     if (pathname?.startsWith("/doctor/insurance_form/success")) {
       setSelectMenu(2);
-    } else if (pathname?.startsWith("/doctor/insurance_form/")) {
+    } else if (pathname?.startsWith("/doctor/")) {
       setSelectMenu(1);
     }
   }, [pathname]);
@@ -132,7 +134,7 @@ export default function Sidebar({ isOpen }) {
           </h1>
 
           <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl   border border-divider">
-            <ScrollShadow hideScrollBar className="space-y-2 w-full h-full p-4" >
+            <ScrollShadow hideScrollBar className="space-y-2 w-full h-full p-4">
               {" "}
               {menu.map((item) => (
                 <Accordion key={item?.id} variant="shadow">
@@ -186,7 +188,7 @@ export default function Sidebar({ isOpen }) {
           </div>
 
           <div className="mt-auto">
-            <Button className="w-full" color="danger" as={Link} href="/">
+            <Button className="w-full" color="danger" onPress={logout}>
               Logout
             </Button>
           </div>

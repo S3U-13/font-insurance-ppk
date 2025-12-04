@@ -124,7 +124,7 @@ export default function page() {
             <TableColumn className="text-center">ACTION</TableColumn>
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
-            {form?.map((item, index) => (
+            {form?.filter((order) => order.status === "approve").map((item, index) => (
               <TableRow key={item.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>OPD</TableCell>

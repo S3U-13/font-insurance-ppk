@@ -132,6 +132,7 @@ export default function page() {
             <TableColumn>CLAIM ID</TableColumn>
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
+            {/* <TableColumn className="text-center">APPROVE</TableColumn> */}
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
             {order?.map((item, index) => (
@@ -144,7 +145,7 @@ export default function page() {
                 <TableCell className="text-center">
                   {item.status === "pending" ? (
                     <Chip
-                      className="p-2"
+                      className="p-1"
                       color="primary"
                       endContent={
                         <svg
@@ -166,7 +167,7 @@ export default function page() {
                     </Chip>
                   ) : item.status === "draft" ? (
                     <Chip
-                      className="p-2"
+                      className="p-1"
                       color="warning"
                       endContent={
                         <svg
@@ -188,7 +189,7 @@ export default function page() {
                     </Chip>
                   ) : item.status === "cancel" ? (
                     <Chip
-                      className="p-2"
+                      className="p-1"
                       color="danger"
                       endContent={<XCircle size={20} />}
                       variant="flat"
@@ -235,6 +236,14 @@ export default function page() {
                     </Button>
                   </div>
                 </TableCell>
+                {/* <TableCell className="flex items-center justify-center gap-2">
+                  <Button color="primary" size="sm" variant="flat">
+                    Approve
+                  </Button>
+                  <Button color="danger" size="sm" variant="flat">
+                    UnApprove
+                  </Button>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

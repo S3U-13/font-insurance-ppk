@@ -5,6 +5,7 @@ import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Checkbox } from "@heroui/checkbox";
 import Link from "next/link";
+import useHook from "./useHook";
 export const EyeSlashFilledIcon = (props) => {
   return (
     <svg
@@ -67,8 +68,8 @@ export const EyeFilledIcon = (props) => {
 
 export default function page({ isOpen, onClose }) {
   const [isVisible, setIsVisible] = useState(false);
-
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const { handleSubmit, field, handleChange } = useHook();
   return (
     <div
       className={`fixed top-0 right-0 h-full w-full md:w-1/2 
@@ -122,77 +123,86 @@ export default function page({ isOpen, onClose }) {
         </div>
 
         {/* Login Box (front) */}
-        <div
-          className="space-y-4 w-[380px] 
+        <form onSubmit={handleSubmit}>
+          <div
+            className="space-y-4 w-[380px] 
       bg-white/50 dark:bg-gray-900/60 
       border border-purple-200/40 dark:border-purple-900/40 
       rounded-2xl p-8 shadow-xl backdrop-blur-xl
       relative z-10"
-        >
-          <h1
-            className="text-3xl font-extrabold bg-gradient-to-r 
-      from-purple-600 to-indigo-500 bg-clip-text text-transparent"
           >
-            Welcome Back
-          </h1>
+            <h1
+              className="text-3xl font-extrabold bg-gradient-to-r 
+      from-purple-600 to-indigo-500 bg-clip-text text-transparent"
+            >
+              Welcome Back
+            </h1>
 
-          <p className="text-gray-700 dark:text-gray-300">
-            เข้าสู่ระบบ{" "}
-            <span className="font-semibold text-purple-600">PPK Paperless</span>
-          </p>
+            <p className="text-gray-700 dark:text-gray-300">
+              เข้าสู่ระบบ{" "}
+              <span className="font-semibold text-purple-600">
+                PPK Paperless
+              </span>
+            </p>
 
-          {/* Inputs */}
-          <Input
-            label="Email"
-            placeholder="Enter your email"
-            type="email"
-            variant="bordered"
-            classNames={{
-              inputWrapper:
-                "border-purple-300/60 hover:border-purple-400 transition",
-            }}
-          />
+            {/* Inputs */}
+            <Input
+              label="Email"
+              placeholder="Enter your email"
+              type="text"
+              variant="bordered"
+              classNames={{
+                inputWrapper:
+                  "border-purple-300/60 hover:border-purple-400 transition",
+              }}
+              name="username"
+              value={field.username}
+              onChange={handleChange}
+            />
 
-          <Input
-            endContent={
-              <button
-                aria-label="toggle password visibility"
-                type="button"
-                className="focus:outline-none"
-                onClick={toggleVisibility}
-              >
-                {isVisible ? (
-                  <EyeSlashFilledIcon className="text-2xl text-purple-400" />
-                ) : (
-                  <EyeFilledIcon className="text-2xl text-purple-400" />
-                )}
-              </button>
-            }
-            label="Password"
-            placeholder="Enter your password"
-            type={isVisible ? "text" : "password"}
-            variant="bordered"
-            classNames={{
-              inputWrapper:
-                "border-purple-300/60 hover:border-purple-400 transition",
-            }}
-          />
+            <Input
+              endContent={
+                <button
+                  aria-label="toggle password visibility"
+                  type="button"
+                  className="focus:outline-none"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-purple-400" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-purple-400" />
+                  )}
+                </button>
+              }
+              label="Password"
+              placeholder="Enter your password"
+              type={isVisible ? "text" : "password"}
+              variant="bordered"
+              classNames={{
+                inputWrapper:
+                  "border-purple-300/60 hover:border-purple-400 transition",
+              }}
+              name="password"
+              value={field.password}
+              onChange={handleChange}
+            />
 
-          <Checkbox color="secondary">Remember me</Checkbox>
+            <Checkbox color="secondary">Remember me</Checkbox>
 
-          <Button
-            as={Link}
-            href="/doctor/"
-            color="secondary"
-            className="w-full py-6 text-base font-semibold 
+            <Button
+              type="submit"
+              color="secondary"
+              className="w-full py-6 text-base font-semibold 
         bg-gradient-to-r from-purple-600 to-indigo-500 
         shadow-[0_5px_25px_rgba(140,107,255,0.45)]
         hover:shadow-[0_5px_30px_rgba(140,107,255,0.65)]
         text-white rounded-xl mt-4"
-          >
-            Login
-          </Button>
-        </div>
+            >
+              Login
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

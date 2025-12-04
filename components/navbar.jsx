@@ -2,8 +2,10 @@
 import React from "react";
 import { useDrawer } from "../context/drawProvider";
 import { Button } from "@heroui/button";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
+  const { user } = useAuth();
   const { openDrawer, setOpenDrawer } = useDrawer();
   return (
     <div className="h-18 w-full p-6 border border-divider rounded-lg flex items-center justify-between px-4 bg-gray-100 dark:bg-[#0e0e11]">
@@ -43,7 +45,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <div className="text-xs">
           <p>
-            <strong>DocName:</strong> นพ.ปุญฤทธิ์ กวางทอง
+            <strong>DocName:</strong> {user.name}
           </p>
           <div className="flex items-center gap-2">
             <p>

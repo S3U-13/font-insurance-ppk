@@ -171,7 +171,7 @@ export default function useHook({ patData, setPatData, onClose }) {
     // ตัวอย่าง: ใช้ค่าจาก patData.map
     form.setFieldValue("patientId", patData?.pat?.hn || null);
     form.setFieldValue("visitid", patData?.patvisitid || null);
-    form.setFieldValue("vitalsignId", patData?.vitalsign[0].id || null);
+    form.setFieldValue("vitalsignId", patData?.vitalsign?.[0]?.id || null);
     form.setFieldValue(
       "chiefComplaint",
       patData?.chief_complaint_and_duration || null
@@ -182,7 +182,10 @@ export default function useHook({ patData, setPatData, onClose }) {
       patData?.underlyingcondition || null
     );
     form.setFieldValue("planOfTreatment", patData?.treatment || null);
-
+    form.setFieldValue(
+      "provisionalDx",
+      patData?.diagnosis?.[0]?.diagtext || ""
+    );
     // เติมค่าฟิลด์อื่น ๆ ตามที่มี
   }, [patData]);
   const formatThaiDateNoTime = (isoString) => {
@@ -252,8 +255,54 @@ export default function useHook({ patData, setPatData, onClose }) {
 
     return address.trim();
   };
-  const [accidentDate, setAccidentDate] = useState(null); // year, month, day
-  const [accidentTime, setAccidentTime] = useState(new Time(0, 0));
+
+  const [accidentDate, setAccidentDate] = useState(null); // {year, month, day}
+  const [accidentTime, setAccidentTime] = useState(new Time(0, 0)); // Time object
+
+  // โหลดค่า accidentDateTime จาก backend (จาก patData)
+  useEffect(() => {
+    if (!patData?.accidentDateTime) return;
+
+    const dt = new Date(patData.accidentDateTime);
+
+    const year = dt.getUTCFullYear();
+    const month = dt.getUTCMonth() + 1;
+    const day = dt.getUTCDate();
+    const hour = dt.getUTCHours();
+    const minute = dt.getUTCMinutes();
+
+    setAccidentDate({ year, month, day });
+    setAccidentTime(new Time(hour, minute));
+  }, [patData]);
+
+  // รวม Date + Time → ISO8601
+  const buildISO = (d, t) => {
+    if (!d || !t) return null; // <-- ป้องกัน error
+
+    return `${d.year}-${String(d.month).padStart(2, "0")}-${String(
+      d.day
+    ).padStart(2, "0")}T${String(t.hour).padStart(2, "0")}:${String(
+      t.minute
+    ).padStart(2, "0")}:00Z`;
+  };
+
+  // อัปเดตฟอร์มเมื่อเลือกวันที่
+  const handleAccidentDateChange = (d) => {
+    setAccidentDate(d);
+    if (!accidentTime) return; // ป้องกัน null
+
+    const iso = buildISO(d, accidentTime);
+    if (iso) form.setFieldValue("accidentDateTime", iso);
+  };
+
+  // อัปเดตฟอร์มเมื่อเลือกเวลา
+  const handleAccidentTimeChange = (t) => {
+    setAccidentTime(t);
+    if (accidentDate) {
+      const iso = buildISO(accidentDate, t);
+      form.setFieldValue("accidentDateTime", iso);
+    }
+  };
 
   return {
     sex,
@@ -269,5 +318,7 @@ export default function useHook({ patData, setPatData, onClose }) {
     setAccidentTime,
     accidentDate,
     setAccidentDate,
+    handleAccidentDateChange,
+    handleAccidentTimeChange,
   };
 }

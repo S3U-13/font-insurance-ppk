@@ -27,7 +27,6 @@ export default function useHook() {
   useEffect(() => {
     if (!openModalOPD && !openModalIPD) return;
     if (!hn) return;
-
     const fetchData = async () => {
       const data = await pullData(hn, setPatData);
       setPatData(data);
@@ -35,8 +34,6 @@ export default function useHook() {
 
     fetchData();
   }, [openModalOPD, openModalIPD, hn]);
-  console.log("hn", hn);
-  console.log("data", patData);
 
   return {
     openModalIPD,

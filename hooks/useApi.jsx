@@ -1,45 +1,88 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useApiRequest = () => {
-  const apiRequest = async (endpoint, method = "GET", body = null) => {
-    const headers = {
-      "Content-Type": "application/json",
+  const apiRequest = async (
+    endpoint,
+    method = "GET",
+    body = null,
+    token = null
+  ) => {
+    // 1️⃣ สร้าง headers
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const options = {
+      method,
+      headers,
+      credentials: "include", // ส่ง cookie HttpOnly อัตโนมัติ
     };
 
-    const options = { method, headers };
-    if (body && method !== "GET") options.body = JSON.stringify(body);
+    if (body && method !== "GET") {
+      options.body = JSON.stringify(body);
+    }
 
     try {
       const res = await fetch(`${API_URL}${endpoint}`, options);
-      const data = await res.json();
+      console.log(res);
+      // อ่าน response เป็น text ก่อน
+      const text = await res.text();
+      let data = null;
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (err) {
+          console.error("Failed to parse JSON:", err, text);
+        }
+      }
+
+      // log status code ถ้า error
+      if (!res.ok) {
+        console.warn(`API ${method} ${endpoint} returned status ${res.status}`);
+        return null;
+      }
+
       return data;
     } catch (error) {
-      console.error;
+      console.error("API error:", error);
+      return null;
     }
   };
-  const FetchAllForm = () => apiRequest("/api/claims", "GET");
-  const pullData = async (hn, setPatData) => {
-    try {
-      const payload = { hn: hn }; // ชัดเจน & ปลอดภัย
-      const data = await apiRequest(`/hospital-forms/get`, "POST", payload);
 
-      if (!data) {
-        console.warn("⚠ ไม่มีข้อมูลจาก API");
-      }
+  // ดึงข้อมูลฟอร์มทั้งหมด → cookie จะถูกส่งให้ server
+  const FetchAllForm = async (token = null) => {
+    return await apiRequest("/api/claims", "GET", null, token);
+  };
+
+  const pullData = async (hn, setPatData, token = null) => {
+    try {
+      const payload = { hn };
+      const data = await apiRequest(
+        "/hospital-forms/get",
+        "POST",
+        payload,
+        token
+      );
+      setPatData(data || null);
       return data;
     } catch (err) {
       console.error("pullData error:", err);
       setPatData(null);
+      return null;
     }
   };
-  const CreateOrderInsuranceOPD = async (value) => {
-    try {
-      const data = await apiRequest(`/hospital-forms`, "POST", value);
 
+  const CreateOrderInsuranceOPD = async (value, token = null) => {
+    try {
+      const data = await apiRequest("/hospital-forms", "POST", value, token);
       return data;
     } catch (err) {
-      console.error(err);
+      console.error("CreateOrderInsuranceOPD error:", err);
+      return null;
     }
   };
+
   return { CreateOrderInsuranceOPD, pullData, FetchAllForm };
 };

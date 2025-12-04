@@ -26,6 +26,8 @@ export default function page({ isOpen, onClose, patData, setPatData }) {
     setAccidentTime,
     accidentDate,
     setAccidentDate,
+    handleAccidentDateChange,
+    handleAccidentTimeChange,
   } = useHook({ patData, setPatData, onClose });
   return (
     <div>
@@ -71,6 +73,8 @@ export default function page({ isOpen, onClose, patData, setPatData }) {
                   setAccidentTime={setAccidentTime}
                   accidentDate={accidentDate}
                   setAccidentDate={setAccidentDate}
+                  handleAccidentDateChange={handleAccidentDateChange}
+                  handleAccidentTimeChange={handleAccidentTimeChange}
                 />
               </ModalBody>
               <ModalFooter>
