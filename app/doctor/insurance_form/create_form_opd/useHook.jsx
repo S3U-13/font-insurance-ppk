@@ -7,7 +7,7 @@ import { Time } from "@internationalized/date";
 import * as z from "zod";
 import { addToast } from "@heroui/toast";
 
-export default function useHook({ patData, setPatData, onClose }) {
+export default function useHook({ patData, setPatData, onClose, claimId }) {
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -75,11 +75,6 @@ export default function useHook({ patData, setPatData, onClose }) {
     manageOPDNote: "",
     planOfTreatment: "",
     investigations: "",
-    physicianid: 1001,
-    approvebyphysician: null,
-    signatureid: 5001,
-    createdByUserId: 1,
-    updatedByUserId: 1,
     relatedConditions: [],
   });
 
@@ -167,6 +162,7 @@ export default function useHook({ patData, setPatData, onClose }) {
 
   useEffect(() => {
     if (!patData) return;
+    if (!claimId) return;
 
     // ตัวอย่าง: ใช้ค่าจาก patData.map
     form.setFieldValue("patientId", patData?.pat?.hn || null);
@@ -182,6 +178,7 @@ export default function useHook({ patData, setPatData, onClose }) {
       patData?.underlyingcondition || null
     );
     form.setFieldValue("planOfTreatment", patData?.treatment || null);
+    form.setFieldValue("claimId", claimId || null);
     form.setFieldValue(
       "provisionalDx",
       patData?.diagnosis?.[0]?.diagtext || ""

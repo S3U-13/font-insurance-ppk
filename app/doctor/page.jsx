@@ -1,11 +1,12 @@
 "use client";
 import { div } from "framer-motion/client";
-import React from "react";
+import React, { useState } from "react";
 import useHook from "./useHook";
 import { Button } from "@heroui/button";
 
 import ModalIPD from "./insurance_form/create_form_ipd/page";
 import ModalOPD from "./insurance_form/create_form_opd/page";
+import ModalViewOPD from "./insurance_form/view_opd/page";
 import {
   Table,
   TableBody,
@@ -31,11 +32,33 @@ export default function page() {
     setOpenModalIPD,
     openModalOPD,
     setOpenModalOPD,
+    openModalViewOPD,
+    setOpenModalViewOPD,
     order,
     patData,
     setHn,
     setPatData,
+    claimId,
+    setClaimId,
+    setSelectID,
+    claimData,
   } = useHook();
+
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
+
+  // const claimid = "c681208";
+
+  // const formatClaim = (id, add = 0) => {
+  //   const prefix = id[0];
+  //   const num = parseInt(id.slice(1));
+  //   return prefix + (num - add);
+  // };
+
   return (
     <div className="space-y-6 mt-6 ">
       <ModalIPD
@@ -47,7 +70,13 @@ export default function page() {
         patData={patData}
         setPatData={setPatData}
         isOpen={openModalOPD}
+        claimId={claimId}
         onClose={() => setOpenModalOPD(false)}
+      />
+      <ModalViewOPD
+        claimData={claimData}
+        isOpen={openModalViewOPD}
+        onClose={() => setOpenModalViewOPD(false)}
       />
 
       <h1 className="text-center text-xl">
@@ -82,7 +111,7 @@ export default function page() {
             }
             type="search"
           />
-          <Dropdown>
+          {/* <Dropdown>
             <DropdownTrigger>
               <Button
                 color="primary"
@@ -113,6 +142,48 @@ export default function page() {
                 OPD FORM
               </DropdownItem>
             </DropdownMenu>
+          </Dropdown> */}
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                className="capitalize"
+                variant="flat"
+                size="md"
+                endContent={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="size-4"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                }
+              >
+                Column
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Multiple selection example"
+              closeOnSelect={false}
+              selectedKeys={selectedKeys}
+              selectionMode="multiple"
+              variant="flat"
+              onSelectionChange={setSelectedKeys}
+            >
+              <DropdownItem key="id">ID</DropdownItem>
+              <DropdownItem key="form_type">FORM TYPE</DropdownItem>
+              <DropdownItem key="hn">HN</DropdownItem>
+              <DropdownItem key="patient_name">PATIENT NAME</DropdownItem>
+              {/* <DropdownItem key="claim_id">CLAIM ID</DropdownItem> */}
+              <DropdownItem key="status">STATUS</DropdownItem>
+              <DropdownItem key="approve">APPROVE</DropdownItem>
+            </DropdownMenu>
           </Dropdown>
         </div>
 
@@ -125,23 +196,24 @@ export default function page() {
           }}
         >
           <TableHeader>
-            <TableColumn>NO</TableColumn>
-            <TableColumn>FORM NAME</TableColumn>
+            <TableColumn>ID</TableColumn>
+            <TableColumn>FORM TYPE</TableColumn>
             <TableColumn>HN</TableColumn>
-            <TableColumn>NAME</TableColumn>
-            <TableColumn>CLAIM ID</TableColumn>
+            <TableColumn>PATIENT NAME</TableColumn>
+            {/* <TableColumn>CLAIM ID</TableColumn> */}
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
+            <TableColumn className="text-center">APPROVE</TableColumn>
             {/* <TableColumn className="text-center">APPROVE</TableColumn> */}
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
             {order?.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>{item?.id}</TableCell>
                 <TableCell>{item.claimType}</TableCell>
                 <TableCell>{item.patientId}</TableCell>
-                <TableCell>{item.patientId}</TableCell>
-                <TableCell>C681126</TableCell>
+                <TableCell>{`${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}</TableCell>
+                {/* <TableCell>{formatClaim(claimid, index)}</TableCell> */}
                 <TableCell className="text-center">
                   {item.status === "pending" ? (
                     <Chip
@@ -208,6 +280,7 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
+                          setClaimId(item.id);
                           setOpenModalOPD(true);
                         }}
                       >
@@ -221,6 +294,7 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
+                          setClaimId(item.id);
                           setOpenModalIPD(true);
                         }}
                       >
@@ -228,25 +302,51 @@ export default function page() {
                       </Button>
                     ) : null}
 
-                    <Button isIconOnly size="sm" color="default" variant="flat">
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      color="default"
+                      variant="flat"
+                      onPress={() => {
+                        setSelectID(item.id);
+                        setOpenModalViewOPD(true);
+                      }}
+                    >
                       <Eye size={20} />
                     </Button>
                     {/* <Button color="primary">
                       ปริ้น PDF
                     </Button> */}
-                    <Button isIconOnly size="sm" color="default" variant="flat" as="a" href="/api/generate-opd-pdf" target="_blank">
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      color="default"
+                      variant="flat"
+                      as="a"
+                      href="/api/generate-opd-pdf"
+                      target="_blank"
+                    >
                       <FileText size={20} />
                     </Button>
                   </div>
                 </TableCell>
-                {/* <TableCell className="flex items-center justify-center gap-2">
-                  <Button color="primary" size="sm" variant="flat">
-                    Approve
-                  </Button>
-                  <Button color="danger" size="sm" variant="flat">
-                    UnApprove
-                  </Button>
-                </TableCell> */}
+                <TableCell>
+                  <div className="flex justify-center gap-2 items-center">
+                    {item.status === "draft" ? (
+                      <Button color="danger" size="sm" variant="flat">
+                        UnApprove
+                      </Button>
+                    ) : item.status === "pending" ? (
+                      <Button color="primary" size="sm" variant="flat">
+                        Approve
+                      </Button>
+                    ) : item.status === "cancel" ? (
+                      <span className="bg-gray-200 p-3 rounded-lg text-xs">
+                        รายการนี้ถูกยกเลิก !
+                      </span>
+                    ) : null}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -25,7 +25,6 @@ export const useApiRequest = () => {
 
     try {
       const res = await fetch(`${API_URL}${endpoint}`, options);
-      console.log(res);
       // อ่าน response เป็น text ก่อน
       const text = await res.text();
       let data = null;
@@ -53,7 +52,12 @@ export const useApiRequest = () => {
 
   // ดึงข้อมูลฟอร์มทั้งหมด → cookie จะถูกส่งให้ server
   const FetchAllForm = async (token = null) => {
-    return await apiRequest("/api/claims", "GET", null, token);
+    return await apiRequest(
+      "/api/claims?status=pending,draft",
+      "GET",
+      null,
+      token
+    );
   };
 
   const pullData = async (hn, setPatData, token = null) => {
@@ -73,6 +77,17 @@ export const useApiRequest = () => {
       return null;
     }
   };
+  const pullClaimData = async (selectID, setClaimData, token = null) => {
+    try {
+      const data = await apiRequest(`/api/claims/${selectID}`, "GET", token);
+      setClaimData(data || null);
+      return data;
+    } catch (err) {
+      console.error("pullData error:", err);
+      setClaimData(null);
+      return null;
+    }
+  };
 
   const CreateOrderInsuranceOPD = async (value, token = null) => {
     try {
@@ -84,5 +99,5 @@ export const useApiRequest = () => {
     }
   };
 
-  return { CreateOrderInsuranceOPD, pullData, FetchAllForm };
+  return { CreateOrderInsuranceOPD, pullData, pullClaimData, FetchAllForm };
 };

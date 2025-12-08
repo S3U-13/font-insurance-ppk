@@ -18,7 +18,8 @@ export async function GET() {
         const pdfBuffer = await page.pdf({
             format: "A4",
             printBackground: false,
-            margin: { top: "10mm", right: "2mm", bottom: "10mm", left: "2mm" },
+
+            margin: { top: "9mm", right: "2mm", bottom: "10mm", left: "2mm" },
         });
 
         await browser.close();
