@@ -7,7 +7,6 @@ import { useEffect } from "react";
 export default function ProtectedRoute({ children, role }) {
   const { user, loading } = useAuth();
   const router = useRouter();
-
   useEffect(() => {
     if (loading) return;
 
@@ -16,7 +15,6 @@ export default function ProtectedRoute({ children, role }) {
       router.replace("/");
       return;
     }
-
     // ❌ role ไม่ตรงกัน
     if (role && user.role !== role) {
       router.replace("/unauthorized");
