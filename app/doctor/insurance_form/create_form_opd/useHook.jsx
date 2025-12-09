@@ -198,6 +198,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     }).format(date);
   };
 
+
   const calculateAge = (birthdate) => {
     if (!birthdate) return "";
 

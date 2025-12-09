@@ -323,7 +323,9 @@ export default function PrintForm() {
           <div className=" text-xs flex gap-2 pt-3">
             <p>
               Physician's name
-              <span className="pl-6">........................................................................</span>
+              <span className="pl-6">
+                ........................................................................
+              </span>
             </p>
             <p className="pl-6">
               Medical license No. ...........................

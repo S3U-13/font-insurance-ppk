@@ -2,6 +2,7 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import React from "react";
+import AreaCountByYear from "./chart_components/area-count-all-order-by-year"; // ✅ ปรับชื่อให้ถูก
 
 export default function page() {
   return (
@@ -11,23 +12,53 @@ export default function page() {
         <div className="col-span-4 grid grid-cols-2 gap-4 h-75">
           <p className="col-span-2">TOTAL</p>
           <Card className="w-60 h-35 bg-gray-50 border border-divider">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
-            <CardBody></CardBody>
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              <h1>จำนวนรายการที่ทำ ปี</h1>
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-center  gap-2">
+                <h1>1000</h1> <span>รายการ</span>
+              </div>
+            </CardBody>
+            <CardFooter>
+              <div className="w-50px">
+                <AreaCountByYear />
+              </div>
+            </CardFooter>
+          </Card>
+          <Card className="w-60 h-35 bg-gray-50 border border-divider">
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              รายการที่เคลมสำเร็จ ปี
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-center  gap-2">
+                <h1>800</h1> <span>รายการ</span>
+              </div>
+            </CardBody>
             <CardFooter></CardFooter>
           </Card>
           <Card className="w-60 h-35 bg-gray-50 border border-divider">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
-            <CardBody></CardBody>
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              จำนวนรายการที่ทำ IPD ปี
+            </CardHeader>
+            <CardBody>
+              {" "}
+              <div className="flex items-center  gap-2">
+                <h1>500</h1> <span>รายการ</span>
+              </div>
+            </CardBody>
             <CardFooter></CardFooter>
           </Card>
           <Card className="w-60 h-35 bg-gray-50 border border-divider">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
-            <CardBody></CardBody>
-            <CardFooter></CardFooter>
-          </Card>
-          <Card className="w-60 h-35 bg-gray-50 border border-divider">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
-            <CardBody></CardBody>
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              จำนวนรายการที่ทำ OPD ปี
+            </CardHeader>
+            <CardBody>
+              {" "}
+              <div className="flex items-center  gap-2">
+                <h1>500</h1> <span>รายการ</span>
+              </div>
+            </CardBody>
             <CardFooter></CardFooter>
           </Card>
         </div>

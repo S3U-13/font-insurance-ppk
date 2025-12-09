@@ -111,80 +111,82 @@ export default function page() {
             }
             type="search"
           />
-          {/* <Dropdown>
-            <DropdownTrigger>
-              <Button
-                color="primary"
-                variant="solid"
-                endContent={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="size-5 "
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                }
-              >
-                ADD FORM
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions">
-              <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
-                IPD FORM
-              </DropdownItem>
-              <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
-                OPD FORM
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown> */}
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                className="capitalize"
+          <div className="flex items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  color="primary"
+                  variant="solid"
+                  endContent={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="size-5 "
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                >
+                  ADD FORM
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
+                  IPD FORM
+                </DropdownItem>
+                <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
+                  OPD FORM
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  className="capitalize"
+                  variant="flat"
+                  size="md"
+                  endContent={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                >
+                  Column
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Multiple selection example"
+                closeOnSelect={false}
+                selectedKeys={selectedKeys}
+                selectionMode="multiple"
                 variant="flat"
-                size="md"
-                endContent={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="size-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                }
+                onSelectionChange={setSelectedKeys}
               >
-                Column
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Multiple selection example"
-              closeOnSelect={false}
-              selectedKeys={selectedKeys}
-              selectionMode="multiple"
-              variant="flat"
-              onSelectionChange={setSelectedKeys}
-            >
-              <DropdownItem key="id">ID</DropdownItem>
-              <DropdownItem key="form_type">FORM TYPE</DropdownItem>
-              <DropdownItem key="hn">HN</DropdownItem>
-              <DropdownItem key="patient_name">PATIENT NAME</DropdownItem>
-              {/* <DropdownItem key="claim_id">CLAIM ID</DropdownItem> */}
-              <DropdownItem key="status">STATUS</DropdownItem>
-              <DropdownItem key="approve">APPROVE</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+                <DropdownItem key="id">ID</DropdownItem>
+                <DropdownItem key="form_type">FORM TYPE</DropdownItem>
+                <DropdownItem key="hn">HN</DropdownItem>
+                <DropdownItem key="patient_name">PATIENT NAME</DropdownItem>
+                {/* <DropdownItem key="claim_id">CLAIM ID</DropdownItem> */}
+                <DropdownItem key="status">STATUS</DropdownItem>
+                <DropdownItem key="approve">APPROVE</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
 
         <Table
