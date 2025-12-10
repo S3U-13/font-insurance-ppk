@@ -12,7 +12,7 @@ export async function GET() {
 
     // โหลดหน้า UI ของคุณ
     await page.goto(
-      "http://172.16.46.34:3004/print/pdf-form-insurance-ppk/ipd",
+      "http://192.168.1.33:3004/print/pdf-form-insurance-ppk/ipd",
       {
         waitUntil: "networkidle0",
       }
@@ -30,7 +30,7 @@ export async function GET() {
     return new NextResponse(pdfBuffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": "inline; filename=form-demo.pdf",
+        "Content-Disposition": "inline; filename=form-ipd.pdf",
       },
     });
   } catch (e) {

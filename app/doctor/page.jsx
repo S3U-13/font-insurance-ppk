@@ -319,17 +319,31 @@ export default function page() {
                     {/* <Button color="primary">
                       ปริ้น PDF
                     </Button> */}
-                    <Button
-                      isIconOnly
-                      size="sm"
-                      color="default"
-                      variant="flat"
-                      as="a"
-                      href="/api/generate-opd-pdf"
-                      target="_blank"
-                    >
-                      <FileText size={20} />
-                    </Button>
+                    {item.claimType === "OPD" ? (
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        color="default"
+                        variant="flat"
+                        as="a"
+                        href="/api/generate-opd-pdf"
+                        target="_blank"
+                      >
+                        <FileText size={20} />
+                      </Button>
+                    ) : item.claimType === "IPD" ? (
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        color="default"
+                        variant="flat"
+                        as="a"
+                        href="/api/generate-ipd-pdf"
+                        target="_blank"
+                      >
+                        <FileText size={20} />
+                      </Button>
+                    ) : null}
                   </div>
                 </TableCell>
                 <TableCell>

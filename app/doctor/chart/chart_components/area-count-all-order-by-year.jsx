@@ -5,8 +5,11 @@ import ApexCharts from "apexcharts";
 export default function Page() {
   useEffect(() => {
     const options = {
-      series: [{ name: "Data", data: [10, 40, 25, 60, 30] }],
-      chart: { type: "area", },
+      series: [{ data: [10, 40, 25, 60, 30] }],
+      dataLabels: {
+        enabled: false,
+      },
+      chart: { type: "area" },
     };
 
     const chart = new ApexCharts(document.querySelector("#chart"), options);
