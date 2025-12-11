@@ -33,7 +33,9 @@ export default function useHook() {
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(
+    new Set(["pending", "draft"])
+  );
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
@@ -61,6 +63,11 @@ export default function useHook() {
     fetchDataView();
   }, [openModalViewOPD, openModalViewIPD, selectID]);
 
+  const status = [
+    { uid: "pending", name: "Pending" },
+    { uid: "draft", name: "Draft" },
+  ];
+
   const filteredItems = useMemo(() => {
     if (!Array.isArray(order)) return [];
     let filtered = [...order];
@@ -74,8 +81,8 @@ export default function useHook() {
           .includes(keyword)
       );
     }
-    if (statusFilter !== "all") {
-      filtered = filtered.filter((item) => item.status === statusFilter);
+    if (statusFilter.size > 0) {
+      filtered = filtered.filter((item) => statusFilter.has(item.status));
     }
     return filtered;
   }, [order, filterValue, statusFilter]);
@@ -140,9 +147,11 @@ export default function useHook() {
   );
 
   const headerColumns = useMemo(() => {
-    if (visibleColumns) return columns;
+    if (visibleColumns === "all") return columns;
     return columns.filter((col) => visibleColumns.has(col.uid));
   }, [visibleColumns, columns]);
+
+  console.log(statusFilter);
 
   const onClear = () => setFilterValue("");
 
@@ -184,5 +193,9 @@ export default function useHook() {
     setSelectedKeys,
     capitalize,
     onSortChange,
+    selectedValue,
+    status,
+    statusFilter,
+    setStatusFilter,
   };
 }

@@ -64,6 +64,9 @@ export default function page() {
     setSelectedKeys,
     capitalize,
     onSortChange,
+    status,
+    statusFilter,
+    setStatusFilter,
   } = useHook();
 
   return (
@@ -135,33 +138,36 @@ export default function page() {
             <Dropdown>
               <DropdownTrigger>
                 <Button
-                  color="primary"
-                  variant="solid"
+                  className="capitalize"
+                  variant="flat"
                   endContent={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="size-5 "
+                      className="size-4"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
                         clipRule="evenodd"
                       />
                     </svg>
                   }
                 >
-                  ADD FORM
+                  Status
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
-                  IPD FORM
-                </DropdownItem>
-                <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
-                  OPD FORM
-                </DropdownItem>
+              <DropdownMenu
+                aria-label="Status filter"
+                closeOnSelect={false}
+                selectedKeys={statusFilter}
+                selectionMode="multiple"
+                onSelectionChange={(keys) => setStatusFilter(new Set(keys))}
+              >
+                {status.map((s) => (
+                  <DropdownItem key={s.uid}>{s.name}</DropdownItem>
+                ))}
               </DropdownMenu>
             </Dropdown>
             <Dropdown>
@@ -169,7 +175,6 @@ export default function page() {
                 <Button
                   className="capitalize"
                   variant="flat"
-                  size="md"
                   endContent={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -190,18 +195,51 @@ export default function page() {
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
-                aria-label="Multiple selection example"
+                aria-label="Table columns"
                 closeOnSelect={false}
-                selectedKeys={selectedKeys}
+                selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 variant="flat"
-                onSelectionChange={setSelectedKeys}
+                onSelectionChange={setVisibleColumns}
               >
                 {columns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  color="primary"
+                  variant="solid"
+                  size="md"
+                  endContent={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                >
+                  ADD FORM
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
+                  IPD FORM
+                </DropdownItem>
+                <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
+                  OPD FORM
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -273,7 +311,6 @@ export default function page() {
               <TableRow key={item.id}>
                 {headerColumns.map((col) => (
                   <TableCell key={col.uid}>
-                    {" "}
                     {col.uid === "id" && item?.id}
                     {col.uid === "form_type" && item?.claimType}{" "}
                     {col.uid === "hn" && item?.patientId}
