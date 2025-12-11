@@ -186,24 +186,47 @@ export default function page({ isOpen, onClose, claimData }) {
                       For Hospital
                     </h2>
                     <div className="space-y-2 px-5">
-                      <div className="grid grid-cols-5 gap-2">
+                      <div className="flex gap-4 items-center ">
                         <p className="flex items-center gap-2 text-sm ">
                           <span className="font-bold">1. Visit date :</span>{" "}
-                          <span></span>
+                          <span>
+                            {formatThaiDateNoTime(
+                              claimData?.hospitalForm?.visit?.visitdatetime
+                            ) || ""}
+                          </span>
                         </p>
                         <p className="flex items-center gap-2 text-sm">
                           <span className="font-bold">Time :</span>{" "}
-                          <span></span>
+                          <span>
+                            {`${formatTimeNoDate(claimData?.hospitalForm?.visit?.visitdatetime)} น.` ||
+                              ""}
+                          </span>
                         </p>
                         <p className="flex items-center gap-2 text-sm">
                           <span className="font-bold">Vital signs: T :</span>{" "}
-                          <span></span>
+                          <span>
+                            {claimData?.hospitalForm?.vitalsign?.temperature
+                              ? `${claimData.hospitalForm?.vitalsign.temperature} °C`
+                              : ""}
+                          </span>
                         </p>
                         <p className="flex items-center gap-2 text-sm">
-                          <span className="font-bold">p :</span> <span></span>
+                          <span className="font-bold">p :</span>{" "}
+                          <span>
+                            {" "}
+                            {claimData?.hospitalForm?.vitalsign?.pulse
+                              ? `${claimData.hospitalForm?.vitalsign.pulse} bpm`
+                              : ""}
+                          </span>
                         </p>
                         <p className="flex items-center gap-2 text-sm">
-                          <span className="font-bold">BP :</span> <span></span>
+                          <span className="font-bold">BP :</span>{" "}
+                          <span>
+                            {claimData?.hospitalForm?.vitalsign?.bp_systolic &&
+                            claimData?.hospitalForm?.vitalsign?.bp_diastolic
+                              ? `${claimData?.hospitalForm.vitalsign.bp_systolic}/${claimData?.hospitalForm.vitalsign.bp_diastolic} mmHg`
+                              : ""}
+                          </span>
                         </p>
                       </div>
                       <p className="flex items-center gap-2 text-sm">

@@ -11,12 +11,9 @@ export async function GET() {
     const page = await browser.newPage();
 
     // โหลดหน้า UI ของคุณ
-    await page.goto(
-      "http://192.168.1.33:3004/print/pdf-form-insurance-ppk/opd",
-      {
-        waitUntil: "networkidle0",
-      }
-    );
+    await page.goto("http://localhost:3004/print/pdf-form-insurance-ppk/opd", {
+      waitUntil: "networkidle0",
+    });
 
     const pdfBuffer = await page.pdf({
       format: "A4",

@@ -511,7 +511,7 @@ export default function PrintForm() {
                 <p className="col-span-2">e) Level of consciousness</p>
                 <p>( ) Normal</p>
                 <p>( ) Confusion</p>
-                <p className="col-span-2">( ) Drowsiness</p>
+                <p className="col-span-2 pl-3.5">( ) Drowsiness</p>
                 <p>( ) Semi-coma</p>
                 <p>( ) Coma</p>
               </div>
@@ -527,52 +527,71 @@ export default function PrintForm() {
         </div>
         <div className="border-l border-r border-b px-1 pt-1 pb-4 text-xs">
           <p>
-            3. Did the patient need to be admintted to hospital? ( ) No ( ) Yes,
-            indication for admission
-            ...............................................................................................................
+            <span>3.</span>
+            <span className="pl-2">
+              Did the patient need to be admintted to hospital? ( ) No ( ) Yes,
+              indication for admission
+              .............................................................................................................
+            </span>
           </p>
-          <p className="pl-3.5">
-            ............................................................................................................................................................................................................................................................
+          <p className="pl-5">
+            ..........................................................................................................................................................................................................................................................
           </p>
-          <p className="flex gap-2">
-            <span>4. Vital signs : T......................</span>
+          <p className="flex gap-2 mt-3">
+            <span>4. </span>
+            <span>Vital signs : T......................</span>
             <span>P.......................</span>
             <span>R.......................</span>
             <span>BP.......................</span>
           </p>
-          <p>
-            5. Pertinent Cinical findings (Symptoms &
-            Signs).................................................................................................................................................................................
-          </p>
-          <p className="pl-3.5">
-            ............................................................................................................................................................................................................................................................
-          </p>
-          <p>
-            6. Investigation & Result (Lab, EKG, X-ray,
-            etc.)..................................................................................................................................................................................
-          </p>
-          <p className="pl-3.5">
-            ............................................................................................................................................................................................................................................................
-          </p>
-          <p>
+          <p className="flex gap-2">
+            <span>5.</span>
             <span>
-              7. HIV Test ( ) No ( ) Yes, Result :
+              {" "}
+              Pertinent Cinical findings (Symptoms &
+              Signs)...............................................................................................................................................................................
+            </span>
+          </p>
+          <p className="pl-5">
+            ..........................................................................................................................................................................................................................................................
+          </p>
+          <p className="flex gap-2 mt-3">
+            <span>6.</span>
+            <span>
+              {" "}
+              Investigation & Result (Lab, EKG, X-ray,
+              etc.)................................................................................................................................................................................
+            </span>
+          </p>
+          <p className="pl-5">
+            ..........................................................................................................................................................................................................................................................
+          </p>
+          <p className="flex gap-2 mt-3">
+            <span>7.</span>
+            <span>HIV Test</span>
+            <span>
+              ( ) No ( ) Yes, Result :
               ..................................................................
             </span>
             <span>
               Date performed :
-              ...........................................................................................................
+              .....................................................................................................
             </span>
           </p>
-          <p>
-            8. Underlying disease :
-            ...........................................................................................................................................................................................................................
+          <p className="flex gap-2">
+            <span>8.</span>
+            <span>
+              {" "}
+              Underlying disease :
+              ..........................................................................................................................................................................................................................
+            </span>
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-2">
+            <span> 9.</span>
             <div>
               <p>
                 <span>
-                  9. Diagnosis 1 :
+                  Diagnosis 1 :
                   ........................................................................................................
                 </span>
                 <span>
@@ -580,7 +599,7 @@ export default function PrintForm() {
                   ...........................................................
                 </span>
               </p>
-              <p className="pl-3">
+              <p>
                 <span>
                   Diagnosis 2 :
                   ........................................................................................................
@@ -590,7 +609,7 @@ export default function PrintForm() {
                   ...........................................................
                 </span>
               </p>
-              <p className="pl-3">
+              <p>
                 <span>
                   Diagnosis 3 :
                   ........................................................................................................
@@ -600,12 +619,13 @@ export default function PrintForm() {
                   ...........................................................
                 </span>
               </p>
-              <p>
+              <p className="absolute left-1">
                 10. Treatment :
-                .........................................................................................................................................................................................
+                ...........................................................................................................................................................................................
               </p>
-              <p className="pl-5">
-                ............................................................................................................................................................................................................
+              <br />
+              <p className="pl-1">
+                .............................................................................................................................................................................................................
               </p>
             </div>
             <div className="grid grid-cols-2 border w-30 mt-2 h-16.5">
@@ -617,106 +637,114 @@ export default function PrintForm() {
               <div className="h-8 "></div>
             </div>
           </div>
-          <p>
+          <p className="mt-3">
             <span>
               11. Surgery/Operation :
               ............................................................................................................
             </span>
             <span> ICD9-CM : ..................................</span>
-            <span> Date performed : ..........................</span>
+            <span> Date performed : ...........................</span>
           </p>
-          <p className="pl-3">
+          <p className="pl-5">
             Anaesthesia Type : ( ) General Anaesthesia ( ) Spinal Anaesthesia (
-            ) Local Anaesthesia ( ) others
-            .................................................................................................
+            ) Local Anaesthesia ( ) Others
+            ..............................................................................................
           </p>
-          <p>
+          <p className="mt-3">
             12. Pathological report :
-            .........................................................................................................................................................................................................................
+            ..........................................................................................................................................................................................................................
           </p>
           <p>
             13. Complications (if any) :
-            ....................................................................................................................................................................................................................
+            .....................................................................................................................................................................................................................
           </p>
-          <p>
-            14. Is the illness related to alcohol, drug abuse or addiction? ( )
-            No ( ) Yes, Please specify
-            ..................................................................
+          <p className="flex gap-2 mt-3">
+            <span>
+              14. Is the illness related to alcohol, drug abuse or
+              addiction?{" "}
+            </span>
+            <span className="pl-1">
+              ( ) No ( ) Yes, Please specify
+              ...............................................................................................................
+            </span>
           </p>
-          <p>
+          <p className="mt-3">
             <span>15. For Female :</span>
-            <span>Is the patient pregnart?</span>
-            <span>
-              ( ) No ( ) Yes, Gestational age.............................weeks
+            <span className="pl-3">Is the patient pregnart?</span>
+            <span className="pl-25">
+              ( ) No ( ) Yes, Gestational
+              age...................................weeks
             </span>
           </p>
           <p>
-            <span>Was the treatment related to infertility?</span>
-            <span>
-              ( ) No ( ) Yes, please specify
-              ........................................
+            <span className="pl-23">
+              Was the treatment related to infertility?
+            </span>
+            <span className="pl-5.5">
+              ( ) No ( ) Yes, Please specify
+              ...............................................................................................................
             </span>
           </p>
-          <p>
+          <p className="mt-3">
             <span>
               16. Has patient ever been treatment by another doctor before?
             </span>
 
-            <span>
+            <span className="pl-1.5">
               ( ) No ( ) Yes, Please give mane and
-              address...................................
+              address.......................................................................................
             </span>
           </p>
-          <p>
+          <p className="mt-3">
             17. Was the illness/injury contributed to or influenced by any of
             the following
           </p>
-          <p>
+          <p className="pl-5">
             <span>a) Physical defects/congenital anomaly</span>
-            <span>( ) No ( ) Yes</span>
+            <span className="pl-2">( ) No ( ) Yes</span>
           </p>
-          <p>
+          <p className="pl-5">
             <span>b) Degenerative change(s)</span>
-            <span>( ) No ( ) Yes</span>
+            <span className="pl-17.5">( ) No ( ) Yes</span>
           </p>
-          <p>18. Other past medical history</p>
-          <div className="px-4">
-            <div className="px-4">
-              <table className="border w-full border-collapse">
-                <thead>
-                  <tr className="text-xs">
-                    <th className="border">Date</th>
-                    <th className="border">Signs & Symptoms</th>
-                    <th className="border">Diagnosis</th>
-                    <th className="border">Treatment</th>
-                    <th className="border">Hospital</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                    <td className="border">&nbsp;</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <p className="mt-3">18. Other past medical history</p>
+
+          <div className="px-6 mt-1">
+            <table className="border w-full border-collapse">
+              <thead>
+                <tr className="text-xs">
+                  <th className="border">Date</th>
+                  <th className="border">Signs & Symptoms</th>
+                  <th className="border">Diagnosis</th>
+                  <th className="border">Treatment</th>
+                  <th className="border">Hospital</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                  <td className="border">&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <p>
+
+          <p className="mt-3">
             19. Other comments about the injury /
-            illness............................................................................................................................................................
+            illness..........................................................................................................................................................................................
           </p>
-          <p>
-            .................................................................................................................................................................................................................................
+          <p className="pl-5">
+            ............................................................................................................................................................................................................................................................
           </p>
         </div>
         <div className="border-l border-r border-b px-1 pt-1 pb-4 text-xs">
@@ -725,30 +753,40 @@ export default function PrintForm() {
             insured in connection with the disbility and that the facts are in
             my opinion as given above.
           </p>
-          <p>
-            <span>
-              Physician' singature ......................................
+          <p className="flex gap-2 mt-1">
+            <span>Physician' singature</span>
+            <span className="pl-2">
+              ..........................................................
             </span>
+            <span className="pl-2">Medical specialty :</span>
+            <span>......................................................</span>
+            <span>Thai Medical license no :</span>
+            <span>....................</span>
+          </p>
+          <p className="pl-28">
             <span>
-              Medical specialty : ......................................
+              (.........................................................)
             </span>
-            <span>
-              Thai Medical license no : ..............................
+            <span className="pl-3">
+              Tel no :
+              .........................................................................
+            </span>
+            <span className="pl-3">
+              Date : ....................................................
             </span>
           </p>
-          <p>
-            <span>(......................................)</span>
-            <span>Tel no : ......................................</span>
-            <span>Date : ..............................</span>
-          </p>
-          <p>
+          <p className="mt-3">
             <span>
-              Medical insitute : ......................................
+              Medical insitute :
+              ...................................................................
             </span>
-            <span>Address : ......................................</span>
+            <span className="pl-3.5">
+              Address :
+              .........................................................................................................................................
+            </span>
           </p>
         </div>
-        <p className="text-xs">
+        <p className="text-xs mt-3">
           Remark : Doctor who issue this report must be a doctor who is licensed
           to practice medicine and correctly registered by the Thai Medical
           Council

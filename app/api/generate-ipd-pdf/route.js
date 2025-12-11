@@ -12,7 +12,7 @@ export async function GET() {
 
     // โหลดหน้า UI ของคุณ
     await page.goto(
-      "http://192.168.1.33:3004/print/pdf-form-insurance-ppk/ipd",
+      "http://localhost:3004/print/pdf-form-insurance-ppk/ipd",
       {
         waitUntil: "networkidle0",
       }

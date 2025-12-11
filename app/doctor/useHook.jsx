@@ -1,7 +1,9 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useApiRequest } from "../../hooks/useApi";
 import { colgroup } from "framer-motion/client";
+
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
   const { pullData, pullClaimData, FetchAllForm } = useApiRequest();
@@ -26,19 +28,27 @@ export default function useHook() {
 
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
+  const [patReg, setPatReg] = useState("");
   const [claimId, setClaimId] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
- 
+  const [filterValue, setFilterValue] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
+
   useEffect(() => {
     if (!openModalOPD && !openModalIPD) return;
-    if (!hn) return;
+    if (!hn && !patReg) return;
+
     const fetchData = async () => {
-      const data = await pullData(hn, setPatData);
+      const data = await pullData(hn, patReg);
       setPatData(data);
     };
+
     fetchData();
-  }, [openModalOPD, openModalIPD, hn]);
+  }, [openModalOPD, openModalIPD, hn, patReg]);
 
   useEffect(() => {
     if (!openModalViewOPD && !openModalViewIPD) return;
@@ -50,6 +60,91 @@ export default function useHook() {
 
     fetchDataView();
   }, [openModalViewOPD, openModalViewIPD, selectID]);
+
+  const filteredItems = useMemo(() => {
+    if (!Array.isArray(order)) return [];
+    let filtered = [...order];
+
+    if (filterValue) {
+      const keyword = filterValue.toLowerCase();
+
+      filtered = filtered.filter((item) =>
+        String(item.patientId || "")
+          .toLowerCase()
+          .includes(keyword)
+      );
+    }
+    if (statusFilter !== "all") {
+      filtered = filtered.filter((item) => item.status === statusFilter);
+    }
+    return filtered;
+  }, [order, filterValue, statusFilter]);
+
+  const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return filteredItems.slice(start, end);
+  }, [page, filteredItems, rowsPerPage]);
+
+  const onRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  };
+
+  const columns = [
+    { uid: "id", name: "ID" },
+    { uid: "form_type", name: "FORM TYPE" },
+    { uid: "hn", name: "HN" },
+    { uid: "name", name: "NAME" },
+  ];
+
+  const [sortDescriptor, setSortDescriptor] = useState({
+    column: null,
+    direction: "ascending",
+  });
+
+  const sortedItems = useMemo(() => {
+    if (!sortDescriptor.column) {
+      return [...items].sort((a, b) => b.id - a.id);
+    }
+
+    return [...items].sort((a, b) => {
+      const first = `${a.patient?.prename || ""}${a.patient?.firstname || ""} ${a.patient?.lastname || ""}`;
+      const second = `${b.patient?.prename || ""}${b.patient?.firstname || ""} ${b.patient?.lastname || ""}`;
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    });
+  }, [items, sortDescriptor]);
+
+  const onSortChange = (column) => {
+    if (sortDescriptor.column === column) {
+      setSortDescriptor({
+        column,
+        direction:
+          sortDescriptor.direction === "ascending" ? "descending" : "ascending",
+      });
+    } else {
+      setSortDescriptor({ column, direction: "ascending" });
+    }
+  };
+
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
+
+  const [visibleColumns, setVisibleColumns] = useState(
+    new Set(["id", "form_type", "hn", "name"])
+  );
+
+  const headerColumns = useMemo(() => {
+    if (visibleColumns) return columns;
+    return columns.filter((col) => visibleColumns.has(col.uid));
+  }, [visibleColumns, columns]);
+
+  const onClear = () => setFilterValue("");
 
   return {
     openModalIPD,
@@ -67,5 +162,27 @@ export default function useHook() {
     selectID,
     setSelectID,
     claimData,
+    setPatReg,
+    FetchAllForm,
+    setOrder,
+    filterValue,
+    setFilterValue,
+    visibleColumns,
+    setVisibleColumns,
+    columns,
+    filteredItems,
+    rowsPerPage,
+    onRowsPerPageChange,
+    headerColumns,
+    sortDescriptor,
+    sortedItems,
+    page,
+    pages,
+    setPage,
+    onClear,
+    selectedKeys,
+    setSelectedKeys,
+    capitalize,
+    onSortChange,
   };
 }

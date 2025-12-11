@@ -60,20 +60,18 @@ export const useApiRequest = () => {
     );
   };
 
-  const pullData = async (hn, setPatData, token = null) => {
+  const pullData = async (hn, patReg, token = null) => {
     try {
-      const payload = { hn };
+      const payload = { hn, patReg };
       const data = await apiRequest(
         "/hospital-forms/get",
         "POST",
         payload,
         token
       );
-      setPatData(data || null);
-      return data;
+      return data ?? null;
     } catch (err) {
       console.error("pullData error:", err);
-      setPatData(null);
       return null;
     }
   };

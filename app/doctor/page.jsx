@@ -42,36 +42,53 @@ export default function page() {
     setClaimId,
     setSelectID,
     claimData,
+    setPatReg,
+    FetchAllForm,
+    setOrder,
+    filterValue,
+    setFilterValue,
+    visibleColumns,
+    setVisibleColumns,
+    columns,
+    filteredItems,
+    rowsPerPage,
+    onRowsPerPageChange,
+    headerColumns,
+    sortDescriptor,
+    sortedItems,
+    page,
+    pages,
+    setPage,
+    onClear,
+    selectedKeys,
+    setSelectedKeys,
+    capitalize,
+    onSortChange,
   } = useHook();
-
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
-
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
-  );
-
-  // const claimid = "c681208";
-
-  // const formatClaim = (id, add = 0) => {
-  //   const prefix = id[0];
-  //   const num = parseInt(id.slice(1));
-  //   return prefix + (num - add);
-  // };
 
   return (
     <div className="space-y-6 mt-6 ">
       <ModalIPD
         patData={patData}
         isOpen={openModalIPD}
-        onClose={() => setOpenModalIPD(false)}
+        onClose={() => {
+          setOpenModalIPD(false);
+          FetchAllForm()
+            .then((data) => setOrder(data || []))
+            .catch(console.error);
+        }}
       />
       <ModalOPD
         patData={patData}
         setPatData={setPatData}
         isOpen={openModalOPD}
         claimId={claimId}
-        onClose={() => setOpenModalOPD(false)}
+        onClose={() => {
+          setOpenModalOPD(false);
+          FetchAllForm()
+            .then((data) => setOrder(data || []))
+            .catch(console.error);
+        }}
       />
       <ModalViewOPD
         claimData={claimData}
@@ -83,7 +100,7 @@ export default function page() {
         <strong>Hospital PPK Insurance Form</strong>
       </h1>
 
-      <div className="p-4 space-y-3 border border-divider rounded-xl bg-gray-100 dark:bg-[#0e0e11]">
+      <div className="p-4 space-y-2 border border-divider rounded-xl bg-gray-100 dark:bg-[#0e0e11]">
         <div className="flex justify-between gap-2 items-center">
           <Input
             classNames={{
@@ -95,6 +112,9 @@ export default function page() {
             placeholder="Type to search..."
             size="sm"
             variant="bordered"
+            value={filterValue}
+            onValueChange={setFilterValue}
+            onClear={onClear}
             startContent={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,45 +197,90 @@ export default function page() {
                 variant="flat"
                 onSelectionChange={setSelectedKeys}
               >
-                <DropdownItem key="id">ID</DropdownItem>
-                <DropdownItem key="form_type">FORM TYPE</DropdownItem>
-                <DropdownItem key="hn">HN</DropdownItem>
-                <DropdownItem key="patient_name">PATIENT NAME</DropdownItem>
-                {/* <DropdownItem key="claim_id">CLAIM ID</DropdownItem> */}
-                <DropdownItem key="status">STATUS</DropdownItem>
-                <DropdownItem key="approve">APPROVE</DropdownItem>
+                {columns.map((column) => (
+                  <DropdownItem key={column.uid} className="capitalize">
+                    {capitalize(column.name)}
+                  </DropdownItem>
+                ))}
               </DropdownMenu>
             </Dropdown>
           </div>
         </div>
-
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {filteredItems.length} records
+          </span>
+          <label className="flex items-center text-default-400 text-small">
+            Rows per page:
+            <select
+              className="bg-transparent outline-none text-default-400 text-small ml-2"
+              onChange={onRowsPerPageChange}
+              value={rowsPerPage}
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
         <Table
           aria-label="Example static collection table"
           classNames={{
             th: "p-4",
-            td: "px-4 py-3.5 border-b border-divider pt-2",
-            base: "max-h-[calc(80vh-130px)]",
+            td: "px-4 py-3.5 border-b border-divider pt-1",
+            base: "max-h-[calc(80vh-150px)]",
           }}
         >
           <TableHeader>
-            <TableColumn>ID</TableColumn>
-            <TableColumn>FORM TYPE</TableColumn>
-            <TableColumn>HN</TableColumn>
-            <TableColumn>PATIENT NAME</TableColumn>
-            {/* <TableColumn>CLAIM ID</TableColumn> */}
+            {headerColumns.map((col) => (
+              <TableColumn key={col.uid}>
+                <div
+                  className="flex items-center"
+                  onClick={() => onSortChange(col.uid)}
+                >
+                  {capitalize(col.name)}
+                  {sortDescriptor.column === col.uid && (
+                    <svg
+                      className={`w-4 h-3 ml-1 transition-transform ${
+                        sortDescriptor.direction === "ascending"
+                          ? "rotate-0"
+                          : "rotate-180"
+                      }`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 15l7-7 7 7"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </TableColumn>
+            ))}
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
             <TableColumn className="text-center">APPROVE</TableColumn>
             {/* <TableColumn className="text-center">APPROVE</TableColumn> */}
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
-            {order?.map((item, index) => (
+            {sortedItems?.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell>{item?.id}</TableCell>
-                <TableCell>{item.claimType}</TableCell>
-                <TableCell>{item.patientId}</TableCell>
-                <TableCell>{`${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}</TableCell>
-                {/* <TableCell>{formatClaim(claimid, index)}</TableCell> */}
+                {headerColumns.map((col) => (
+                  <TableCell key={col.uid}>
+                    {" "}
+                    {col.uid === "id" && item?.id}
+                    {col.uid === "form_type" && item?.claimType}{" "}
+                    {col.uid === "hn" && item?.patientId}
+                    {col.uid === "name" &&
+                      `${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}
+                  </TableCell>
+                ))}
                 <TableCell className="text-center">
                   {item.status === "pending" ? (
                     <Chip
@@ -282,6 +347,7 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
+                          setPatReg(item.patregId);
                           setClaimId(item.id);
                           setOpenModalOPD(true);
                         }}
@@ -296,6 +362,7 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
+                          setPatReg(item.patregId);
                           setClaimId(item.id);
                           setOpenModalIPD(true);
                         }}
@@ -372,8 +439,9 @@ export default function page() {
             classNames={{ wrapper: "border border-divider" }}
             isCompact
             showControls
-            initialPage={1}
-            total={10}
+            page={page}
+            total={pages}
+            onChange={setPage}
           />
         </div>
       </div>
