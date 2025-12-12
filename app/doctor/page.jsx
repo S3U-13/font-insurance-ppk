@@ -308,6 +308,7 @@ export default function page() {
             </select>
           </label>
         </div>
+
         <Table
           aria-label="Example static collection table"
           classNames={{
@@ -527,6 +528,7 @@ export default function page() {
             ))}
           </TableBody>
         </Table>
+
         <div className="flex justify-end ">
           <Pagination
             classNames={{ wrapper: "border border-divider" }}

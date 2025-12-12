@@ -42,7 +42,7 @@ export default function useHook() {
   const [visitId, setVisitId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log(loading);
+  console.log(base64PdfOpd);
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน

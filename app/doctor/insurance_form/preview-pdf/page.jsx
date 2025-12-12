@@ -9,6 +9,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
+import False from "../../../../components/false";
 
 export default function page({ isOpen, onClose, base64PdfOpd, loading }) {
   return (
@@ -19,7 +20,7 @@ export default function page({ isOpen, onClose, base64PdfOpd, loading }) {
         size="4xl"
         classNames={{
           body: "max-h-[calc(90vh-80px)] overflow-y-scroll",
-          header: "border-b border-divider",
+          header: "border-b border-divider py-6",
           footer: "border-t border-divider",
         }}
       >
@@ -34,6 +35,8 @@ export default function page({ isOpen, onClose, base64PdfOpd, loading }) {
                   <div className="flex justify-center items-center h-[80vh]">
                     <Spinner size="lg" label="Loading..." />
                   </div>
+                ) : base64PdfOpd === null ? (
+                  <False />
                 ) : (
                   <iframe
                     src={`data:application/pdf;base64,${base64PdfOpd?.base64}`}
