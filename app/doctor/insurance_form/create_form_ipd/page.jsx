@@ -28,6 +28,10 @@ export default function page({ isOpen, onClose, patData }) {
     choice5,
     selectTabs,
     handleSelectTabs,
+    formatThaiDateNoTime,
+    calculateAge,
+    convertISOToTime,
+    formatAddress,
   } = useHook();
   return (
     <div>
@@ -85,6 +89,10 @@ export default function page({ isOpen, onClose, patData }) {
                       choice2={choice2}
                       yesOrNo={yesOrNo}
                       patData={patData}
+                      calculateAge={calculateAge}
+                      formatThaiDateNoTime={formatThaiDateNoTime}
+                      convertISOToTime={convertISOToTime}
+                      formatAddress={formatAddress}
                     />
                   </Tab>
                   <Tab
@@ -103,6 +111,11 @@ export default function page({ isOpen, onClose, patData }) {
                       Anaesthesia={Anaesthesia}
                       noOrYes={noOrYes}
                       choice5={choice5}
+                      patData={patData}
+                      calculateAge={calculateAge}
+                      formatThaiDateNoTime={formatThaiDateNoTime}
+                      convertISOToTime={convertISOToTime}
+                      formatAddress={formatAddress}
                     />
                   </Tab>
                 </Tabs>

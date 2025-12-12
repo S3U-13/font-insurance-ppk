@@ -14,6 +14,10 @@ export default function page({
   choice2,
   yesOrNo,
   patData,
+  calculateAge,
+  formatThaiDateNoTime,
+  convertISOToTime,
+  formatAddress,
 }) {
   return (
     <div className="space-y-3 ">
@@ -23,11 +27,11 @@ export default function page({
           สำหรับผู้เอาประกัน
         </h2>
         <div className="grid grid-cols-10 gap-2 items-center">
-          <p className="col-span-10">{patData?.pat?.hn || ""}</p>
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
             size="sm"
+            value={`${patData?.pat?.prename || ""}${patData?.pat?.firstname || ""} ${patData?.pat?.lastname || ""}`}
             variant="bordered"
           />
           <Select
@@ -35,6 +39,9 @@ export default function page({
             label="เพศ"
             size="sm"
             variant="bordered"
+            selectedKeys={
+              patData?.pat?.sex ? new Set([String(patData.pat.sex)]) : new Set()
+            }
           >
             {sex.map((sex) => (
               <SelectItem key={sex.id} value={sex.id}>
@@ -47,6 +54,7 @@ export default function page({
             label="เลขประจำตัวประชาชน"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.citizencardno || ""}
           />
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
@@ -55,6 +63,7 @@ export default function page({
             label="วัน/เดือน/ปีเกิด"
             size="sm"
             variant="bordered"
+            value={formatThaiDateNoTime(patData?.pat?.birthdatetime || "")}
           />
           <div className="flex gap-2 items-center col-span-1">
             <Input
@@ -62,8 +71,8 @@ export default function page({
               label="อายุ"
               size="sm"
               variant="bordered"
+              value={`${calculateAge(patData?.pat?.birthdatetime).years || ""} ปี`}
             />
-            <span>ปี</span>
           </div>
 
           <Input
@@ -71,6 +80,7 @@ export default function page({
             label="เดือน"
             size="sm"
             variant="bordered"
+            value={`${calculateAge(patData?.pat?.birthdatetime).months || ""} เดือน`}
           />
 
           <Input
@@ -78,6 +88,7 @@ export default function page({
             label="อาชีพ"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.occupationName || ""}
           />
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
@@ -86,6 +97,7 @@ export default function page({
             label="โทรศัพท์มือถือ"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.pat_address[0]?.phone ?? "-"}
           />
           <Input
             className="col-span-2"
@@ -99,6 +111,7 @@ export default function page({
             label="อีเมล"
             size="sm"
             variant="bordered"
+            value={patData?.pat?.pat_address[0]?.email ?? "-"}
           />
         </div>
         <div className="grid grid-cols-8 gap-2 items-center">
@@ -107,6 +120,7 @@ export default function page({
             label="ที่อยู่"
             size="sm"
             variant="bordered"
+            value={formatAddress(patData?.pat?.pat_address)}
           />
         </div>
       </div>

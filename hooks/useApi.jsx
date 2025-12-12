@@ -60,7 +60,22 @@ export const useApiRequest = () => {
     );
   };
 
-  const pullData = async (hn, patReg, token = null) => {
+  const pullDataIpd = async (hn, visitId, token = null) => {
+    try {
+      const payload = { hn, visitId };
+      const data = await apiRequest(
+        "/hospital-forms/get",
+        "POST",
+        payload,
+        token
+      );
+      return data ?? null;
+    } catch (err) {
+      console.error("pullDataIpd error:", err);
+      return null;
+    }
+  };
+  const pullDataOpd = async (hn, patReg, token = null) => {
     try {
       const payload = { hn, patReg };
       const data = await apiRequest(
@@ -71,7 +86,21 @@ export const useApiRequest = () => {
       );
       return data ?? null;
     } catch (err) {
-      console.error("pullData error:", err);
+      console.error("pullDataOpd error:", err);
+      return null;
+    }
+  };
+  const pdfOpd = async (claimId, token = null) => {
+    try {
+      // const payload = { claimId };
+      const data = await apiRequest(
+        `/api/claims/${claimId}/opd-pdf`,
+        "POST",
+        token
+      );
+      return data ?? null;
+    } catch (error) {
+      console.error("base64 error:", error);
       return null;
     }
   };
@@ -97,5 +126,12 @@ export const useApiRequest = () => {
     }
   };
 
-  return { CreateOrderInsuranceOPD, pullData, pullClaimData, FetchAllForm };
+  return {
+    CreateOrderInsuranceOPD,
+    pullDataIpd,
+    pullDataOpd,
+    pullClaimData,
+    FetchAllForm,
+    pdfOpd,
+  };
 };

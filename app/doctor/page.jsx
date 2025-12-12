@@ -7,6 +7,7 @@ import { Button } from "@heroui/button";
 import ModalIPD from "./insurance_form/create_form_ipd/page";
 import ModalOPD from "./insurance_form/create_form_opd/page";
 import ModalViewOPD from "./insurance_form/view_opd/page";
+import ModalPreviewPdf from "./insurance_form/preview-pdf/page";
 import {
   Table,
   TableBody,
@@ -60,13 +61,21 @@ export default function page() {
     pages,
     setPage,
     onClear,
-    selectedKeys,
-    setSelectedKeys,
+    // selectedKeys,
+    // setSelectedKeys,
     capitalize,
     onSortChange,
     status,
     statusFilter,
     setStatusFilter,
+    setVisitId,
+    forms,
+    formFilter,
+    setFormFilter,
+    previewPdfModal,
+    setPreviewPdfModal,
+    base64PdfOpd,
+    loading,
   } = useHook();
 
   return (
@@ -97,6 +106,12 @@ export default function page() {
         claimData={claimData}
         isOpen={openModalViewOPD}
         onClose={() => setOpenModalViewOPD(false)}
+      />
+      <ModalPreviewPdf
+        base64PdfOpd={base64PdfOpd}
+        isOpen={previewPdfModal}
+        loading={loading}
+        onClose={() => setPreviewPdfModal(false)}
       />
 
       <h1 className="text-center text-xl">
@@ -135,6 +150,41 @@ export default function page() {
             type="search"
           />
           <div className="flex items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  className="capitalize"
+                  variant="flat"
+                  endContent={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  }
+                >
+                  Forms Type
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Status filter"
+                closeOnSelect={false}
+                selectedKeys={formFilter}
+                selectionMode="multiple"
+                onSelectionChange={(keys) => setFormFilter(new Set(keys))}
+              >
+                {forms.map((f) => (
+                  <DropdownItem key={f.uid}>{f.name}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
             <Dropdown>
               <DropdownTrigger>
                 <Button
@@ -211,33 +261,29 @@ export default function page() {
             </Dropdown>
             <Dropdown>
               <DropdownTrigger>
-                <Button
-                  color="primary"
-                  variant="solid"
-                  size="md"
-                  endContent={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="size-5"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  }
-                >
-                  ADD FORM
+                <Button color="primary" variant="solid" size="md">
+                  PDF IPD & OPD
                 </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
-                <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
+                {/* <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
                   IPD FORM
                 </DropdownItem>
                 <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
+                  OPD FORM
+                </DropdownItem> */}
+                <DropdownItem
+                  key="IPD"
+                  href="/api/generate-ipd-pdf"
+                  target="_blank"
+                >
+                  IPD FORM
+                </DropdownItem>
+                <DropdownItem
+                  key="OPD"
+                  href="/api/generate-opd-pdf"
+                  target="_blank"
+                >
                   OPD FORM
                 </DropdownItem>
               </DropdownMenu>
@@ -384,6 +430,7 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
+                          setVisitId("");
                           setPatReg(item.patregId);
                           setClaimId(item.id);
                           setOpenModalOPD(true);
@@ -399,7 +446,8 @@ export default function page() {
                         variant="flat"
                         onPress={() => {
                           setHn(item.patientId);
-                          setPatReg(item.patregId);
+                          setPatReg("");
+                          setVisitId(item.visitId);
                           setClaimId(item.id);
                           setOpenModalIPD(true);
                         }}
@@ -430,8 +478,12 @@ export default function page() {
                         color="default"
                         variant="flat"
                         as="a"
-                        href="/api/generate-opd-pdf"
-                        target="_blank"
+                        onPress={() => {
+                          setClaimId(item.id);
+                          setPreviewPdfModal(true);
+                        }}
+                        // href="/api/generate-opd-pdf"
+                        // target="_blank"
                       >
                         <FileText size={20} />
                       </Button>
@@ -442,8 +494,12 @@ export default function page() {
                         color="default"
                         variant="flat"
                         as="a"
-                        href="/api/generate-ipd-pdf"
-                        target="_blank"
+                        onPress={() => {
+                          setClaimId(item.id);
+                          setPreviewPdfModal(true);
+                        }}
+                        // href="/api/generate-ipd-pdf"
+                        // target="_blank"
                       >
                         <FileText size={20} />
                       </Button>

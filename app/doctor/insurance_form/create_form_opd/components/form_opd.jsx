@@ -142,7 +142,7 @@ export default function FormOPD({
             label="อาชีพ"
             size="sm"
             variant="bordered"
-            value={patData?.pat?.occupationName}
+            value={patData?.pat?.occupationName || ""}
             disabled
           />
         </div>

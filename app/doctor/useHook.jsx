@@ -6,18 +6,18 @@ import { colgroup } from "framer-motion/client";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { pullData, pullClaimData, FetchAllForm } = useApiRequest();
+  const { pullDataOpd, pullDataIpd, pullClaimData, FetchAllForm, pdfOpd } =
+    useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
-
-  // const handleOpenModal = () => {
-  //   setOpenModalIPD((prev) => !prev);
-  //   setOpenModalOPD((prev) => !prev);
-  // };
+  const [patData, setPatData] = useState(null);
+  const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
+  const [previewPdfModal, setPreviewPdfModal] = useState(false);
+
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
     didFetch.current = true;
@@ -26,9 +26,6 @@ export default function useHook() {
       .catch(console.error);
   }, [FetchAllForm]);
 
-  const [patData, setPatData] = useState(null);
-  const [hn, setHn] = useState("");
-  const [patReg, setPatReg] = useState("");
   const [claimId, setClaimId] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
@@ -36,21 +33,39 @@ export default function useHook() {
   const [statusFilter, setStatusFilter] = useState(
     new Set(["pending", "draft"])
   );
+  const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
+  const [base64PdfOpd, setBase64PdfOpd] = useState("");
+  const [patReg, setPatReg] = useState("");
+  const [visitId, setVisitId] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  console.log(loading);
 
   useEffect(() => {
+    // if (didFetch.current) return; // check flag ก่อน
+    // didFetch.current = true;
     if (!openModalOPD && !openModalIPD) return;
-    if (!hn && !patReg) return;
+    if (!hn && !patReg && !visitId) return;
+    if (openModalOPD) {
+      const fetchData = async () => {
+        const data = await pullDataOpd(hn, patReg);
+        setPatData(data);
+      };
 
-    const fetchData = async () => {
-      const data = await pullData(hn, patReg);
-      setPatData(data);
-    };
+      fetchData();
+    }
+    if (openModalIPD) {
+      const fetchData = async () => {
+        const data = await pullDataIpd(hn, visitId);
+        setPatData(data);
+      };
 
-    fetchData();
-  }, [openModalOPD, openModalIPD, hn, patReg]);
+      fetchData();
+    }
+  }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
 
   useEffect(() => {
     if (!openModalViewOPD && !openModalViewIPD) return;
@@ -63,9 +78,26 @@ export default function useHook() {
     fetchDataView();
   }, [openModalViewOPD, openModalViewIPD, selectID]);
 
+  useEffect(() => {
+    if (!claimId) return;
+
+    const pdfOpdBase64 = async () => {
+      setLoading(true); // เริ่มโหลด
+      const data = await pdfOpd(claimId);
+      setBase64PdfOpd(data);
+      setLoading(false);
+    };
+
+    pdfOpdBase64();
+  }, [claimId]);
+
   const status = [
     { uid: "pending", name: "Pending" },
     { uid: "draft", name: "Draft" },
+  ];
+  const forms = [
+    { uid: "OPD", name: "OPD" },
+    { uid: "IPD", name: "IPD" },
   ];
 
   const filteredItems = useMemo(() => {
@@ -84,8 +116,11 @@ export default function useHook() {
     if (statusFilter.size > 0) {
       filtered = filtered.filter((item) => statusFilter.has(item.status));
     }
+    if (formFilter.size > 0) {
+      filtered = filtered.filter((item) => formFilter.has(item.claimType));
+    }
     return filtered;
-  }, [order, filterValue, statusFilter]);
+  }, [order, filterValue, statusFilter, formFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -151,8 +186,6 @@ export default function useHook() {
     return columns.filter((col) => visibleColumns.has(col.uid));
   }, [visibleColumns, columns]);
 
-  console.log(statusFilter);
-
   const onClear = () => setFilterValue("");
 
   return {
@@ -189,13 +222,21 @@ export default function useHook() {
     pages,
     setPage,
     onClear,
-    selectedKeys,
-    setSelectedKeys,
+    // selectedKeys,
+    // setSelectedKeys,
     capitalize,
     onSortChange,
     selectedValue,
     status,
     statusFilter,
     setStatusFilter,
+    setVisitId,
+    forms,
+    formFilter,
+    setFormFilter,
+    previewPdfModal,
+    setPreviewPdfModal,
+    base64PdfOpd,
+    loading,
   };
 }

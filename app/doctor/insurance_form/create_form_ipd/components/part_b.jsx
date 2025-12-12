@@ -26,6 +26,12 @@ export default function page({
   Anaesthesia,
   noOrYes,
   choice5,
+  patData,
+  calculateAge,
+  formatThaiDateNoTime,
+  convertISOToTime,
+  formatAddress,
+  s,
 }) {
   return (
     <div>
@@ -42,12 +48,18 @@ export default function page({
               label="Patient's Name :"
               size="sm"
               variant="bordered"
+              value={`${patData?.pat?.prename || ""}${patData?.pat?.firstname || ""} ${patData?.pat?.lastname || ""}`}
             />
             <Select
               className="col-span-1"
               label="เพศ"
               size="sm"
               variant="bordered"
+              selectedKeys={
+                patData?.pat?.sex
+                  ? new Set([String(patData.pat.sex)])
+                  : new Set()
+              }
             >
               {sex.map((sex) => (
                 <SelectItem key={sex.id} value={sex.id}>
@@ -60,24 +72,28 @@ export default function page({
               label="HN :"
               size="sm"
               variant="bordered"
+              value={patData?.pat?.hn || ""}
             />
             <Input
               className="col-span-2"
               label="AN :"
               size="sm"
               variant="bordered"
+              value={patData?.an || ""}
             />
             <Input
               className="col-span-1"
               label="Age :"
               size="sm"
               variant="bordered"
+              value={`${calculateAge(patData?.pat?.birthdatetime).years || ""} ปี`}
             />
             <Input
               className="col-span-2"
               label="Month(s) :"
               size="sm"
               variant="bordered"
+              value={`${calculateAge(patData?.pat?.birthdatetime).months || ""} เดือน`}
             />
             <Input
               className="col-span-2"
@@ -557,7 +573,7 @@ export default function page({
           <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             19.Other comments about the injury / illness
-          </h2>        
+          </h2>
           <Textarea className="col-span-8" variant="bordered" />
         </div>
       </div>
