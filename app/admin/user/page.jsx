@@ -4,13 +4,10 @@ import React, { useState } from "react";
 import useHook from "./useHook";
 import { Button } from "@heroui/button";
 
-import ModalIPD from "./insurance_form/create_form_ipd/page";
-import ModalOPD from "./insurance_form/create_form_opd/page";
-import ModalViewOPD from "./insurance_form/view_opd/page";
-import ModalPreviewPdf from "./insurance_form/preview-pdf/page";
-import ModalEditIPD from "./insurance_form/edit_form_ipd/page";
-import ModalEditOPD from "./insurance_form/edit_form_opd/page";
-
+// import ModalIPD from "./insurance_form/create_form_ipd/page";
+// import ModalOPD from "./insurance_form/create_form_opd/page";
+// import ModalViewOPD from "./insurance_form/view_opd/page";
+// import ModalPreviewPdf from "./insurance_form/preview-pdf/page";
 import {
   Table,
   TableBody,
@@ -47,7 +44,7 @@ export default function page() {
     setSelectID,
     claimData,
     setPatReg,
-    FetchAllForm,
+    FetchUsers,
     setOrder,
     filterValue,
     setFilterValue,
@@ -72,22 +69,15 @@ export default function page() {
     statusFilter,
     setStatusFilter,
     setVisitId,
-    forms,
-    formFilter,
-    setFormFilter,
     previewPdfModal,
     setPreviewPdfModal,
     base64PdfOpd,
     loading,
-    openModalEditIPD,
-    setOpenModalEditIPD,
-    openModalEditOPD,
-    setOpenModalEditOPD,
   } = useHook();
 
   return (
     <div className="space-y-6 mt-6 ">
-      <ModalIPD
+      {/* <ModalIPD
         patData={patData}
         isOpen={openModalIPD}
         onClose={() => {
@@ -119,27 +109,7 @@ export default function page() {
         isOpen={previewPdfModal}
         loading={loading}
         onClose={() => setPreviewPdfModal(false)}
-      />
-      <ModalEditIPD
-        claimData={claimData}
-        isOpen={openModalEditIPD}
-        onClose={() => {
-          setOpenModalEditIPD(false);
-          FetchAllForm()
-            .then((data) => setOrder(data || []))
-            .catch(console.error);
-        }}
-      />
-      <ModalEditOPD
-        claimData={claimData}
-        isOpen={openModalEditOPD}
-        onClose={() => {
-          setOpenModalEditOPD(false);
-          FetchAllForm()
-            .then((data) => setOrder(data || []))
-            .catch(console.error);
-        }}
-      />
+      /> */}
 
       <h1 className="text-center text-xl">
         <strong>Hospital PPK Insurance Form</strong>
@@ -177,41 +147,6 @@ export default function page() {
             type="search"
           />
           <div className="flex items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  className="capitalize"
-                  variant="flat"
-                  endContent={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="size-4"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  }
-                >
-                  Forms Type
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Status filter"
-                closeOnSelect={false}
-                selectedKeys={formFilter}
-                selectionMode="multiple"
-                onSelectionChange={(keys) => setFormFilter(new Set(keys))}
-              >
-                {forms.map((f) => (
-                  <DropdownItem key={f.uid}>{f.name}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
             <Dropdown>
               <DropdownTrigger>
                 <Button
@@ -286,35 +221,6 @@ export default function page() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button color="primary" variant="solid" size="md">
-                  PDF IPD & OPD
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                {/* <DropdownItem key="IPD" onPress={() => setOpenModalIPD(true)}>
-                  IPD FORM
-                </DropdownItem>
-                <DropdownItem key="OPD" onPress={() => setOpenModalOPD(true)}>
-                  OPD FORM
-                </DropdownItem> */}
-                <DropdownItem
-                  key="IPD"
-                  href="/api/generate-ipd-pdf"
-                  target="_blank"
-                >
-                  IPD FORM
-                </DropdownItem>
-                <DropdownItem
-                  key="OPD"
-                  href="/api/generate-opd-pdf"
-                  target="_blank"
-                >
-                  OPD FORM
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -377,7 +283,6 @@ export default function page() {
             ))}
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
-            <TableColumn className="text-center">APPROVE</TableColumn>
             {/* <TableColumn className="text-center">APPROVE</TableColumn> */}
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
@@ -386,197 +291,54 @@ export default function page() {
                 {headerColumns.map((col) => (
                   <TableCell key={col.uid}>
                     {col.uid === "id" && item?.id}
-                    {col.uid === "form_type" && item?.claimType}{" "}
-                    {col.uid === "hn" && item?.patientId}
+                    {col.uid === "username" && item?.username}{" "}
                     {col.uid === "name" &&
-                      `${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}
+                      `${item?.app_person?.firstname} ${item?.app_person?.lastname}`}
+                    {col.uid === "role" && item?.role}
+                    {col.uid === "active" && item?.active}
                   </TableCell>
                 ))}
                 <TableCell className="text-center">
-                  {item.status === "pending" ? (
+                  {item.active === "Y" ? (
                     <Chip
                       className="p-1"
-                      color="primary"
+                      color="success"
                       endContent={
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
                           viewBox="0 0 24 24"
-                          fill="currentColor"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
                           className="size-5.5"
                         >
                           <path
-                            fillRule="evenodd"
-                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                            clipRule="evenodd"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                           />
                         </svg>
                       }
                       variant="flat"
                     >
-                      ยังไม่ได้กรอกข้อมูล
+                      Active
                     </Chip>
-                  ) : item.status === "draft" ? (
-                    <Chip
-                      className="p-1"
-                      color="warning"
-                      endContent={
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="size-5.5"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
-                      variant="flat"
-                    >
-                      รอดำเนินการ
-                    </Chip>
-                  ) : item.status === "cancel" ? (
+                  ) : item.active === "N" ? (
                     <Chip
                       className="p-1"
                       color="danger"
                       endContent={<XCircle size={20} />}
                       variant="flat"
                     >
-                      Cancel approval
+                      Inactive
                     </Chip>
                   ) : null}
                 </TableCell>
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">
-                    {item.status === "pending" ? (
-                      <div>
-                        {item.claimType === "OPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            onPress={() => {
-                              setHn(item.patientId);
-                              setVisitId("");
-                              setPatReg(item.patregId);
-                              setClaimId(item.id);
-                              setOpenModalOPD(true);
-                            }}
-                          >
-                            <Edit size={20} />
-                          </Button>
-                        ) : item.claimType === "IPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            onPress={() => {
-                              setHn(item.patientId);
-                              setPatReg("");
-                              setVisitId(item.visitId);
-                              setClaimId(item.id);
-                              setOpenModalIPD(true);
-                            }}
-                          >
-                            <Edit size={20} />
-                          </Button>
-                        ) : null}
-                      </div>
-                    ) : item.status === "draft" ? (
-                      <div>
-                        {item.claimType === "OPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            onPress={() => {
-                              setSelectID(item.id);
-                              setOpenModalEditOPD(true);
-                            }}
-                          >
-                            <Edit size={20} />
-                          </Button>
-                        ) : item.claimType === "IPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            onPress={() => {
-                              setSelectID(item.id);
-                              setOpenModalEditIPD(true);
-                            }}
-                          >
-                            <Edit size={20} />
-                          </Button>
-                        ) : null}
-                      </div>
-                    ) : null}
-
-                    <Button
-                      isIconOnly
-                      size="sm"
-                      color="default"
-                      variant="flat"
-                      onPress={() => {
-                        setSelectID(item.id);
-                        setOpenModalViewOPD(true);
-                      }}
-                    >
-                      <Eye size={20} />
+                    <Button isIconOnly size="sm" color="default" variant="flat">
+                      <Edit size={20} />
                     </Button>
-
-                    {item.claimType === "OPD" ? (
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        color="default"
-                        variant="flat"
-                        as="a"
-                        onPress={() => {
-                          setClaimId(item.id);
-                          setPreviewPdfModal(true);
-                        }}
-                      >
-                        <FileText size={20} />
-                      </Button>
-                    ) : item.claimType === "IPD" ? (
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        color="default"
-                        variant="flat"
-                        as="a"
-                        onPress={() => {
-                          setClaimId(item.id);
-                          setPreviewPdfModal(true);
-                        }}
-                      >
-                        <FileText size={20} />
-                      </Button>
-                    ) : null}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex justify-center gap-2 items-center">
-                    {item.status === "draft" ? (
-                      <Button color="danger" size="sm" variant="flat">
-                        UnApprove
-                      </Button>
-                    ) : item.status === "pending" ? (
-                      <Button color="primary" size="sm" variant="flat">
-                        Approve
-                      </Button>
-                    ) : item.status === "cancel" ? (
-                      <span className="bg-gray-200 p-3 rounded-lg text-xs">
-                        รายการนี้ถูกยกเลิก !
-                      </span>
-                    ) : null}
                   </div>
                 </TableCell>
               </TableRow>

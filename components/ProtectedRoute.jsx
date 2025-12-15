@@ -16,9 +16,12 @@ export default function ProtectedRoute({ children, role }) {
       return;
     }
     // ❌ role ไม่ตรงกัน
-    if (role && user.role !== role) {
-      router.replace("/unauthorized");
-      return;
+    if (role) {
+      const allowRoles = Array.isArray(role) ? role : [role];
+
+      if (!allowRoles.includes(user.role)) {
+        router.push("/unauthorized");
+      }
     }
   }, [user, loading, role]); // ลด dependency เพื่อป้องกันลูป
 

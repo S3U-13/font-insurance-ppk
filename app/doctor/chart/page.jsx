@@ -22,7 +22,7 @@ export default function page() {
             </CardBody>
             <CardFooter>
               <div className="w-50px">
-                <AreaCountByYear />
+                {/* <AreaCountByYear /> */}
               </div>
             </CardFooter>
           </Card>

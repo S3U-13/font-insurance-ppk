@@ -18,8 +18,7 @@ export default function FormOPD({
   noOrYes,
   choice2,
   form,
-  patData,
-  setPatData,
+  claimData,
   calculateAge,
   formatThaiDateNoTime,
   convertISOToTime,
@@ -53,7 +52,7 @@ export default function FormOPD({
           <Input
             className="col-span-4"
             label="ชื่อ-นามสกุล"
-            value={`${patData?.pat?.prename || ""}${patData?.pat?.firstname || ""} ${patData?.pat?.lastname || ""}`}
+            value={`${claimData?.his?.patient?.prename || ""}${claimData?.his?.patient?.firstname || ""} ${claimData?.his?.patient?.lastname || ""}`}
             size="sm"
             variant="bordered"
             disabled
@@ -65,11 +64,13 @@ export default function FormOPD({
             variant="bordered"
             disabled
             selectedKeys={
-              patData?.pat?.sex ? new Set([String(patData.pat.sex)]) : new Set()
+              claimData?.his?.patient?.sex
+                ? new Set([String(claimData.his.patient.sex)])
+                : new Set()
             }
             onSelectionChange={(keys) => {
               const selected = Array.from(keys)[0];
-              setPatData((prev) => ({
+              setclaimData((prev) => ({
                 ...prev,
                 pat: {
                   ...prev.pat,
@@ -91,7 +92,7 @@ export default function FormOPD({
             className="col-span-3"
             label="เลขประจำตัวประชาชน"
             size="sm"
-            value={patData?.pat?.citizencardno || ""}
+            value={claimData?.his?.patient?.citizencardno || ""}
             variant="bordered"
             disabled
           />
@@ -116,7 +117,9 @@ export default function FormOPD({
             label="วัน/เดือน/ปีเกิด"
             size="sm"
             variant="bordered"
-            value={formatThaiDateNoTime(patData?.pat?.birthdatetime || "")}
+            value={formatThaiDateNoTime(
+              claimData?.his?.patient?.birthdatetime || ""
+            )}
           />
 
           <Input
@@ -125,7 +128,7 @@ export default function FormOPD({
             size="sm"
             variant="bordered"
             disabled
-            value={`${calculateAge(patData?.pat?.birthdatetime).years || ""} ปี`}
+            value={`${calculateAge(claimData?.his?.patient?.birthdatetime).years || ""} ปี`}
           />
 
           <Input
@@ -133,7 +136,7 @@ export default function FormOPD({
             label="เดือน"
             size="sm"
             variant="bordered"
-            value={`${calculateAge(patData?.pat?.birthdatetime).months || ""} เดือน`}
+            value={`${calculateAge(claimData?.his?.patient?.birthdatetime).months || ""} เดือน`}
             disabled
           />
 
@@ -142,7 +145,7 @@ export default function FormOPD({
             label="อาชีพ"
             size="sm"
             variant="bordered"
-            value={patData?.pat?.occupationName || ""}
+            value={claimData?.his?.patient?.occupationName || ""}
             disabled
           />
         </div>
@@ -152,7 +155,7 @@ export default function FormOPD({
             label="โทรศัพท์มือถือ"
             size="sm"
             variant="bordered"
-            value={patData?.pat?.pat_address[0]?.phone ?? "-"}
+            value={claimData?.his?.patient?.pat_address[0]?.phone ?? "-"}
             disabled
           />
           <Input
@@ -168,7 +171,7 @@ export default function FormOPD({
             label="อีเมล"
             size="sm"
             variant="bordered"
-            value={patData?.pat?.pat_address[0]?.email ?? "-"}
+            value={claimData?.his?.patient?.pat_address[0]?.email ?? "-"}
             disabled
           />
         </div>
@@ -178,7 +181,7 @@ export default function FormOPD({
             label="ที่อยู่ปัจจุบัน"
             size="sm"
             variant="bordered"
-            value={formatAddress(patData?.pat?.pat_address)}
+            value={formatAddress(claimData?.his?.patient?.pat_address)}
             disabled
           />
         </div>
@@ -295,8 +298,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.visitdatetime
-                  ? parseDate(patData?.visitdatetime.split("T")[0])
+                claimData?.hospitalForm?.visit?.visitdatetime
+                  ? parseDate(claimData?.hospitalForm?.visit?.visitdatetime.split("T")[0])
                   : null
               }
               disabled
@@ -307,8 +310,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.visitdatetime
-                  ? convertISOToTime(patData.visitdatetime)
+                claimData?.hospitalForm?.visit?.visitdatetime
+                  ? convertISOToTime(claimData.hospitalForm?.visit?.visitdatetime)
                   : null
               }
               disabled
@@ -320,8 +323,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign?.[0]?.temperature
-                  ? `${patData.vitalsign[0]?.temperature} °C`
+                claimData?.hospitalForm?.vitalsign?.temperature
+                  ? `${claimData.hospitalForm.vitalsign?.temperature} °C`
                   : ""
               }
               disabled
@@ -333,8 +336,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign?.[0]?.pulse
-                  ? `${patData.vitalsign[0].pulse} bpm`
+                claimData?.hospitalForm?.vitalsign?.pulse
+                  ? `${claimData.hospitalForm.vitalsign.pulse} bpm`
                   : ""
               }
               disabled
@@ -346,8 +349,8 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign?.[0]?.respiration
-                  ? `${patData.vitalsign[0].respiration} /min`
+                claimData?.hospitalForm?.vitalsign?.respiration
+                  ? `${claimData.hospitalForm.vitalsign.respiration} /min`
                   : ""
               }
               disabled
@@ -359,9 +362,9 @@ export default function FormOPD({
               size="sm"
               variant="bordered"
               value={
-                patData?.vitalsign?.[0]?.bp_systolic &&
-                patData?.vitalsign?.[0]?.bp_diastolic
-                  ? `${patData.vitalsign[0].bp_systolic}/${patData.vitalsign[0].bp_diastolic} mmHg`
+                claimData?.hospitalForm?.vitalsign?.bp_systolic &&
+                claimData?.hospitalForm?.vitalsign?.bp_diastolic
+                  ? `${claimData.hospitalForm?.vitalsign.bp_systolic}/${claimData.hospitalForm?.vitalsign.bp_diastolic} mmHg`
                   : ""
               }
               disabled

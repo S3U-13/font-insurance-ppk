@@ -1,18 +1,16 @@
 "use client";
 import React, { useEffect, useRef, useMemo, useState } from "react";
-import { useApiRequest } from "../../hooks/useApi";
+import { useApiRequest } from "../../../hooks/useApi";
 import { colgroup } from "framer-motion/client";
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { pullDataOpd, pullDataIpd, pullClaimData, FetchAllForm, pdfOpd } =
+  const { pullDataOpd, pullDataIpd, pullClaimData, FetchUsers, pdfOpd } =
     useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
-  const [openModalEditIPD, setOpenModalEditIPD] = useState(false);
-  const [openModalEditOPD, setOpenModalEditOPD] = useState(false);
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
   const [patData, setPatData] = useState(null);
@@ -23,19 +21,16 @@ export default function useHook() {
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
     didFetch.current = true;
-    FetchAllForm()
+    FetchUsers()
       .then((data) => setOrder(data || []))
       .catch(console.error);
-  }, [FetchAllForm]);
+  }, [FetchUsers]);
 
   const [claimId, setClaimId] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState(
-    new Set(["pending", "draft"])
-  );
-  const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
+  const [statusFilter, setStatusFilter] = useState(new Set(["Y", "N"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
@@ -43,6 +38,8 @@ export default function useHook() {
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log(statusFilter);
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
@@ -68,13 +65,7 @@ export default function useHook() {
   }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
 
   useEffect(() => {
-    if (
-      !openModalViewOPD &&
-      !openModalViewIPD &&
-      !openModalEditIPD &&
-      !openModalEditOPD
-    )
-      return;
+    if (!openModalViewOPD && !openModalViewIPD) return;
     if (!selectID) return;
     const fetchDataView = async () => {
       const data = await pullClaimData(selectID, setClaimData);
@@ -82,13 +73,7 @@ export default function useHook() {
     };
 
     fetchDataView();
-  }, [
-    openModalViewOPD,
-    openModalViewIPD,
-    openModalEditOPD,
-    openModalEditIPD,
-    selectID,
-  ]);
+  }, [openModalViewOPD, openModalViewIPD, selectID]);
 
   useEffect(() => {
     if (!claimId) return;
@@ -104,12 +89,8 @@ export default function useHook() {
   }, [claimId]);
 
   const status = [
-    { uid: "pending", name: "Pending" },
-    { uid: "draft", name: "Draft" },
-  ];
-  const forms = [
-    { uid: "OPD", name: "OPD" },
-    { uid: "IPD", name: "IPD" },
+    { uid: "Y", name: "active" },
+    { uid: "N", name: "inactive" },
   ];
 
   const filteredItems = useMemo(() => {
@@ -120,19 +101,19 @@ export default function useHook() {
       const keyword = filterValue.toLowerCase();
 
       filtered = filtered.filter((item) =>
-        String(item.patientId || "")
+        String(item.id || "")
           .toLowerCase()
           .includes(keyword)
       );
     }
     if (statusFilter.size > 0) {
-      filtered = filtered.filter((item) => statusFilter.has(item.status));
+      filtered = filtered.filter((item) => statusFilter.has(item.active));
     }
-    if (formFilter.size > 0) {
-      filtered = filtered.filter((item) => formFilter.has(item.claimType));
-    }
+    // if (formFilter.size > 0) {
+    //   filtered = filtered.filter((item) => formFilter.has(item.claimType));
+    // }
     return filtered;
-  }, [order, filterValue, statusFilter, formFilter]);
+  }, [order, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -149,9 +130,10 @@ export default function useHook() {
 
   const columns = [
     { uid: "id", name: "ID" },
-    { uid: "form_type", name: "FORM TYPE" },
-    { uid: "hn", name: "HN" },
+    { uid: "username", name: "USERNAME" },
     { uid: "name", name: "NAME" },
+    { uid: "role", name: "ROLE" },
+    { uid: "active", name: "ACTIVE" },
   ];
 
   const [sortDescriptor, setSortDescriptor] = useState({
@@ -161,12 +143,12 @@ export default function useHook() {
 
   const sortedItems = useMemo(() => {
     if (!sortDescriptor.column) {
-      return [...items].sort((a, b) => b.id - a.id);
+      return [...items].sort((a, b) => a.id - b.id);
     }
 
     return [...items].sort((a, b) => {
-      const first = `${a.patient?.prename || ""}${a.patient?.firstname || ""} ${a.patient?.lastname || ""}`;
-      const second = `${b.patient?.prename || ""}${b.patient?.firstname || ""} ${b.patient?.lastname || ""}`;
+      const first = `${a.app_person?.firstname || ""}${a.app_person?.lastname || ""}`;
+      const second = `${b.app_person?.firstname || ""} ${b.app_person?.lastname || ""}`;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
@@ -190,7 +172,7 @@ export default function useHook() {
   );
 
   const [visibleColumns, setVisibleColumns] = useState(
-    new Set(["id", "form_type", "hn", "name"])
+    new Set(["id", "username", "name", "role", "active"])
   );
 
   const headerColumns = useMemo(() => {
@@ -217,7 +199,7 @@ export default function useHook() {
     setSelectID,
     claimData,
     setPatReg,
-    FetchAllForm,
+    FetchUsers,
     setOrder,
     filterValue,
     setFilterValue,
@@ -243,16 +225,9 @@ export default function useHook() {
     statusFilter,
     setStatusFilter,
     setVisitId,
-    forms,
-    formFilter,
-    setFormFilter,
     previewPdfModal,
     setPreviewPdfModal,
     base64PdfOpd,
     loading,
-    openModalEditIPD,
-    setOpenModalEditIPD,
-    openModalEditOPD,
-    setOpenModalEditOPD,
   };
 }

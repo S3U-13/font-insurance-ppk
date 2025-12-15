@@ -4,7 +4,7 @@ import React from "react";
 export default function False() {
   return (
     <div className="w-full h-[55vh] flex items-center justify-center ">
-      <div className="w-full max-w-md mx-auto border border-divider shadow-xl rounded-3xl  p-4 text-center">
+      <div className="w-full max-w-md mx-auto  rounded-3xl  p-4 text-center">
         {/* Icon + Title */}
         <div className="flex gap-2 items-center justify-center">
           <svg

@@ -41,6 +41,10 @@ export default function useHook() {
     // redirect ตาม role
     if (data.data.user?.role === "doctor") {
       router.push("/doctor/");
+    } else if (data.data.user?.role === "staff") {
+      router.push("/doctor/");
+    } else if (data.data.user?.role === "admin") {
+      router.push("/admin/user/");
     }
     // else router.push("/dashboard_admin");
   };

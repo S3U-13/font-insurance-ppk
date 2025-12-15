@@ -147,8 +147,8 @@ export default function page({ isOpen, onClose }) {
 
             {/* Inputs */}
             <Input
-              label="Email"
-              placeholder="Enter your email"
+              label="User Name"
+              placeholder="Enter your user name"
               type="text"
               variant="bordered"
               classNames={{

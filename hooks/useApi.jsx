@@ -126,6 +126,15 @@ export const useApiRequest = () => {
     }
   };
 
+  const FetchUsers = async (token = null) => {
+    try {
+      return await apiRequest("/api/users", "GET", token);
+    } catch (err) {
+      console.error("fetch users error:", err);
+      return null;
+    }
+  };
+
   return {
     CreateOrderInsuranceOPD,
     pullDataIpd,
@@ -133,5 +142,6 @@ export const useApiRequest = () => {
     pullClaimData,
     FetchAllForm,
     pdfOpd,
+    FetchUsers,
   };
 };

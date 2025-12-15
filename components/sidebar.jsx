@@ -3,22 +3,25 @@ import { Accordion, AccordionItem } from "@heroui/accordion";
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { ThemeSwitch } from "./theme-switch";
 import { div } from "framer-motion/client";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar({ isOpen }) {
+  const { user } = useAuth();
   const { logout } = useAuth();
   const [selectMenu, setSelectMenu] = useState(1);
   const pathname = usePathname();
   const router = useRouter();
   const [currentTheme, setCurrentTheme] = useState("light");
-  const [menu, setMenu] = useState([
+
+  const menu_config = [
     {
       id: 1,
       name: "INSURANCE FORM",
+      role: ["doctor", "staff"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +54,7 @@ export default function Sidebar({ isOpen }) {
     {
       id: 2,
       name: "CHART",
+      role: ["doctor", "staff"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +67,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 3,
+          label_id: 1,
           label_name: "CHART INSURANCE",
           link: "/doctor/chart/",
         },
@@ -71,7 +75,39 @@ export default function Sidebar({ isOpen }) {
     },
     {
       id: 3,
+      name: "USER MANAGE",
+      role: "admin",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-4.5 text-neutral-600"
+        >
+          <path
+            fillRule="evenodd"
+            d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+      label: [
+        {
+          label_id: 1,
+          label_name: "user",
+          link: "/admin/user",
+        },
+        // {
+        //   label_id: 2,
+        //   label_name: "INSURANCE FORM SUCCESS",
+        //   link: "/doctor/insurance_form/success",
+        // },
+      ],
+    },
+    {
+      id: 4,
       name: "SETTING",
+      role: ["doctor", "staff", "admin"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +124,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 4,
+          label_id: 1,
           label_name: "THEME SETTING",
           icon_theme: (
             <ThemeSwitch
@@ -104,13 +140,24 @@ export default function Sidebar({ isOpen }) {
         // },
       ],
     },
-  ]);
+  ];
+  const menu = useMemo(() => {
+    if (!user?.role) return [];
+    return menu_config.filter((menu) => menu.role.includes(user.role));
+  }, [user?.role]);
   useEffect(() => {
+    if (!user?.role) return;
     // ตัวอย่างแม็ป path -> label_id (ปรับได้ตามโครงสร้างของคุณ)
-    if (pathname?.startsWith("/doctor/insurance_form/success")) {
-      setSelectMenu(2);
-    } else if (pathname?.startsWith("/doctor/")) {
-      setSelectMenu(1);
+    if (["doctor", "staff"].includes(user.role)) {
+      if (pathname?.startsWith("/doctor/insurance_form/success")) {
+        setSelectMenu(2);
+      } else if (pathname?.startsWith("/doctor/")) {
+        setSelectMenu(1);
+      }
+    } else if (user.role === "admin") {
+      if (pathname?.startsWith("/admin/user/")) {
+        setSelectMenu(1);
+      }
     }
   }, [pathname]);
 
