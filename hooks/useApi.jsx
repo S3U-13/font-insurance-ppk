@@ -104,9 +104,9 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const pullClaimData = async (selectID, setClaimData, token = null) => {
+  const pullClaimData = async (claimId, setClaimData, token = null) => {
     try {
-      const data = await apiRequest(`/api/claims/${selectID}`, "GET", token);
+      const data = await apiRequest(`/api/claims/${claimId}`, "GET", token);
       setClaimData(data || null);
       return data;
     } catch (err) {
@@ -123,6 +123,19 @@ export const useApiRequest = () => {
     } catch (err) {
       console.error("CreateOrderInsuranceOPD error:", err);
       return null;
+    }
+  };
+  const EditOrderInsuranceOPD = async (value, hosClaimId, token = null) => {
+    try {
+      const data = await apiRequest(
+        `/hospital-forms/${hosClaimId}`,
+        "PUT",
+        value,
+        token
+      );
+      return data;
+    } catch (err) {
+      console.error("EditOrderInsuranceOPD error:", err);
     }
   };
 
@@ -143,5 +156,6 @@ export const useApiRequest = () => {
     FetchAllForm,
     pdfOpd,
     FetchUsers,
+    EditOrderInsuranceOPD,
   };
 };

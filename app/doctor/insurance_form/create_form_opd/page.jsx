@@ -34,7 +34,15 @@ export default function page({
     setAccidentDate,
     handleAccidentDateChange,
     handleAccidentTimeChange,
+    user,
+    signatureCheck,
+    openSignDoctor,
+    setOpenSignDoctor,
+    handleSaveSignatureDoctor,
+    signatureDoctor,
+    setSignatureDoctor,
   } = useHook({ patData, setPatData, onClose, claimId });
+
   return (
     <div>
       <Modal
@@ -81,6 +89,13 @@ export default function page({
                   setAccidentDate={setAccidentDate}
                   handleAccidentDateChange={handleAccidentDateChange}
                   handleAccidentTimeChange={handleAccidentTimeChange}
+                  user={user}
+                  signatureCheck={signatureCheck}
+                  openSignDoctor={openSignDoctor}
+                  setOpenSignDoctor={setOpenSignDoctor}
+                  handleSaveSignatureDoctor={handleSaveSignatureDoctor}
+                  signatureDoctor={signatureDoctor}
+                  setSignatureDoctor={setSignatureDoctor}
                 />
               </ModalBody>
               <ModalFooter>

@@ -266,7 +266,7 @@ export default function FormOPD({
               />
             )}
           </form.Field>
-          <form.Field name="claimId">
+          {/* <form.Field name="claimId">
             {(field) => (
               <Input
                 label="claim id :"
@@ -277,14 +277,14 @@ export default function FormOPD({
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
-          </form.Field>
+          </form.Field> */}
           <form.Field name="vitalsignId">
             {(field) => (
               <Input
                 label="vital sign id :"
                 size="sm"
                 variant="bordered"
-                type="hidden"
+                type="text"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -299,7 +299,11 @@ export default function FormOPD({
               variant="bordered"
               value={
                 claimData?.hospitalForm?.visit?.visitdatetime
-                  ? parseDate(claimData?.hospitalForm?.visit?.visitdatetime.split("T")[0])
+                  ? parseDate(
+                      claimData?.hospitalForm?.visit?.visitdatetime.split(
+                        "T"
+                      )[0]
+                    )
                   : null
               }
               disabled
@@ -311,7 +315,9 @@ export default function FormOPD({
               variant="bordered"
               value={
                 claimData?.hospitalForm?.visit?.visitdatetime
-                  ? convertISOToTime(claimData.hospitalForm?.visit?.visitdatetime)
+                  ? convertISOToTime(
+                      claimData.hospitalForm?.visit?.visitdatetime
+                    )
                   : null
               }
               disabled

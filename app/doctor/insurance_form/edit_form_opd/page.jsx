@@ -11,7 +11,13 @@ import {
 import FormOPD from "./components/form_opd";
 import useHook from "./useHook";
 
-export default function page({ isOpen, onClose, claimData }) {
+export default function page({
+  isOpen,
+  onClose,
+  claimData,
+  selectID,
+  setClaimData,
+}) {
   const {
     sex,
     noOrYes,
@@ -28,7 +34,7 @@ export default function page({ isOpen, onClose, claimData }) {
     setAccidentDate,
     handleAccidentDateChange,
     handleAccidentTimeChange,
-  } = useHook({ onClose, claimData });
+  } = useHook({ onClose, claimData, selectID, isOpen, setClaimData });
   return (
     <div>
       <Modal

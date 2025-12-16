@@ -75,9 +75,9 @@ export default function useHook() {
       !openModalEditOPD
     )
       return;
-    if (!selectID) return;
+    if (!claimId) return;
     const fetchDataView = async () => {
-      const data = await pullClaimData(selectID, setClaimData);
+      const data = await pullClaimData(claimId, setClaimData);
       setClaimData(data);
     };
 
@@ -87,10 +87,11 @@ export default function useHook() {
     openModalViewIPD,
     openModalEditOPD,
     openModalEditIPD,
-    selectID,
+    claimId,
   ]);
 
   useEffect(() => {
+    if (!previewPdfModal) return;
     if (!claimId) return;
 
     const pdfOpdBase64 = async () => {
@@ -101,7 +102,7 @@ export default function useHook() {
     };
 
     pdfOpdBase64();
-  }, [claimId]);
+  }, [claimId, previewPdfModal]);
 
   const status = [
     { uid: "pending", name: "Pending" },
@@ -216,6 +217,7 @@ export default function useHook() {
     selectID,
     setSelectID,
     claimData,
+    setClaimData,
     setPatReg,
     FetchAllForm,
     setOrder,

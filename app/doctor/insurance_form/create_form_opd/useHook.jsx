@@ -3,11 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { useForm } from "@tanstack/react-form";
 import { Time } from "@internationalized/date";
+import { useAuth } from "../../../../context/AuthContext";
 
 import * as z from "zod";
 import { addToast } from "@heroui/toast";
 
 export default function useHook({ patData, setPatData, onClose, claimId }) {
+  const { user } = useAuth();
+  const [openSignDoctor, setOpenSignDoctor] = useState(false);
+  const [signatureDoctor, setSignatureDoctor] = useState(null);
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -57,6 +61,18 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
       value: "AIDS",
     },
   ]);
+
+  const signatureCheck = [
+    {
+      id: 1,
+      value: "ใช้",
+    },
+    {
+      id: 2,
+      value: "ไม่ใช้",
+    },
+  ];
+
   const { CreateOrderInsuranceOPD } = useApiRequest();
 
   const initialField = () => ({
@@ -76,6 +92,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     planOfTreatment: "",
     investigations: "",
     relatedConditions: [],
+    signatureCheck: null,
   });
 
   const [field, setField] = useState(initialField());
@@ -126,6 +143,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
   const defaultValues = initialField();
 
   const validationSchema = z.object({
+    signatureCheck: z.coerce.number().nullable(),
     patientId: z.coerce.number().nullable(),
     claimId: z.coerce.number().nullable(),
     visitid: z.coerce.number().nullable(),
@@ -133,7 +151,6 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     chiefComplaint: z.string().optional(),
     presentIllness: z.string().optional(),
     physicalExam: z.string().optional(),
-
     accidentDateTime: z.string().nullable(),
     accidentPlace: z.string().optional(),
     underlyingCondition: z.string().optional(),
@@ -183,6 +200,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
       "provisionalDx",
       patData?.diagnosis?.[0]?.diagtext || ""
     );
+    // form.setFieldValue("signatureCheck", "1");
     // เติมค่าฟิลด์อื่น ๆ ตามที่มี
   }, [patData]);
   const formatThaiDateNoTime = (isoString) => {
@@ -197,7 +215,6 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
       year: "numeric",
     }).format(date);
   };
-
 
   const calculateAge = (birthdate) => {
     if (!birthdate) return "";
@@ -255,7 +272,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
   };
 
   const [accidentDate, setAccidentDate] = useState(null); // {year, month, day}
-  const [accidentTime, setAccidentTime] = useState(new Time(0, 0)); // Time object
+  const [accidentTime, setAccidentTime] = useState(null); // Time object
 
   // โหลดค่า accidentDateTime จาก backend (จาก patData)
   useEffect(() => {
@@ -302,6 +319,13 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     }
   };
 
+  const handleSaveSignatureDoctor = (dataUrl) => {
+    setSignatureDoctor(dataUrl);
+    // console.log("📜 ลายเซ็น:", dataUrl);
+    // 👉 สามารถ fetch ไป backend ได้ เช่น:
+    // await fetch('/api/upload-signature', { method: 'POST', body: JSON.stringify({ signature: dataUrl }) })
+  };
+
   return {
     sex,
     noOrYes,
@@ -318,5 +342,11 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     setAccidentDate,
     handleAccidentDateChange,
     handleAccidentTimeChange,
+    user,
+    signatureCheck,
+    openSignDoctor,
+    setOpenSignDoctor,
+    handleSaveSignatureDoctor,
+    signatureDoctor,
   };
 }

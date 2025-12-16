@@ -2,12 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { useForm } from "@tanstack/react-form";
-import { Time } from "@internationalized/date";
+import { CalendarDate, Time } from "@internationalized/date";
 
 import * as z from "zod";
 import { addToast } from "@heroui/toast";
 
-export default function useHook({ onClose, claimData }) {
+export default function useHook({
+  onClose,
+  claimData,
+  selectID,
+  isOpen,
+  setClaimData,
+}) {
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -57,11 +63,12 @@ export default function useHook({ onClose, claimData }) {
       value: "AIDS",
     },
   ]);
-  const { CreateOrderInsuranceOPD } = useApiRequest();
+
+  const { EditOrderInsuranceOPD } = useApiRequest();
 
   const initialField = () => ({
     patientId: null,
-    claimId: null,
+    // claimId: null,
     visitid: null,
     vitalsignId: null,
     chiefComplaint: "",
@@ -78,6 +85,7 @@ export default function useHook({ onClose, claimData }) {
     relatedConditions: [],
   });
 
+  const hosClaimId = selectID;
   const [field, setField] = useState(initialField());
   const [relatedConditions, setRelatedConditions] = useState([]);
 
@@ -101,25 +109,43 @@ export default function useHook({ onClose, claimData }) {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (value) => {
     if (isSubmitting) return;
+
+    setIsSubmitting(true); // ✅ สำคัญมาก
+
     try {
-      const data = await CreateOrderInsuranceOPD(value);
-      setPatData(null);
-      form.reset();
+      const data = await EditOrderInsuranceOPD(value, hosClaimId);
+      // setPatData(null);
       onClose();
-      if ((data.status = 200)) {
+      form.reset();
+      if (data) {
         addToast({
           title: "สำเร็จ",
           description: "เพิ่มข้อมูลสำเร็จ",
           color: "success",
           variant: "flat",
         });
+      } else if (!data) {
+        addToast({
+          title: "ผิดพลาด",
+          description: "ไม่สามารถบันทึกข้อมูลได้",
+          color: "danger",
+          variant: "flat",
+        });
       }
     } catch (err) {
-      console.error();
+      console.error("handleSubmit error:", err);
+
+      addToast({
+        title: "error",
+        description: "error",
+        color: "danger",
+        variant: "flat",
+      });
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // ✅ ปลดล็อกเสมอ
     }
   };
 
@@ -127,7 +153,7 @@ export default function useHook({ onClose, claimData }) {
 
   const validationSchema = z.object({
     patientId: z.coerce.number().nullable(),
-    claimId: z.coerce.number().nullable(),
+    // claimId: z.coerce.number().nullable(),
     visitid: z.coerce.number().nullable(),
     vitalsignId: z.coerce.number().nullable(),
     chiefComplaint: z.string().optional(),
@@ -160,13 +186,56 @@ export default function useHook({ onClose, claimData }) {
     },
   });
 
+  const [accidentDate, setAccidentDate] = useState(null); // CalendarDate | null
+  const [accidentTime, setAccidentTime] = useState(null); // Time | null
+
+  useEffect(() => {
+    if (isOpen) {
+      form.reset();
+      setClaimData(null);
+      setAccidentDate(null);
+      setAccidentTime(null);
+    }
+  }, [isOpen]);
+
+  const parseISOToDateTime = (isoString) => {
+    if (!isoString) return null;
+
+    const d = new Date(isoString);
+
+    return {
+      date: new CalendarDate(
+        d.getUTCFullYear(),
+        d.getUTCMonth() + 1,
+        d.getUTCDate()
+      ),
+      time: new Time(d.getUTCHours(), d.getUTCMinutes()),
+    };
+  };
+  useEffect(() => {
+    console.log("ISO:", claimData?.hospitalForm?.accidentDateTime);
+    const iso = claimData?.hospitalForm?.accidentDateTime;
+    if (!iso) return;
+
+    const parsed = parseISOToDateTime(iso);
+    if (!parsed) return;
+
+    setAccidentDate(parsed.date); // CalendarDate
+    setAccidentTime(parsed.time); // Time
+
+    // sync ค่าเข้า form (ถ้ามี)
+    form.setFieldValue("accidentDateTime", iso);
+  }, [claimData?.hospitalForm?.accidentDateTime]);
+
   useEffect(() => {
     if (!claimData) return;
 
-    // ตัวอย่าง: ใช้ค่าจาก patData.map
     form.setFieldValue("patientId", claimData?.patientId || null);
     form.setFieldValue("visitid", claimData?.visitId || null);
-    form.setFieldValue("vitalsignId", claimData?.vitalsignId || null);
+    form.setFieldValue(
+      "vitalsignId",
+      claimData?.hospitalForm?.vitalsignId || null
+    );
     form.setFieldValue(
       "chiefComplaint",
       claimData?.hospitalForm?.chiefComplaint || null
@@ -207,8 +276,45 @@ export default function useHook({ onClose, claimData }) {
       "planOfTreatment",
       claimData?.hospitalForm?.planOfTreatment || null
     );
-    // เติมค่าฟิลด์อื่น ๆ ตามที่มี
   }, [claimData]);
+
+  // โหลดค่า accidentDateTime จาก backend (จาก patData)
+
+  // รวม Date + Time → ISO8601
+  const buildISO = (d, t) => {
+    if (!d || !t) return null;
+
+    return `${d.year}-${String(d.month).padStart(2, "0")}-${String(
+      d.day
+    ).padStart(2, "0")}T${String(t.hour).padStart(2, "0")}:${String(
+      t.minute
+    ).padStart(2, "0")}:00Z`;
+  };
+
+  // อัปเดตฟอร์มเมื่อเลือกวันที่
+  const handleAccidentDateChange = (d) => {
+    if (!d) {
+      setAccidentDate(null);
+      return; // ✅ สำคัญมาก
+    }
+
+    setAccidentDate(d);
+
+    if (accidentTime) {
+      const iso = buildISO(d, accidentTime);
+      if (iso) form.setFieldValue("accidentDateTime", iso);
+    }
+  };
+  // อัปเดตฟอร์มเมื่อเลือกเวลา
+  const handleAccidentTimeChange = (t) => {
+    setAccidentTime(t);
+
+    if (accidentDate) {
+      const iso = buildISO(accidentDate, t);
+      form.setFieldValue("accidentDateTime", iso);
+    }
+  };
+
   const formatThaiDateNoTime = (isoString) => {
     if (!isoString) return "";
 
@@ -275,54 +381,6 @@ export default function useHook({ onClose, claimData }) {
       address += ` จ.${pat_address[0]?.provinceName.detailtext}`;
 
     return address.trim();
-  };
-
-  const [accidentDate, setAccidentDate] = useState(null); // {year, month, day}
-  const [accidentTime, setAccidentTime] = useState(new Time(0, 0)); // Time object
-
-  // โหลดค่า accidentDateTime จาก backend (จาก patData)
-  // useEffect(() => {
-  //   if (!claimData?.hospitalForm?.accidentDateTime) return;
-
-  //   const dt = new Date(claimData?.hospitalForm?.accidentDateTime);
-
-  //   const year = dt.getUTCFullYear();
-  //   const month = dt.getUTCMonth() + 1;
-  //   const day = dt.getUTCDate();
-  //   const hour = dt.getUTCHours();
-  //   const minute = dt.getUTCMinutes();
-
-  //   setAccidentDate({ year, month, day });
-  //   setAccidentTime(new Time(hour, minute));
-  // }, [claimData]);
-
-  // รวม Date + Time → ISO8601
-  const buildISO = (d, t) => {
-    if (!d || !t) return null; // <-- ป้องกัน error
-
-    return `${d.year}-${String(d.month).padStart(2, "0")}-${String(
-      d.day
-    ).padStart(2, "0")}T${String(t.hour).padStart(2, "0")}:${String(
-      t.minute
-    ).padStart(2, "0")}:00Z`;
-  };
-
-  // อัปเดตฟอร์มเมื่อเลือกวันที่
-  const handleAccidentDateChange = (d) => {
-    setAccidentDate(d);
-    if (!accidentTime) return; // ป้องกัน null
-
-    const iso = buildISO(d, accidentTime);
-    if (iso) form.setFieldValue("accidentDateTime", iso);
-  };
-
-  // อัปเดตฟอร์มเมื่อเลือกเวลา
-  const handleAccidentTimeChange = (t) => {
-    setAccidentTime(t);
-    if (accidentDate) {
-      const iso = buildISO(accidentDate, t);
-      form.setFieldValue("accidentDateTime", iso);
-    }
   };
 
   return {
