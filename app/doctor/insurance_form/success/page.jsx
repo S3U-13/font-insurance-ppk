@@ -21,6 +21,8 @@ import {
 } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 
+import ModalUnApprove from "./modal-unapprove/page";
+
 export default function page() {
   const {
     openModalIPD,
@@ -36,7 +38,7 @@ export default function page() {
     setSelectID,
     claimData,
     setPatReg,
-    FetchAllForm,
+    // FetchAllForm,
     setOrder,
     filterValue,
     setFilterValue,
@@ -64,6 +66,11 @@ export default function page() {
     forms,
     formFilter,
     setFormFilter,
+    FetchAllFormStatusApproved,
+    openModalUnApprove,
+    setOpenModalUnApprove,
+    changeStatus,
+    setChangeStatus,
   } = useHook();
   const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
 
@@ -73,6 +80,17 @@ export default function page() {
   );
   return (
     <div className="space-y-6 mt-6">
+      <ModalUnApprove
+        changeStatus={changeStatus}
+        claimId={claimId}
+        isOpen={openModalUnApprove}
+        onClose={() => {
+          setOpenModalUnApprove(false);
+          FetchAllFormStatusApproved()
+            .then((data) => setOrder(data || []))
+            .catch(console.error);
+        }}
+      />
       <h1 className="text-center text-xl">
         <strong>Hospital PPK Insurance Form</strong>
       </h1>
@@ -246,10 +264,11 @@ export default function page() {
             ))}
             <TableColumn className="text-center">STATUS</TableColumn>
             <TableColumn className="text-center">ACTION</TableColumn>
+            <TableColumn className="text-center">APPROVE</TableColumn>
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
             {sortedItems
-              ?.filter((order) => order.status === "approve")
+              ?.filter((order) => order.status === "approved")
               .map((item, index) => (
                 <TableRow key={item.id}>
                   {headerColumns.map((col) => (
@@ -261,6 +280,7 @@ export default function page() {
                         `${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}
                     </TableCell>
                   ))}
+
                   <TableCell className="text-center">
                     <Chip
                       className="p-2"
@@ -337,6 +357,23 @@ export default function page() {
                           <path d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625Z" />
                           <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
                         </svg>
+                      </Button>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex justify-center gap-2 items-center">
+                      <Button
+                        color="danger"
+                        size="sm"
+                        variant="flat"
+                        onPress={() => {
+                          setOpenModalUnApprove(true);
+                          setChangeStatus("unapprove");
+                          setClaimId(item.id);
+                        }}
+                        // onPress={() => handleUnApprove(item.id, "unapprove")}
+                      >
+                        Unapproved
                       </Button>
                     </div>
                   </TableCell>

@@ -53,11 +53,14 @@ export const useApiRequest = () => {
   // ดึงข้อมูลฟอร์มทั้งหมด → cookie จะถูกส่งให้ server
   const FetchAllForm = async (token = null) => {
     return await apiRequest(
-      "/api/claims?status=pending,draft",
+      "/api/claims?status=pending,draft,unapproved",
       "GET",
       null,
       token
     );
+  };
+  const FetchAllFormStatusApproved = async (token = null) => {
+    return await apiRequest("/api/claims?status=approved", "GET", null, token);
   };
 
   const pullDataIpd = async (hn, visitId, token = null) => {
@@ -75,6 +78,7 @@ export const useApiRequest = () => {
       return null;
     }
   };
+
   const pullDataOpd = async (hn, patReg, token = null) => {
     try {
       const payload = { hn, patReg };
@@ -148,6 +152,20 @@ export const useApiRequest = () => {
     }
   };
 
+  const ChangeStatus = async (claimId, changeStatus, token = null) => {
+    try {
+      const data = await apiRequest(
+        `/api/claims/${claimId}/${changeStatus}`,
+        "POST",
+        token
+      );
+      return data;
+    } catch (err) {
+      console.error("Approve:", err);
+      return null;
+    }
+  };
+
   return {
     CreateOrderInsuranceOPD,
     pullDataIpd,
@@ -157,5 +175,7 @@ export const useApiRequest = () => {
     pdfOpd,
     FetchUsers,
     EditOrderInsuranceOPD,
+    FetchAllFormStatusApproved,
+    ChangeStatus,
   };
 };

@@ -4,27 +4,31 @@ import { useApiRequest } from "../../../../hooks/useApi";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { FetchAllForm } = useApiRequest();
+  const { FetchAllFormStatusApproved, ChangeStatus } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
+  const [openModalUnApprove, setOpenModalUnApprove] = useState(false);
   const handleOpenModal = () => {
     setOpenModalIPD((prev) => !prev);
   };
+
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
+  console.log(order);
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
     didFetch.current = true;
-    FetchAllForm()
+    FetchAllFormStatusApproved()
       .then((data) => setOrder(data || []))
       .catch(console.error);
-  }, [FetchAllForm]);
+  }, [FetchAllFormStatusApproved]);
 
   const [claimId, setClaimId] = useState("");
+  const [changeStatus, setChangeStatus] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
@@ -189,7 +193,7 @@ export default function useHook() {
     setSelectID,
     claimData,
     setPatReg,
-    FetchAllForm,
+    // FetchAllForm,
     setOrder,
     filterValue,
     setFilterValue,
@@ -218,5 +222,10 @@ export default function useHook() {
     forms,
     formFilter,
     setFormFilter,
+    FetchAllFormStatusApproved,
+    openModalUnApprove,
+    setOpenModalUnApprove,
+    changeStatus,
+    setChangeStatus,
   };
 }

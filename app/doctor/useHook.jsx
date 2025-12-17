@@ -6,8 +6,14 @@ import { colgroup } from "framer-motion/client";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { pullDataOpd, pullDataIpd, pullClaimData, FetchAllForm, pdfOpd } =
-    useApiRequest();
+  const {
+    pullDataOpd,
+    pullDataIpd,
+    pullClaimData,
+    FetchAllForm,
+    pdfOpd,
+    ChangeStatus,
+  } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
@@ -29,11 +35,12 @@ export default function useHook() {
   }, [FetchAllForm]);
 
   const [claimId, setClaimId] = useState("");
+  const [changeStatus, setChangeStatus] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   const [statusFilter, setStatusFilter] = useState(
-    new Set(["pending", "draft"])
+    new Set(["pending", "draft", "unapproved"])
   );
   const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -42,6 +49,7 @@ export default function useHook() {
   const [base64PdfOpd, setBase64PdfOpd] = useState("");
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -107,6 +115,7 @@ export default function useHook() {
   const status = [
     { uid: "pending", name: "Pending" },
     { uid: "draft", name: "Draft" },
+    { uid: "unapproved", name: "Unapproved" },
   ];
   const forms = [
     { uid: "OPD", name: "OPD" },
@@ -201,6 +210,21 @@ export default function useHook() {
 
   const onClear = () => setFilterValue("");
 
+  const handleApprove = async (claimId, changeStatus) => {
+    if (!changeStatus || !claimId) return;
+
+    try {
+      const data = await ChangeStatus(claimId, changeStatus);
+      if (data) {
+        const list = await FetchAllForm();
+        setOrder(list || []);
+      }
+      return data;
+    } catch (err) {
+      console.error("handleApprove error :", err);
+    }
+  };
+
   return {
     openModalIPD,
     setOpenModalIPD,
@@ -256,5 +280,6 @@ export default function useHook() {
     setOpenModalEditIPD,
     openModalEditOPD,
     setOpenModalEditOPD,
+    handleApprove,
   };
 }

@@ -6,12 +6,15 @@ import { Radio, RadioGroup } from "@heroui/radio";
 import { Select, SelectItem } from "@heroui/select";
 import { div } from "framer-motion/client";
 import React from "react";
+import { Button } from "@heroui/button";
 import {
   parseDate,
   getLocalTimeZone,
   parseAbsoluteToLocal,
 } from "@internationalized/date";
 import { DateInput, TimeInput } from "@heroui/date-input";
+import { Edit3 } from "@deemlol/next-icons";
+import ModalDoctorSignature from "../doctor-signature/page";
 
 export default function FormOPD({
   sex,
@@ -29,9 +32,23 @@ export default function FormOPD({
   setAccidentDate,
   handleAccidentDateChange,
   handleAccidentTimeChange,
+  user,
+  signatureCheck,
+  openSignDoctor,
+  setOpenSignDoctor,
+  handleSaveSignatureDoctor,
+  signatureDoctor,
+  setSignatureDoctor,
 }) {
   return (
     <div>
+      <ModalDoctorSignature
+        isOpen={openSignDoctor}
+        onClose={() => {
+          setOpenSignDoctor(false);
+        }}
+        onSave={handleSaveSignatureDoctor}
+      />
       <div className="text-center pt-2">
         <p>
           <strong>Hospital Name</strong> พระปกเกล้า จันทบุรี
@@ -589,15 +606,72 @@ export default function FormOPD({
           </h3>
           <div className="flex justify-between border border-divider rounded-xl p-4">
             <div className="space-y-2">
-              <Input label="Physician's name" variant="bordered" size="sm" />
-              <Input label="Doctor signature" variant="bordered" size="sm" />
+              <form.Field name="signatureCheck">
+                {(field) => (
+                  <RadioGroup
+                    label="ต้องการใช้ลายเซ็นในระบบหรือไม่"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    orientation="horizontal"
+                    size="sm"
+                  >
+                    {signatureCheck.map((s) => (
+                      <div key={s.id} className="flex items-center gap-2">
+                        <Radio value={String(s.id)}>{s.value}</Radio>
+                        {String(s.id) === "1" && field.state.value === "1" && (
+                          <Input
+                            label="Doctor signature"
+                            variant="bordered"
+                            size="sm"
+                          />
+                        )}
+                        {String(s.id) === "2" && field.state.value === "2" && (
+                          <div className="flex flex-wrap gap-3 items-center">
+                            <span className="text-sm flex items-center gap-2 text-gray-600">
+                              {!signatureDoctor ? (
+                                <span className="text-gray-400">
+                                  .............................
+                                </span>
+                              ) : (
+                                <img
+                                  src={signatureDoctor}
+                                  alt="signature"
+                                  className="border border-gray-200 rounded-lg shadow w-[180px] h-[48px] object-contain bg-white"
+                                />
+                              )}
+                            </span>
+                            <Button
+                              size="md"
+                              isIconOnly
+                              color="secondary"
+                              variant="flat"
+                              onPress={() => setOpenSignDoctor(true)}
+                            >
+                              <Edit3 className="size-5" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+              </form.Field>
+
+              <Input
+                label="Physician's name"
+                variant="bordered"
+                size="sm"
+                value={`${user?.doctorsalutation} ${user?.name}`}
+                disabled
+                readOnly
+              />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 pt-8">
               <Input label="Medical license No." variant="bordered" size="sm" />
 
               <DateInput label="DATE" variant="bordered" size="sm" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 pt-8">
               <Input label="Specialty" variant="bordered" size="sm" />
             </div>
           </div>

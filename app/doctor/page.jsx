@@ -83,6 +83,8 @@ export default function page() {
     setOpenModalEditIPD,
     openModalEditOPD,
     setOpenModalEditOPD,
+
+    handleApprove,
   } = useHook();
 
   return (
@@ -439,14 +441,14 @@ export default function page() {
                     >
                       รอดำเนินการ
                     </Chip>
-                  ) : item.status === "cancel" ? (
+                  ) : item.status === "unapproved" ? (
                     <Chip
                       className="p-1"
                       color="danger"
                       endContent={<XCircle size={20} />}
                       variant="flat"
                     >
-                      Cancel approval
+                      unapproved
                     </Chip>
                   ) : null}
                 </TableCell>
@@ -489,6 +491,38 @@ export default function page() {
                         ) : null}
                       </div>
                     ) : item.status === "draft" ? (
+                      <div>
+                        {item.claimType === "OPD" ? (
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            color="default"
+                            variant="flat"
+                            onPress={() => {
+                              setClaimId(item.id);
+                              setSelectID(item?.hospitalForm?.id);
+                              setOpenModalEditOPD(true);
+                            }}
+                          >
+                            <Edit size={20} />
+                          </Button>
+                        ) : item.claimType === "IPD" ? (
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            color="default"
+                            variant="flat"
+                            onPress={() => {
+                              setClaimId(item.id);
+                              setSelectID(item?.hospitalForm?.id);
+                              setOpenModalEditIPD(true);
+                            }}
+                          >
+                            <Edit size={20} />
+                          </Button>
+                        ) : null}
+                      </div>
+                    ) : item.status === "unapproved" ? (
                       <div>
                         {item.claimType === "OPD" ? (
                           <Button
@@ -567,22 +601,77 @@ export default function page() {
                         ) : null}
                       </>
                     )}
+                    {item.status === "unapproved" && (
+                      <>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          color="default"
+                          variant="flat"
+                          onPress={() => {
+                            setClaimId(item.id);
+                            setOpenModalViewOPD(true);
+                          }}
+                        >
+                          <Eye size={20} />
+                        </Button>
+                        {item.claimType === "OPD" ? (
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            color="default"
+                            variant="flat"
+                            as="a"
+                            onPress={() => {
+                              setClaimId(item.id);
+                              setPreviewPdfModal(true);
+                            }}
+                          >
+                            <FileText size={20} />
+                          </Button>
+                        ) : item.claimType === "IPD" ? (
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            color="default"
+                            variant="flat"
+                            as="a"
+                            onPress={() => {
+                              setClaimId(item.id);
+                              setPreviewPdfModal(true);
+                            }}
+                          >
+                            <FileText size={20} />
+                          </Button>
+                        ) : null}
+                      </>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">
                     {item.status === "draft" ? (
-                      <Button color="danger" size="sm" variant="flat">
-                        UnApprove
-                      </Button>
-                    ) : item.status === "pending" ? (
-                      <Button color="primary" size="sm" variant="flat">
+                      // <Button color="danger" size="sm" variant="flat">
+                      //   UnApprove
+                      // </Button>
+
+                      <Button
+                        color="primary"
+                        size="sm"
+                        variant="flat"
+                        onPress={() => handleApprove(item.id, "approve")}
+                      >
                         Approve
                       </Button>
-                    ) : item.status === "cancel" ? (
-                      <span className="bg-gray-200 p-3 rounded-lg text-xs">
-                        รายการนี้ถูกยกเลิก !
-                      </span>
+                    ) : item.status === "unapproved" ? (
+                      <Button
+                        color="primary"
+                        size="sm"
+                        variant="flat"
+                        onPress={() => handleApprove(item.id, "approve")}
+                      >
+                        Approve
+                      </Button>
                     ) : null}
                   </div>
                 </TableCell>

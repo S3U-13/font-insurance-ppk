@@ -6,6 +6,7 @@ import { CalendarDate, Time } from "@internationalized/date";
 
 import * as z from "zod";
 import { addToast } from "@heroui/toast";
+import { useAuth } from "../../../../context/AuthContext";
 
 export default function useHook({
   onClose,
@@ -14,6 +15,9 @@ export default function useHook({
   isOpen,
   setClaimData,
 }) {
+  const { user } = useAuth();
+  const [openSignDoctor, setOpenSignDoctor] = useState(false);
+  const [signatureDoctor, setSignatureDoctor] = useState(null);
   const [sex, setSex] = useState([
     {
       id: 1,
@@ -63,6 +67,17 @@ export default function useHook({
       value: "AIDS",
     },
   ]);
+
+  const signatureCheck = [
+    {
+      id: 1,
+      value: "ใช้",
+    },
+    {
+      id: 2,
+      value: "ไม่ใช้",
+    },
+  ];
 
   const { EditOrderInsuranceOPD } = useApiRequest();
 
@@ -383,6 +398,13 @@ export default function useHook({
     return address.trim();
   };
 
+  const handleSaveSignatureDoctor = (dataUrl) => {
+    setSignatureDoctor(dataUrl);
+    // console.log("📜 ลายเซ็น:", dataUrl);
+    // 👉 สามารถ fetch ไป backend ได้ เช่น:
+    // await fetch('/api/upload-signature', { method: 'POST', body: JSON.stringify({ signature: dataUrl }) })
+  };
+
   return {
     sex,
     noOrYes,
@@ -399,5 +421,11 @@ export default function useHook({
     setAccidentDate,
     handleAccidentDateChange,
     handleAccidentTimeChange,
+    user,
+    signatureCheck,
+    openSignDoctor,
+    setOpenSignDoctor,
+    handleSaveSignatureDoctor,
+    signatureDoctor,
   };
 }

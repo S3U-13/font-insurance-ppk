@@ -34,9 +34,17 @@ export default function page({
     setAccidentDate,
     handleAccidentDateChange,
     handleAccidentTimeChange,
+    user,
+    signatureCheck,
+    openSignDoctor,
+    setOpenSignDoctor,
+    handleSaveSignatureDoctor,
+    signatureDoctor,
+    setSignatureDoctor,
   } = useHook({ onClose, claimData, selectID, isOpen, setClaimData });
   return (
     <div>
+      
       <Modal
         isOpen={isOpen}
         onOpenChange={onClose}
@@ -80,6 +88,13 @@ export default function page({
                   setAccidentDate={setAccidentDate}
                   handleAccidentDateChange={handleAccidentDateChange}
                   handleAccidentTimeChange={handleAccidentTimeChange}
+                  user={user}
+                  signatureCheck={signatureCheck}
+                  openSignDoctor={openSignDoctor}
+                  setOpenSignDoctor={setOpenSignDoctor}
+                  handleSaveSignatureDoctor={handleSaveSignatureDoctor}
+                  signatureDoctor={signatureDoctor}
+                  setSignatureDoctor={setSignatureDoctor}
                 />
               </ModalBody>
               <ModalFooter>

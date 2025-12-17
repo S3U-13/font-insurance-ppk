@@ -3,6 +3,7 @@ import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import React from "react";
 import AreaCountByYear from "./chart_components/area-count-all-order-by-year"; // ✅ ปรับชื่อให้ถูก
+import ColumnChart from "./chart_components/column-charts"; // ✅ ปรับชื่อให้ถูก
 
 export default function page() {
   return (
@@ -21,9 +22,7 @@ export default function page() {
               </div>
             </CardBody>
             <CardFooter>
-              <div className="w-50px">
-                {/* <AreaCountByYear /> */}
-              </div>
+              <div className="w-50px">{/* <AreaCountByYear /> */}</div>
             </CardFooter>
           </Card>
           <Card className="w-60 h-35 bg-gray-50 border border-divider">
@@ -65,9 +64,11 @@ export default function page() {
         <div className="col-span-8 ">
           <p className="col-span-2">CHART</p>
           <Card className="bg-gray-50 rounded-xl h-74 mt-4 border border-divider">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
-            <CardBody></CardBody>
-            <CardFooter></CardFooter>
+            
+            <CardBody>
+              <ColumnChart />
+            </CardBody>
+         
           </Card>
         </div>
         <div className="col-span-12">

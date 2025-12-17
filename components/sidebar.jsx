@@ -12,7 +12,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Sidebar({ isOpen }) {
   const { user } = useAuth();
   const { logout } = useAuth();
-  const [selectMenu, setSelectMenu] = useState(1);
+  const [selectMenu, setSelectMenu] = useState("");
   const pathname = usePathname();
   const router = useRouter();
   const [currentTheme, setCurrentTheme] = useState("light");
@@ -67,7 +67,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 1,
+          label_id: 3,
           label_name: "CHART INSURANCE",
           link: "/doctor/chart/",
         },
@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 1,
+          label_id: 4,
           label_name: "user",
           link: "/admin/user",
         },
@@ -124,7 +124,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 1,
+          label_id: 5,
           label_name: "THEME SETTING",
           icon_theme: (
             <ThemeSwitch
@@ -141,22 +141,27 @@ export default function Sidebar({ isOpen }) {
       ],
     },
   ];
+
   const menu = useMemo(() => {
     if (!user?.role) return [];
     return menu_config.filter((menu) => menu.role.includes(user.role));
   }, [user?.role]);
+  
   useEffect(() => {
     if (!user?.role) return;
     // ตัวอย่างแม็ป path -> label_id (ปรับได้ตามโครงสร้างของคุณ)
     if (["doctor", "staff"].includes(user.role)) {
-      if (pathname?.startsWith("/doctor/insurance_form/success")) {
-        setSelectMenu(2);
-      } else if (pathname?.startsWith("/doctor/")) {
+      if (pathname?.startsWith("/doctor/")) {
         setSelectMenu(1);
+      } else if (pathname?.startsWith("/doctor/insurance_form/success")) {
+        setSelectMenu(2);
+      }
+       else if (pathname?.startsWith("/doctor/chart")) {
+        setSelectMenu(3);
       }
     } else if (user.role === "admin") {
       if (pathname?.startsWith("/admin/user/")) {
-        setSelectMenu(1);
+        setSelectMenu(4);
       }
     }
   }, [pathname]);
