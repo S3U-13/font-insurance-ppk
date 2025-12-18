@@ -19,7 +19,7 @@ export default function page({ isOpen, onClose, base64PdfOpd, loading }) {
         onOpenChange={onClose}
         size="4xl"
         classNames={{
-          body: "max-h-[calc(90vh-80px)] overflow-y-scroll",
+          body: "max-h-[calc(90vh-80px)]",
           header: "border-b border-divider py-6",
           footer: "border-t border-divider",
         }}

@@ -10,6 +10,7 @@ import ModalViewOPD from "./insurance_form/view_opd/page";
 import ModalPreviewPdf from "./insurance_form/preview-pdf/page";
 import ModalEditIPD from "./insurance_form/edit_form_ipd/page";
 import ModalEditOPD from "./insurance_form/edit_form_opd/page";
+import ModalApprove from "./insurance_form/modal-approve/page";
 
 import {
   Table,
@@ -85,6 +86,10 @@ export default function page() {
     setOpenModalEditOPD,
 
     handleApprove,
+    changeStatus,
+    setChangeStatus,
+    openModalApprove,
+    setOpenModalApprove,
   } = useHook();
 
   return (
@@ -139,6 +144,18 @@ export default function page() {
         isOpen={openModalEditOPD}
         onClose={() => {
           setOpenModalEditOPD(false);
+          FetchAllForm()
+            .then((data) => setOrder(data || []))
+            .catch(console.error);
+        }}
+      />
+      <ModalApprove
+        claimId={claimId}
+        claimData={claimData}
+        changeStatus={changeStatus}
+        isOpen={openModalApprove}
+        onClose={() => {
+          setOpenModalApprove(false);
           FetchAllForm()
             .then((data) => setOrder(data || []))
             .catch(console.error);
@@ -659,7 +676,12 @@ export default function page() {
                         color="primary"
                         size="sm"
                         variant="flat"
-                        onPress={() => handleApprove(item.id, "approve")}
+                        // onPress={() => handleApprove(item.id, "approve")}
+                        onPress={() => {
+                          setOpenModalApprove(true);
+                          setChangeStatus("approve");
+                          setClaimId(item.id);
+                        }}
                       >
                         Approve
                       </Button>
@@ -668,7 +690,12 @@ export default function page() {
                         color="primary"
                         size="sm"
                         variant="flat"
-                        onPress={() => handleApprove(item.id, "approve")}
+                        // onPress={() => handleApprove(item.id, "approve")}
+                        onPress={() => {
+                          setOpenModalApprove(true);
+                          setChangeStatus("approve");
+                          setClaimId(item.id);
+                        }}
                       >
                         Approve
                       </Button>

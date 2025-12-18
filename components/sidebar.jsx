@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen }) {
         {
           label_id: 1,
           label_name: "INSURANCE FORM CREATE",
-          link: "/doctor/",
+          link: "/doctor",
         },
         {
           label_id: 2,
@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen }) {
     },
     {
       id: 2,
-      name: "CHART",
+      name: "DASHBOARD",
       role: ["doctor", "staff"],
       icon: (
         <svg
@@ -68,15 +68,15 @@ export default function Sidebar({ isOpen }) {
       label: [
         {
           label_id: 3,
-          label_name: "CHART INSURANCE",
-          link: "/doctor/chart/",
+          label_name: "DASHBOARD INSURANCE",
+          link: "/doctor/dashboard",
         },
       ],
     },
     {
       id: 3,
       name: "USER MANAGE",
-      role: "admin",
+      role: ["admin"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -146,25 +146,24 @@ export default function Sidebar({ isOpen }) {
     if (!user?.role) return [];
     return menu_config.filter((menu) => menu.role.includes(user.role));
   }, [user?.role]);
-  
+
   useEffect(() => {
     if (!user?.role) return;
-    // ตัวอย่างแม็ป path -> label_id (ปรับได้ตามโครงสร้างของคุณ)
+
     if (["doctor", "staff"].includes(user.role)) {
-      if (pathname?.startsWith("/doctor/")) {
-        setSelectMenu(1);
-      } else if (pathname?.startsWith("/doctor/insurance_form/success")) {
+      if (pathname?.startsWith("/doctor/insurance_form/success")) {
         setSelectMenu(2);
-      }
-       else if (pathname?.startsWith("/doctor/chart")) {
+      } else if (pathname?.startsWith("/doctor/dashboard")) {
         setSelectMenu(3);
+      } else if (pathname?.startsWith("/doctor")) {
+        setSelectMenu(1);
       }
     } else if (user.role === "admin") {
-      if (pathname?.startsWith("/admin/user/")) {
+      if (pathname?.startsWith("/admin/user")) {
         setSelectMenu(4);
       }
     }
-  }, [pathname]);
+  }, [pathname, user?.role]);
 
   const handleClickAndNavigate = (e, link, id) => {
     e.preventDefault();

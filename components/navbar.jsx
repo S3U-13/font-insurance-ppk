@@ -3,6 +3,8 @@ import React from "react";
 import { useDrawer } from "../context/drawProvider";
 import { Button } from "@heroui/button";
 import { useAuth } from "../context/AuthContext";
+import { Badge } from "@heroui/badge";
+import { Avatar, AvatarGroup, AvatarIcon } from "@heroui/avatar";
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -56,12 +58,20 @@ export default function Navbar() {
             </p>
           </div>
         </div>
-        <div className="w-13 h-13 border-2 border-green-600 rounded-full bg-gray-300 overflow-hidden">
-          <img
+        <Badge
+          color="success"
+          content=""
+          placement="bottom-right"
+          shape="circle"
+          showOutline={true}
+        >
+          <Avatar
+            isBordered
+            color="success"
+            radius="full"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBJ1cM6gCghQwI5w0jX7hHIFMUqPicfZTwpQ&s"
-            alt=""
           />
-        </div>
+        </Badge>
       </div>
     </div>
   );

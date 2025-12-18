@@ -4,7 +4,7 @@ import { useApiRequest } from "../../../../hooks/useApi";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { FetchAllFormStatusApproved, ChangeStatus } = useApiRequest();
+  const { FetchAllFormStatusApproved, pullClaimData } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
@@ -18,7 +18,7 @@ export default function useHook() {
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
-  console.log(order);
+
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
     didFetch.current = true;
@@ -32,9 +32,9 @@ export default function useHook() {
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState(
-    new Set(["pending", "draft"])
-  );
+  // const [statusFilter, setStatusFilter] = useState(
+  //   new Set(["pending", "draft"])
+  // );
   const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -43,6 +43,8 @@ export default function useHook() {
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
 
+  console.log(claimId);
+  console.log(claimData);
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
     // didFetch.current = true;
@@ -67,15 +69,15 @@ export default function useHook() {
   }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
 
   useEffect(() => {
-    if (!openModalViewOPD && !openModalViewIPD) return;
-    if (!selectID) return;
+    if (!openModalViewOPD && !openModalViewIPD && !openModalUnApprove) return;
+    if (!claimId) return;
     const fetchDataView = async () => {
-      const data = await pullClaimData(selectID, setClaimData);
+      const data = await pullClaimData(claimId, setClaimData);
       setClaimData(data);
     };
 
     fetchDataView();
-  }, [openModalViewOPD, openModalViewIPD, selectID]);
+  }, [openModalViewOPD, openModalViewIPD, openModalUnApprove, selectID]);
 
   const status = [
     { uid: "pending", name: "Pending" },
@@ -216,8 +218,8 @@ export default function useHook() {
     onSortChange,
     selectedValue,
     status,
-    statusFilter,
-    setStatusFilter,
+    // statusFilter,
+    // setStatusFilter,
     setVisitId,
     forms,
     formFilter,

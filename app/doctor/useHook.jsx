@@ -21,6 +21,7 @@ export default function useHook() {
   const [openModalEditOPD, setOpenModalEditOPD] = useState(false);
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
+  const [openModalApprove, setOpenModalApprove] = useState(false);
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
@@ -80,7 +81,8 @@ export default function useHook() {
       !openModalViewOPD &&
       !openModalViewIPD &&
       !openModalEditIPD &&
-      !openModalEditOPD
+      !openModalEditOPD &&
+      !openModalApprove
     )
       return;
     if (!claimId) return;
@@ -95,6 +97,7 @@ export default function useHook() {
     openModalViewIPD,
     openModalEditOPD,
     openModalEditIPD,
+    openModalApprove,
     claimId,
   ]);
 
@@ -281,5 +284,9 @@ export default function useHook() {
     openModalEditOPD,
     setOpenModalEditOPD,
     handleApprove,
+    changeStatus,
+    setChangeStatus,
+    openModalApprove,
+    setOpenModalApprove,
   };
 }

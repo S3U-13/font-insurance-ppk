@@ -13,7 +13,7 @@ export default function ColumnChart() {
         text: "(chart example)",
         align: "center", // 'left' | 'center' | 'right'
         style: {
-          fontSize: "16px",
+          fontSize: "20px",
           fontWeight: "bold",
         },
       },

@@ -60,8 +60,8 @@ export default function page() {
     capitalize,
     onSortChange,
     status,
-    statusFilter,
-    setStatusFilter,
+    // statusFilter,
+    // setStatusFilter,
     setVisitId,
     forms,
     formFilter,
@@ -82,6 +82,7 @@ export default function page() {
     <div className="space-y-6 mt-6">
       <ModalUnApprove
         changeStatus={changeStatus}
+        claimData={claimData}
         claimId={claimId}
         isOpen={openModalUnApprove}
         onClose={() => {

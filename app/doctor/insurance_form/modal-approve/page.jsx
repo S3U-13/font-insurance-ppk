@@ -16,6 +16,7 @@ export default function page({
   claimId,
   claimData,
 }) {
+
   const { handleUnApprove, calculateAge, formatThaiDateTime } = useHook({
     onClose,
   });
@@ -34,22 +35,18 @@ export default function page({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                <h1 className="text-center ">คุณต้องการ UnApprove หรือไม่ ?</h1>
+                <h1 className="text-center ">คุณต้องการ Approve หรือไม่ ?</h1>
               </ModalHeader>
               <ModalBody>
                 <div className="px-8">
                   <p className="font-bold">รายละเอียด</p>{" "}
                   <div className="flex justify-between test-sm">
                     <p>รายการที่ </p>
-                    <span className="text-gray-600">
-                      {claimData?.claimNo || ""}
-                    </span>
+                    <span className="text-gray-600">{claimData?.claimNo || ""}</span>
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>ประเภทของผู้ป่วย</p>
-                    <span className="text-gray-600">
-                      {claimData?.claimType || ""}
-                    </span>
+                    <span className="text-gray-600">{claimData?.claimType || ""}</span>
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>ชื่อ</p>
@@ -61,9 +58,7 @@ export default function page({
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>วันทำรายการ</p>
-                    <span className="text-gray-600">
-                      {formatThaiDateTime(claimData?.createdAt)}
-                    </span>
+                    <span className="text-gray-600">{formatThaiDateTime(claimData?.createdAt)}</span>
                   </div>
                 </div>
               </ModalBody>

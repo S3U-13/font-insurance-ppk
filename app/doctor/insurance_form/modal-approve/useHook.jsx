@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import { useApiRequest } from "../../../../../hooks/useApi";
+import { useApiRequest } from "../../../../hooks/useApi";
 import { addToast } from "@heroui/toast";
 
 export default function useHook({ onClose }) {
-  const { FetchAllFormStatusApproved, ChangeStatus } = useApiRequest();
+  const {  ChangeStatus } = useApiRequest();
   const handleUnApprove = async (claimId, changeStatus) => {
     if (!changeStatus || !claimId) return;
 
