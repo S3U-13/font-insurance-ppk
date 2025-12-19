@@ -4,13 +4,14 @@ import { useApiRequest } from "../../../../hooks/useApi";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useHook() {
-  const { FetchAllFormStatusApproved, pullClaimData } = useApiRequest();
+  const { FetchAllFormStatusApproved, pullClaimData, pdfOpd } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalUnApprove, setOpenModalUnApprove] = useState(false);
+  const [previewPdfModal, setPreviewPdfModal] = useState(false);
   const handleOpenModal = () => {
     setOpenModalIPD((prev) => !prev);
   };
@@ -39,12 +40,11 @@ export default function useHook() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
-
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
+  const [base64PdfOpd, setBase64PdfOpd] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  console.log(claimId);
-  console.log(claimData);
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
     // didFetch.current = true;
@@ -78,6 +78,20 @@ export default function useHook() {
 
     fetchDataView();
   }, [openModalViewOPD, openModalViewIPD, openModalUnApprove, selectID]);
+
+  useEffect(() => {
+    if (!previewPdfModal) return;
+    if (!claimId) return;
+
+    const pdfOpdBase64 = async () => {
+      setLoading(true); // เริ่มโหลด
+      const data = await pdfOpd(claimId);
+      setBase64PdfOpd(data);
+      setLoading(false);
+    };
+
+    pdfOpdBase64();
+  }, [claimId, previewPdfModal]);
 
   const status = [
     { uid: "pending", name: "Pending" },
@@ -229,5 +243,9 @@ export default function useHook() {
     setOpenModalUnApprove,
     changeStatus,
     setChangeStatus,
+    previewPdfModal,
+    setPreviewPdfModal,
+    base64PdfOpd,
+    loading,
   };
 }

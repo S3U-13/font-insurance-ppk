@@ -62,7 +62,7 @@ export default function FormOPD({
       </p>
       <div className="mt-2 border border-divider rounded-xl p-4 space-y-4">
         <div className="grid grid-cols-10 gap-2 items-center">
-          <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+          <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
             <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
             สำหรับผู้เอาประกัน
           </h2>
@@ -204,7 +204,7 @@ export default function FormOPD({
         </div>
       </div>
       <div className="mt-6 border border-divider rounded-xl p-4 space-y-4">
-        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+        <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
           <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
           กรมธรรม์เลขที่
         </h2>
@@ -259,7 +259,7 @@ export default function FormOPD({
         </div>
       </div>
 
-      <div className="mt-6 border border-divider rounded-2xl p-6 space-y-8 bg-white dark:bg-[#0e0e11] shadow-sm">
+      <div className="mt-6 border border-divider rounded-2xl p-6 space-y-8 shadow-sm">
         <h2 className="text-gray-800 dark:text-gray-100 font-bold text-lg flex items-center gap-3">
           <span className="w-1.5 h-6 bg-violet-500 rounded-full"></span>
           For Hospital
@@ -267,7 +267,7 @@ export default function FormOPD({
 
         {/* Section 1: Visit Information */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             1. Visit Information
           </h3>
           {/* <div className="grid grid-cols-3 gap-2"> */}
@@ -397,7 +397,7 @@ export default function FormOPD({
 
         {/* Section 2: Chief Complaint */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             2. Chief Complaint
           </h3>
 
@@ -417,7 +417,7 @@ export default function FormOPD({
 
         {/* Section 3: Present Illness */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             3. Present Illness
           </h3>
 
@@ -436,7 +436,7 @@ export default function FormOPD({
 
         {/* Section 4: Accident Details */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             4. Accident Details
           </h3>
 
@@ -478,7 +478,7 @@ export default function FormOPD({
 
         {/* Section 5: Physical Exam */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             5. Physical Examination
           </h3>
 
@@ -498,7 +498,7 @@ export default function FormOPD({
 
         {/* Section 6: Related Conditions */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             6. Related Conditions
           </h3>
 
@@ -525,7 +525,7 @@ export default function FormOPD({
 
         {/* Section 7: Underlying Condition */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             7. Underlying Condition
           </h3>
 
@@ -545,9 +545,7 @@ export default function FormOPD({
 
         {/* Section 8: Diagnosis */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
-            8. Diagnosis
-          </h3>
+          <h3 className="font-semibold  dark:text-gray-200">8. Diagnosis</h3>
           <form.Field name="provisionalDx">
             {(field) => (
               <Input
@@ -564,7 +562,7 @@ export default function FormOPD({
 
         {/* Section 9: Investigation */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             9. Investigation & Result
           </h3>
           <form.Field name="investigations">
@@ -583,9 +581,7 @@ export default function FormOPD({
 
         {/* Section 10: Treatment */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
-            10.Treatment
-          </h3>
+          <h3 className="font-semibold  dark:text-gray-200">10.Treatment</h3>
 
           <form.Field name="planOfTreatment">
             {(field) => (
@@ -601,7 +597,7 @@ export default function FormOPD({
           </form.Field>
         </div>
         <div className="space-y-4  ">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             11.Doctor Signature
           </h3>
           <div className="flex justify-between border border-divider rounded-xl p-4">
@@ -677,7 +673,7 @@ export default function FormOPD({
           </div>
         </div>
         <div className="space-y-4">
-          <h3 className="text-xs text-center font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="text-xs text-center font-semibold  dark:text-gray-200">
             Remark : Doctor who issue this report must be a doctor who is
             licensed to practice medicine and correctly registered by the Thai
             Medical Council

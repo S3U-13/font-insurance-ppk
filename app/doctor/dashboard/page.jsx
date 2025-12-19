@@ -5,15 +5,16 @@ import React from "react";
 import AreaCountByYear from "./chart_components/area-count-all-order-by-year"; // ✅ ปรับชื่อให้ถูก
 import ColumnChart from "./chart_components/column-charts"; // ✅ ปรับชื่อให้ถูก
 import DonutChart from "./chart_components/donut-chart"; // ✅ ปรับชื่อให้ถูก
+import SplineArea from "./chart_components/spline-area"; // ✅ ปรับชื่อให้ถูก
 
 export default function page() {
   return (
     <div className="space-y-4">
       <h1 className="mt-4 text-center text-xl font-bold">CHART</h1>
-      <div className="bg-gray-100 border border-divider w-full h-195 rounded-lg p-4 grid grid-cols-12 gap-4">
+      <div className="bg-gray-100 dark:bg-[#0e0e11] border border-divider w-full h-195 rounded-lg p-4 grid grid-cols-12 gap-4">
         <div className="col-span-4 grid grid-cols-2 gap-4 h-75">
           <p className="col-span-2">TOTAL</p>
-          <Card className="w-60 h-35 bg-gray-50 border border-divider">
+          <Card className="h-35 bg-gray-50 border border-divider dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <h1>จำนวนรายการที่ทำ ปี</h1>
             </CardHeader>
@@ -48,7 +49,7 @@ export default function page() {
               <div className="w-50px">{/* <AreaCountByYear /> */}</div>
             </CardFooter>
           </Card>
-          <Card className="w-60 h-35 bg-gray-50 border border-divider">
+          <Card className="h-35 bg-gray-50 border border-divider  dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               รายการที่เคลมสำเร็จ ปี
             </CardHeader>
@@ -75,7 +76,7 @@ export default function page() {
             </CardBody>
             <CardFooter></CardFooter>
           </Card>
-          <Card className="w-60 h-35 bg-gray-50 border border-divider">
+          <Card className="h-35 bg-gray-50 border border-divider dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               จำนวนรายการที่ทำ IPD ปี
             </CardHeader>
@@ -100,7 +101,7 @@ export default function page() {
             </CardBody>
             <CardFooter></CardFooter>
           </Card>
-          <Card className="w-60 h-35 bg-gray-50 border border-divider">
+          <Card className="h-35 bg-gray-50 border border-divider dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               จำนวนรายการที่ทำ OPD ปี
             </CardHeader>
@@ -128,17 +129,17 @@ export default function page() {
         </div>
         <div className="col-span-8 ">
           <p className="col-span-2">CHART</p>
-          <Card className="bg-gray-50 rounded-xl h-74 mt-4 border border-divider">
+          <Card className="bg-gray-50 rounded-xl h-74 mt-4 border border-divider dark:bg-[#18181b]">
             <CardBody>
               <ColumnChart />
             </CardBody>
           </Card>
         </div>
         <div className="col-span-4">
-          <Card className="bg-gray-50 rounded-xl h-96 border border-divider">
+          <Card className="bg-gray-50 rounded-xl h-96 border border-divider dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
             <CardBody>
-              <div className="w-100 h-100 pt-8">
+              <div className="w-90 h-90 mx-auto ">
                 <DonutChart />
               </div>
             </CardBody>
@@ -146,10 +147,10 @@ export default function page() {
           </Card>
         </div>
         <div className="col-span-8">
-          <Card className="bg-gray-50 rounded-xl h-96 border border-divider">
+          <Card className="bg-gray-50 rounded-xl h-96 border border-divider dark:bg-[#18181b]">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start"></CardHeader>
             <CardBody>
-              <div className="w-100 h-100 pt-8"></div>
+              <SplineArea />
             </CardBody>
             <CardFooter></CardFooter>
           </Card>

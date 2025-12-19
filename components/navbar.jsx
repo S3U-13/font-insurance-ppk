@@ -47,7 +47,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <div className="text-xs">
           <p>
-            <strong>DocName:</strong> {user.name}
+            <strong>DocName:</strong> {user?.doctorsalutation || ""}{user.name}
           </p>
           <div className="flex items-center gap-2">
             <p>
@@ -65,12 +65,28 @@ export default function Navbar() {
           shape="circle"
           showOutline={true}
         >
-          <Avatar
-            isBordered
-            color="success"
-            radius="full"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBJ1cM6gCghQwI5w0jX7hHIFMUqPicfZTwpQ&s"
-          />
+          {user?.role === "doctor" ? (
+            <Avatar
+              isBordered
+              color="success"
+              radius="full"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBJ1cM6gCghQwI5w0jX7hHIFMUqPicfZTwpQ&s"
+            />
+          ) : user?.role === "staff" ? (
+            <Avatar
+              isBordered
+              color="success"
+              radius="full"
+              src="https://www.tech101.in/wp-content/uploads/2018/07/blank-profile-picture.png"
+            />
+          ) : user?.role === "admin" ? (
+            <Avatar
+              isBordered
+              color="success"
+              radius="full"
+              src="https://media.tenor.com/I9qt03YKkjQAAAAe/monkey-thinking.png"
+            />
+          ) : null}
         </Badge>
       </div>
     </div>

@@ -55,8 +55,8 @@ export default function page({ isOpen, onClose, claimData }) {
                 <p>
                   <strong>Part A</strong>
                 </p>
-                <div className="border border-divider rounded-xl p-4 bg-gray-50 space-y-6 ">
-                  <section className="grid grid-cols-2 gap-2 p-6 bg-white shadow-xl rounded-xl border border-divider">
+                <div className=" space-y-6 ">
+                  <section className="grid grid-cols-2 gap-2 p-6  shadow-xl rounded-xl border border-divider">
                     <h2 className="text-gray-800 dark:text-gray-100 font-bold text-lg flex items-center gap-3 col-span-2 mb-3">
                       <span className="w-1.5 h-6 bg-violet-500 rounded-full"></span>
                       สำหรับผู้เอาประกัน
@@ -180,7 +180,7 @@ export default function page({ isOpen, onClose, claimData }) {
                     </div>
                   </section>
 
-                  <section className="p-6 bg-white shadow-xl rounded-xl border border-divider">
+                  <section className="p-6  shadow-xl rounded-xl border border-divider">
                     <h2 className="text-gray-800 dark:text-gray-100 font-bold text-lg flex items-center gap-3 col-span-2 mb-5">
                       <span className="w-1.5 h-6 bg-violet-500 rounded-full"></span>
                       For Hospital

@@ -38,7 +38,7 @@ export default function page({
       <div className="border border-divider rounded-xl p-4 space-y-2">
         <h1 className="text-md text-center font-bold">Medical certification</h1>
         <div className="border border-divider p-4 rounded-xl ">
-          <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+          <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
             <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
             สำหรับผู้เอาประกัน
           </h2>
@@ -130,7 +130,7 @@ export default function page({
 
         <div className="grid grid-cols-8 gap-2 items-center">
           <div className="col-span-4 border border-divider p-4 space-y-2 rounded-xl h-full">
-            <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4">
+            <h2 className=" text-base flex items-center gap-2 mb-4">
               <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
               1. For Illness
             </h2>
@@ -144,7 +144,7 @@ export default function page({
             />
           </div>
           <div className="col-span-4 border border-divider p-4 space-y-2 rounded-xl grid grid-cols-3 gap-2">
-            <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-3">
+            <h2 className=" text-base flex items-center gap-2 mb-4 col-span-3">
               <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
               2. For Injury
             </h2>
@@ -207,7 +207,7 @@ export default function page({
           </div>
         </div>
         <div className="grid grid-cols-8 gap-2 items-center border border-divider rounded-xl  p-4">
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             3. Did the patient need to be admitted to hospital?
           </h2>
@@ -224,7 +224,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             4. Vital signs
           </h2>
@@ -252,7 +252,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             5.Pertinent Clinical findings (Symptoms & Signs)
           </h2>
@@ -262,7 +262,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />{" "}
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             6.Investigation & Result (Lab, ENG, X-ray, etc.)
           </h2>{" "}
@@ -272,7 +272,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             7. HIV Test
           </h2>{" "}
@@ -295,7 +295,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             8.Underlying disease
           </h2>{" "}
@@ -305,7 +305,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             9.Diagnosis
           </h2>{" "}
@@ -377,7 +377,7 @@ export default function page({
               classNames={{ inputWrapper: "h-full" }}
             />
           </div>
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             10. Treatment
           </h2>{" "}
@@ -387,7 +387,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             11.Surgery/Operation
           </h2>{" "}
@@ -422,7 +422,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             12.Pathological report
           </h2>{" "}
@@ -432,7 +432,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             13.Complications (if any)
           </h2>{" "}
@@ -443,7 +443,7 @@ export default function page({
             variant="bordered"
           />
           <div className="col-span-5 flex items-center gap-2">
-            <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+            <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
               <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
               14.Is the illness related tp alcohol, drug abuse or addiction?
             </h2>{" "}
@@ -462,7 +462,7 @@ export default function page({
             variant="bordered"
           />
           <div className="col-span-5 flex items-center gap-2">
-            <h2 className="text-gray-700 text-base flex items-center gap-2 col-span-8">
+            <h2 className=" text-base flex items-center gap-2 col-span-8">
               <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
               15.For Female: Is the patient pregnant?
             </h2>
@@ -499,7 +499,7 @@ export default function page({
             variant="bordered"
           />
           <div className="col-span-5 flex items-center gap-2">
-            <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+            <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
               <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
               16.Has patient ever been treated by another doctor before?
             </h2>
@@ -517,7 +517,7 @@ export default function page({
             size="sm"
             variant="bordered"
           />
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             17.Was the illness/injury contributed to or Influenced by any of the
             following
@@ -536,7 +536,7 @@ export default function page({
               </Radio>
             ))}
           </RadioGroup>
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             18.Other past medical i history
           </h2>
@@ -570,7 +570,7 @@ export default function page({
               </TableBody>
             </Table>
           </div>
-          <h2 className="text-gray-700 text-base flex items-center gap-2 mb-4 col-span-8">
+          <h2 className=" text-base flex items-center gap-2 mb-4 col-span-8">
             <span className="w-1 h-5 bg-violet-500 rounded-full "></span>
             19.Other comments about the injury / illness
           </h2>

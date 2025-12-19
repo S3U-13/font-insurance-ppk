@@ -228,7 +228,6 @@ export default function useHook({
     };
   };
   useEffect(() => {
-    console.log("ISO:", claimData?.hospitalForm?.accidentDateTime);
     const iso = claimData?.hospitalForm?.accidentDateTime;
     if (!iso) return;
 

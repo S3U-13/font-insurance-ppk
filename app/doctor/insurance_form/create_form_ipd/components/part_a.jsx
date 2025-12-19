@@ -22,7 +22,7 @@ export default function page({
   return (
     <div className="space-y-3 ">
       <div className=" border border-divider rounded-xl p-4 space-y-2 mb-6">
-        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+        <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
           <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
           สำหรับผู้เอาประกัน
         </h2>
@@ -125,7 +125,7 @@ export default function page({
         </div>
       </div>
       <div className=" border border-divider rounded-xl p-4 space-y-2">
-        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
+        <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
           <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
           กรมธรรม์
         </h2>
@@ -174,7 +174,7 @@ export default function page({
           />
         </div>
         <hr className="border-b-1 border-divider mt-4" />
-        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
+        <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
           <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
           สาเหตุของการเรียกร้องครั้งนี้
         </h2>
@@ -242,7 +242,7 @@ export default function page({
           />
         </div>
         <hr className="border-b-1 border-divider mt-4" />
-        <h2 className="text-gray-700 font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
+        <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10 mt-4">
           <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
           สำหรับการเกิดอุบัติเหตุครั้งนี้ เคยรักษาที่ใดไป
         </h2>
@@ -283,16 +283,16 @@ export default function page({
         </div>
       </div>
 
-      <div className="mt-4 bg-white border border-divider rounded-xl p-6 space-y-6 shadow-sm">
+      <div className="mt-4 border border-divider rounded-xl p-6 space-y-6 shadow-sm">
         {/* Title */}
         <div className="flex items-center gap-2">
           <div className="w-1 h-6 bg-violet-600 rounded-full" />
-          <h1 className="text-lg font-semibold text-gray-800">For Hospital</h1>
+          <h1 className="text-lg font-semibold">For Hospital</h1>
         </div>
 
         {/* 1. Visit */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             1. Visit Information
           </p>
           <div className="grid grid-cols-12 gap-4 items-center">
@@ -338,7 +338,7 @@ export default function page({
 
         {/* 2. Chief complaint */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             2. Chief Complaint
           </p>
           <Input
@@ -351,7 +351,7 @@ export default function page({
 
         {/* 3. Present illness */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             3. Present Illness
           </p>
           <Textarea
@@ -362,7 +362,7 @@ export default function page({
 
         {/* 4. Physical exam */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             4. Physical Exam
           </p>
           <Textarea label="Physical exam :" variant="bordered" />
@@ -370,7 +370,7 @@ export default function page({
 
         {/* 5. Previous treatment */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             5. Previous Treatment
           </p>
           <Input
@@ -382,7 +382,7 @@ export default function page({
 
         {/* 6. Illness related */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-700 dark:text-gray-200">
+          <h3 className="font-semibold  dark:text-gray-200">
             6. Related Conditions
           </h3>
 
@@ -409,7 +409,7 @@ export default function page({
 
         {/* 7. Underlying condition */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             7. Underlying Condition
           </p>
           <Input label="Underlying condition :" size="sm" variant="bordered" />
@@ -417,7 +417,7 @@ export default function page({
 
         {/* 8. Diagnosis */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">8. Diagnosis</p>
+          <p className="text-sm font-medium  mb-2">8. Diagnosis</p>
           <div className="grid grid-cols-8 gap-4">
             <Input
               className="col-span-4"
@@ -436,7 +436,7 @@ export default function page({
 
         {/* 9. OPD or not */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             9. OPD Management
           </p>
           <RadioGroup
@@ -460,7 +460,7 @@ export default function page({
 
         {/* 10. Reason of admission */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             10. Reason of Admission
           </p>
           <Input label="Reasons of admission" size="sm" variant="bordered" />
@@ -468,7 +468,7 @@ export default function page({
 
         {/* 11. Plan of treatment */}
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">
+          <p className="text-sm font-medium  mb-2">
             11. Plan of Treatment
           </p>
           <Input label="Plan of treatment" size="sm" variant="bordered" />

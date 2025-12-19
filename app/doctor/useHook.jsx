@@ -11,7 +11,6 @@ export default function useHook() {
     pullDataIpd,
     pullClaimData,
     FetchAllForm,
-    pdfOpd,
     ChangeStatus,
   } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
@@ -25,7 +24,6 @@ export default function useHook() {
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
-  const [previewPdfModal, setPreviewPdfModal] = useState(false);
 
   useEffect(() => {
     if (didFetch.current) return; // check flag ก่อน
@@ -47,11 +45,8 @@ export default function useHook() {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
-  const [base64PdfOpd, setBase64PdfOpd] = useState("");
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
@@ -100,20 +95,6 @@ export default function useHook() {
     openModalApprove,
     claimId,
   ]);
-
-  useEffect(() => {
-    if (!previewPdfModal) return;
-    if (!claimId) return;
-
-    const pdfOpdBase64 = async () => {
-      setLoading(true); // เริ่มโหลด
-      const data = await pdfOpd(claimId);
-      setBase64PdfOpd(data);
-      setLoading(false);
-    };
-
-    pdfOpdBase64();
-  }, [claimId, previewPdfModal]);
 
   const status = [
     { uid: "pending", name: "Pending" },
@@ -275,10 +256,6 @@ export default function useHook() {
     forms,
     formFilter,
     setFormFilter,
-    previewPdfModal,
-    setPreviewPdfModal,
-    base64PdfOpd,
-    loading,
     openModalEditIPD,
     setOpenModalEditIPD,
     openModalEditOPD,

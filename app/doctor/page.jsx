@@ -7,7 +7,6 @@ import { Button } from "@heroui/button";
 import ModalIPD from "./insurance_form/create_form_ipd/page";
 import ModalOPD from "./insurance_form/create_form_opd/page";
 import ModalViewOPD from "./insurance_form/view_opd/page";
-import ModalPreviewPdf from "./insurance_form/preview-pdf/page";
 import ModalEditIPD from "./insurance_form/edit_form_ipd/page";
 import ModalEditOPD from "./insurance_form/edit_form_opd/page";
 import ModalApprove from "./insurance_form/modal-approve/page";
@@ -29,7 +28,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@heroui/dropdown";
-import { Edit, Eye, FileText, XCircle } from "@deemlol/next-icons";
+import { Edit, Eye, XCircle } from "@deemlol/next-icons";
 
 export default function page() {
   const {
@@ -76,16 +75,10 @@ export default function page() {
     forms,
     formFilter,
     setFormFilter,
-    previewPdfModal,
-    setPreviewPdfModal,
-    base64PdfOpd,
-    loading,
     openModalEditIPD,
     setOpenModalEditIPD,
     openModalEditOPD,
     setOpenModalEditOPD,
-
-    handleApprove,
     changeStatus,
     setChangeStatus,
     openModalApprove,
@@ -121,12 +114,7 @@ export default function page() {
         isOpen={openModalViewOPD}
         onClose={() => setOpenModalViewOPD(false)}
       />
-      <ModalPreviewPdf
-        base64PdfOpd={base64PdfOpd}
-        isOpen={previewPdfModal}
-        loading={loading}
-        onClose={() => setPreviewPdfModal(false)}
-      />
+
       <ModalEditIPD
         claimData={claimData}
         isOpen={openModalEditIPD}
@@ -587,81 +575,21 @@ export default function page() {
                         >
                           <Eye size={20} />
                         </Button>
-                        {item.claimType === "OPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            as="a"
-                            onPress={() => {
-                              setClaimId(item.id);
-                              setPreviewPdfModal(true);
-                            }}
-                          >
-                            <FileText size={20} />
-                          </Button>
-                        ) : item.claimType === "IPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            as="a"
-                            onPress={() => {
-                              setClaimId(item.id);
-                              setPreviewPdfModal(true);
-                            }}
-                          >
-                            <FileText size={20} />
-                          </Button>
-                        ) : null}
                       </>
                     )}
                     {item.status === "unapproved" && (
-                      <>
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          color="default"
-                          variant="flat"
-                          onPress={() => {
-                            setClaimId(item.id);
-                            setOpenModalViewOPD(true);
-                          }}
-                        >
-                          <Eye size={20} />
-                        </Button>
-                        {item.claimType === "OPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            as="a"
-                            onPress={() => {
-                              setClaimId(item.id);
-                              setPreviewPdfModal(true);
-                            }}
-                          >
-                            <FileText size={20} />
-                          </Button>
-                        ) : item.claimType === "IPD" ? (
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            color="default"
-                            variant="flat"
-                            as="a"
-                            onPress={() => {
-                              setClaimId(item.id);
-                              setPreviewPdfModal(true);
-                            }}
-                          >
-                            <FileText size={20} />
-                          </Button>
-                        ) : null}
-                      </>
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        color="default"
+                        variant="flat"
+                        onPress={() => {
+                          setClaimId(item.id);
+                          setOpenModalViewOPD(true);
+                        }}
+                      >
+                        <Eye size={20} />
+                      </Button>
                     )}
                   </div>
                 </TableCell>
