@@ -1,36 +1,40 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { addToast } from "@heroui/toast";
 
 export default function useHook({ onClose }) {
-  const {  ChangeStatus } = useApiRequest();
-  const handleUnApprove = async (claimId, changeStatus) => {
-    if (!changeStatus || !claimId) return;
+  const { ChangeStatus } = useApiRequest();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleApprove = async (claimId, changeStatus) => {
+    if (!changeStatus || !claimId) return;
+    if (isSubmitting) return;
+    setIsSubmitting(true); // ✅ สำคัญมาก
     try {
       const data = await ChangeStatus(claimId, changeStatus);
+
       if (data) {
         onClose();
-        if (data) {
-          addToast({
-            title: "สำเร็จ",
-            description: "ยืนยันสำเร็จ",
-            color: "success",
-            variant: "flat",
-          });
-        } else if (!data) {
-          addToast({
-            title: "ผิดพลาด",
-            description: "ยืนยันไม่สำเร็จ",
-            color: "danger",
-            variant: "flat",
-          });
-        }
+
+        addToast({
+          title: "สำเร็จ",
+          description: "ยืนยันสำเร็จ",
+          color: "success",
+          variant: "flat",
+        });
+      } else if (!data) {
+        addToast({
+          title: "ผิดพลาด",
+          description: "ยืนยันไม่สำเร็จ",
+          color: "danger",
+          variant: "flat",
+        });
       }
-      return data;
     } catch (err) {
       console.error("handleApprove error :", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   const calculateAge = (birthdate) => {
@@ -74,5 +78,5 @@ export default function useHook({ onClose }) {
       hour12: false,
     }).format(date);
   };
-  return { handleUnApprove, calculateAge, formatThaiDateTime };
+  return { handleApprove, calculateAge, formatThaiDateTime };
 }

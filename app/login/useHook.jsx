@@ -42,7 +42,7 @@ export default function useHook() {
     if (data.data.user?.role === "doctor") {
       router.push("/doctor/");
     } else if (data.data.user?.role === "staff") {
-      router.push("/doctor/");
+      router.push("/staff/");
     } else if (data.data.user?.role === "admin") {
       router.push("/admin/user/");
     }

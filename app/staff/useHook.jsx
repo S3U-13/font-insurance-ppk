@@ -1,75 +1,57 @@
 "use client";
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useApiRequest } from "../../hooks/useApi";
-import { colgroup } from "framer-motion/client";
-import { useSocket } from "@/hooks/useSocket";
-import { useAuth } from "@/context/AuthContext";
-import { socket } from "@/sockets/socket"; // ✅ import ที่หายไป
-
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../hooks/useSocket";
 
 export default function useHook() {
   const { user } = useAuth();
-  const { pullDataOpd, pullDataIpd, pullClaimData, FetchAllForm } =
-    useApiRequest();
+  const { FetchAllFormStatusApproved, pullClaimData, pdfOpd } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
-  const [openModalEditIPD, setOpenModalEditIPD] = useState(false);
-  const [openModalEditOPD, setOpenModalEditOPD] = useState(false);
-  const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalViewOPD, setOpenModalViewOPD] = useState(false);
-  const [openModalApprove, setOpenModalApprove] = useState(false);
+  const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
+  const [openModalUnApprove, setOpenModalUnApprove] = useState(false);
+  const [previewPdfModal, setPreviewPdfModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModalIPD((prev) => !prev);
+  };
+
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
+
+  useEffect(() => {
+    if (didFetch.current) return; // check flag ก่อน
+    didFetch.current = true;
+    FetchAllFormStatusApproved()
+      .then((data) => setOrder(data || []))
+      .catch(console.error);
+  }, [FetchAllFormStatusApproved]);
+
+  useSocket(user.role, async () => {
+    const list = await FetchAllFormStatusApproved();
+    setOrder(list);
+  });
+
   const [claimId, setClaimId] = useState("");
   const [changeStatus, setChangeStatus] = useState("");
   const [selectID, setSelectID] = useState("");
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
-  const [statusFilter, setStatusFilter] = useState(
-    new Set(["pending", "draft", "unapproved"])
-  );
+  // const [statusFilter, setStatusFilter] = useState(
+  //   new Set(["pending", "draft"])
+  // );
   const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(1);
   const [patReg, setPatReg] = useState("");
   const [visitId, setVisitId] = useState("");
-
-  useEffect(() => {
-    if (didFetch.current) return; // check flag ก่อน
-    didFetch.current = true;
-    FetchAllForm()
-      .then((data) => setOrder(data || []))
-      .catch(console.error);
-  }, [FetchAllForm]);
-
-  // connect ครั้งเดียว
-
-  // // ฟัง realtime
-
-  useEffect(() => {
-    if (!socket.connected) {
-      socket.connect();
-    }
-  }, []);
-
-  useEffect(() => {
-    socket.emit("join:claim", claimId);
-    socket.emit("join:role", "doctor"); // หรือ role ของ user
-
-    return () => {
-      socket.emit("leave:claim", claimId);
-      socket.emit("leave:role", "doctor");
-    };
-  }, [claimId]);
-  // 🔹 subscribe socket event
-  useSocket(async (payload) => {
-    const list = await FetchAllForm();
-    setOrder(list);
-  });
+  const [base64PdfOpd, setBase64PdfOpd] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
@@ -95,14 +77,7 @@ export default function useHook() {
   }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
 
   useEffect(() => {
-    if (
-      !openModalViewOPD &&
-      !openModalViewIPD &&
-      !openModalEditIPD &&
-      !openModalEditOPD &&
-      !openModalApprove
-    )
-      return;
+    if (!openModalViewOPD && !openModalViewIPD && !openModalUnApprove) return;
     if (!claimId) return;
     const fetchDataView = async () => {
       const data = await pullClaimData(claimId, setClaimData);
@@ -110,19 +85,25 @@ export default function useHook() {
     };
 
     fetchDataView();
-  }, [
-    openModalViewOPD,
-    openModalViewIPD,
-    openModalEditOPD,
-    openModalEditIPD,
-    openModalApprove,
-    claimId,
-  ]);
+  }, [openModalViewOPD, openModalViewIPD, openModalUnApprove, selectID]);
+
+  useEffect(() => {
+    if (!previewPdfModal) return;
+    if (!claimId) return;
+
+    const pdfOpdBase64 = async () => {
+      setLoading(true); // เริ่มโหลด
+      const data = await pdfOpd(claimId);
+      setBase64PdfOpd(data);
+      setLoading(false);
+    };
+
+    pdfOpdBase64();
+  }, [claimId, previewPdfModal]);
 
   const status = [
     { uid: "pending", name: "Pending" },
     { uid: "draft", name: "Draft" },
-    { uid: "unapproved", name: "Unapproved" },
   ];
   const forms = [
     { uid: "OPD", name: "OPD" },
@@ -142,16 +123,20 @@ export default function useHook() {
           .includes(keyword)
       );
     }
-    if (statusFilter.size > 0) {
-      filtered = filtered.filter((item) => statusFilter.has(item.status));
-    }
+    // if (statusFilter.size > 0) {
+    //   filtered = filtered.filter((item) => statusFilter.has(item.status));
+    // }
     if (formFilter.size > 0) {
       filtered = filtered.filter((item) => formFilter.has(item.claimType));
     }
     return filtered;
-  }, [order, filterValue, statusFilter, formFilter]);
+  }, [order, filterValue, formFilter]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
+  const pages =
+    Math.ceil(
+      filteredItems.filter((item) => item.status === "success").length /
+        rowsPerPage
+    ) || 1;
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -222,8 +207,6 @@ export default function useHook() {
     setOpenModalIPD,
     openModalOPD,
     setOpenModalOPD,
-    openModalViewOPD,
-    setOpenModalViewOPD,
     order,
     patData,
     setHn,
@@ -233,9 +216,8 @@ export default function useHook() {
     selectID,
     setSelectID,
     claimData,
-    setClaimData,
     setPatReg,
-    FetchAllForm,
+    // FetchAllForm,
     setOrder,
     filterValue,
     setFilterValue,
@@ -258,19 +240,20 @@ export default function useHook() {
     onSortChange,
     selectedValue,
     status,
-    statusFilter,
-    setStatusFilter,
+    // statusFilter,
+    // setStatusFilter,
     setVisitId,
     forms,
     formFilter,
     setFormFilter,
-    openModalEditIPD,
-    setOpenModalEditIPD,
-    openModalEditOPD,
-    setOpenModalEditOPD,
+    FetchAllFormStatusApproved,
+    openModalUnApprove,
+    setOpenModalUnApprove,
     changeStatus,
     setChangeStatus,
-    openModalApprove,
-    setOpenModalApprove,
+    previewPdfModal,
+    setPreviewPdfModal,
+    base64PdfOpd,
+    loading,
   };
 }

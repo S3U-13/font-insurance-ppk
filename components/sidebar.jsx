@@ -21,7 +21,7 @@ export default function Sidebar({ isOpen }) {
     {
       id: 1,
       name: "INSURANCE FORM",
-      role: ["doctor", "staff"],
+      role: ["doctor"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ export default function Sidebar({ isOpen }) {
     {
       id: 2,
       name: "DASHBOARD",
-      role: ["doctor", "staff"],
+      role: ["doctor"],
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -75,6 +75,39 @@ export default function Sidebar({ isOpen }) {
     },
     {
       id: 3,
+      name: "INSURANCE FORM",
+      role: ["staff"],
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-4.5 text-neutral-600"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
+          />
+        </svg>
+      ),
+      label: [
+        {
+          label_id: 4,
+          label_name: "INSURANCE FORM CREATE",
+          link: "/staff",
+        },
+        // {
+        //   label_id: 5,
+        //   label_name: "INSURANCE FORM SUCCESS",
+        //   link: "/doctor/insurance_form/success",
+        // },
+      ],
+    },
+    {
+      id: 4,
       name: "USER MANAGE",
       role: ["admin"],
       icon: (
@@ -93,7 +126,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 4,
+          label_id: 6,
           label_name: "user",
           link: "/admin/user",
         },
@@ -105,7 +138,7 @@ export default function Sidebar({ isOpen }) {
       ],
     },
     {
-      id: 4,
+      id: 5,
       name: "SETTING",
       role: ["doctor", "staff", "admin"],
       icon: (
@@ -124,7 +157,7 @@ export default function Sidebar({ isOpen }) {
       ),
       label: [
         {
-          label_id: 5,
+          label_id: 7,
           label_name: "THEME SETTING",
           icon_theme: (
             <ThemeSwitch
@@ -150,7 +183,7 @@ export default function Sidebar({ isOpen }) {
   useEffect(() => {
     if (!user?.role) return;
 
-    if (["doctor", "staff"].includes(user.role)) {
+    if (user.role === "doctor") {
       if (pathname?.startsWith("/doctor/insurance_form/success")) {
         setSelectMenu(2);
       } else if (pathname?.startsWith("/doctor/dashboard")) {
@@ -158,9 +191,13 @@ export default function Sidebar({ isOpen }) {
       } else if (pathname?.startsWith("/doctor")) {
         setSelectMenu(1);
       }
+    } else if (user.role === "staff") {
+      if (pathname?.startsWith("/staff")) {
+        setSelectMenu(4);
+      }
     } else if (user.role === "admin") {
       if (pathname?.startsWith("/admin/user")) {
-        setSelectMenu(4);
+        setSelectMenu(6);
       }
     }
   }, [pathname, user?.role]);

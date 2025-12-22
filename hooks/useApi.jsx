@@ -165,6 +165,19 @@ export const useApiRequest = () => {
       return null;
     }
   };
+  const StaffChangeStatus = async (claimId, changeStatus, token = null) => {
+    try {
+      const data = await apiRequest(
+        `/api/claims/${claimId}/${changeStatus}`,
+        "POST",
+        token
+      );
+      return data;
+    } catch (err) {
+      console.error("Approve:", err);
+      return null;
+    }
+  };
 
   return {
     CreateOrderInsuranceOPD,
@@ -177,5 +190,6 @@ export const useApiRequest = () => {
     EditOrderInsuranceOPD,
     FetchAllFormStatusApproved,
     ChangeStatus,
+    StaffChangeStatus,
   };
 };

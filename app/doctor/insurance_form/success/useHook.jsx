@@ -2,8 +2,12 @@
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+import { useSocket } from "@/hooks/useSocket";
+import { useAuth } from "@/context/AuthContext";
+import { socket } from "@/sockets/socket"; // ✅ import ที่หายไป
 
 export default function useHook() {
+  const { user } = useAuth();
   const { FetchAllFormStatusApproved, pullClaimData, pdfOpd } = useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
   const [openModalIPD, setOpenModalIPD] = useState(false);
@@ -19,14 +23,6 @@ export default function useHook() {
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
-
-  useEffect(() => {
-    if (didFetch.current) return; // check flag ก่อน
-    didFetch.current = true;
-    FetchAllFormStatusApproved()
-      .then((data) => setOrder(data || []))
-      .catch(console.error);
-  }, [FetchAllFormStatusApproved]);
 
   const [claimId, setClaimId] = useState("");
   const [changeStatus, setChangeStatus] = useState("");
@@ -44,6 +40,36 @@ export default function useHook() {
   const [visitId, setVisitId] = useState("");
   const [base64PdfOpd, setBase64PdfOpd] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (didFetch.current) return; // check flag ก่อน
+    didFetch.current = true;
+    FetchAllFormStatusApproved()
+      .then((data) => setOrder(data || []))
+      .catch(console.error);
+  }, [FetchAllFormStatusApproved]);
+
+  // ฟัง realtime
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.emit("join:claim", claimId);
+    socket.emit("join:role", "doctor"); // หรือ role ของ user
+
+    return () => {
+      socket.emit("leave:claim", claimId);
+      socket.emit("leave:role", "doctor");
+    };
+  }, [claimId]);
+  // 🔹 subscribe socket event
+  useSocket(async (payload) => {
+    const list = await FetchAllFormStatusApproved();
+    setOrder(list);
+  });
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน

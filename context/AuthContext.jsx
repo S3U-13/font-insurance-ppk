@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+import { connectSocket } from "@/sockets/connectSocket";
 
 const AuthContext = createContext();
 
@@ -21,6 +22,12 @@ export const AuthProvider = ({ children }) => {
 
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (user?.role) {
+      connectSocket(user.role);
+    }
+  }, [user?.role]);
 
   const login = (data) => {
     setUser(data.data.user);

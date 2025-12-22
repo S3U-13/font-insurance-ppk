@@ -16,10 +16,10 @@ export default function page({
   claimId,
   claimData,
 }) {
-
-  const { handleUnApprove, calculateAge, formatThaiDateTime } = useHook({
-    onClose,
-  });
+  const { handleApprove, calculateAge, formatThaiDateTime, isSubmitting } =
+    useHook({
+      onClose,
+    });
   return (
     <div>
       <Modal
@@ -42,11 +42,15 @@ export default function page({
                   <p className="font-bold">รายละเอียด</p>{" "}
                   <div className="flex justify-between test-sm">
                     <p>รายการที่ </p>
-                    <span className="text-gray-600">{claimData?.claimNo || ""}</span>
+                    <span className="text-gray-600">
+                      {claimData?.claimNo || ""}
+                    </span>
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>ประเภทของผู้ป่วย</p>
-                    <span className="text-gray-600">{claimData?.claimType || ""}</span>
+                    <span className="text-gray-600">
+                      {claimData?.claimType || ""}
+                    </span>
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>ชื่อ</p>
@@ -58,7 +62,9 @@ export default function page({
                   </div>
                   <div className="flex justify-between test-sm">
                     <p>วันทำรายการ</p>
-                    <span className="text-gray-600">{formatThaiDateTime(claimData?.createdAt)}</span>
+                    <span className="text-gray-600">
+                      {formatThaiDateTime(claimData?.createdAt)}
+                    </span>
                   </div>
                 </div>
               </ModalBody>
@@ -91,7 +97,8 @@ export default function page({
                   isIconOnly
                   color="success"
                   variant="flat"
-                  onPress={() => handleUnApprove(claimId, changeStatus)}
+                  onPress={() => handleApprove(claimId, changeStatus)}
+                  disabled={isSubmitting}
                   endContent={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

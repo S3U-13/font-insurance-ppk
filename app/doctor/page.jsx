@@ -596,10 +596,6 @@ export default function page() {
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">
                     {item.status === "draft" ? (
-                      // <Button color="danger" size="sm" variant="flat">
-                      //   UnApprove
-                      // </Button>
-
                       <Button
                         color="primary"
                         size="sm"
