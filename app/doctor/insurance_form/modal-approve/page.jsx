@@ -43,7 +43,7 @@ export default function page({
                   <div className="flex justify-between test-sm">
                     <p>รายการที่ </p>
                     <span className="text-gray-600">
-                      {claimData?.claimNo || ""}
+                      {claimData?.id || ""}
                     </span>
                   </div>
                   <div className="flex justify-between test-sm">

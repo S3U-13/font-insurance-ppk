@@ -59,10 +59,12 @@ export default function useHook() {
   useEffect(() => {
     socket.emit("join:claim", claimId);
     socket.emit("join:role", "doctor"); // หรือ role ของ user
+    socket.emit("join:role", "staff"); // หรือ role ของ user
 
     return () => {
       socket.emit("leave:claim", claimId);
       socket.emit("leave:role", "doctor");
+      socket.emit("leave:role", "staff");
     };
   }, [claimId]);
   // 🔹 subscribe socket event
@@ -225,6 +227,10 @@ export default function useHook() {
     setOpenModalIPD,
     openModalOPD,
     setOpenModalOPD,
+    openModalViewIPD,
+    setOpenModalViewIPD,
+    openModalViewOPD,
+    setOpenModalViewOPD,
     order,
     patData,
     setHn,

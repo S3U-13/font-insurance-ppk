@@ -2,8 +2,9 @@
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { useApiRequest } from "../../hooks/useApi";
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-import { useAuth } from "../../context/AuthContext";
-import { useSocket } from "../../hooks/useSocket";
+import { useAuth } from "@/context/AuthContext";
+import { useSocket } from "@/hooks/useSocket";
+import { socket } from "@/sockets/socket"; // ✅ import ที่หายไป
 
 export default function useHook() {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ export default function useHook() {
   const [openModalViewIPD, setOpenModalViewIPD] = useState(false);
   const [openModalUnApprove, setOpenModalUnApprove] = useState(false);
   const [previewPdfModal, setPreviewPdfModal] = useState(false);
+  const [openModalApprove, setOpenModalApprove] = useState(false);
   const handleOpenModal = () => {
     setOpenModalIPD((prev) => !prev);
   };
@@ -22,19 +24,6 @@ export default function useHook() {
   const [patData, setPatData] = useState(null);
   const [hn, setHn] = useState("");
   const [order, setOrder] = useState([]);
-
-  useEffect(() => {
-    if (didFetch.current) return; // check flag ก่อน
-    didFetch.current = true;
-    FetchAllFormStatusApproved()
-      .then((data) => setOrder(data || []))
-      .catch(console.error);
-  }, [FetchAllFormStatusApproved]);
-
-  useSocket(user.role, async () => {
-    const list = await FetchAllFormStatusApproved();
-    setOrder(list);
-  });
 
   const [claimId, setClaimId] = useState("");
   const [changeStatus, setChangeStatus] = useState("");
@@ -52,6 +41,37 @@ export default function useHook() {
   const [visitId, setVisitId] = useState("");
   const [base64PdfOpd, setBase64PdfOpd] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (didFetch.current) return; // check flag ก่อน
+    didFetch.current = true;
+    FetchAllFormStatusApproved()
+      .then((data) => setOrder(data || []))
+      .catch(console.error);
+  }, [FetchAllFormStatusApproved]);
+
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.emit("join:claim", claimId);
+    socket.emit("join:role", "doctor"); // หรือ role ของ user
+    // socket.emit("join:role", "staff"); // หรือ role ของ user
+
+    return () => {
+      socket.emit("leave:claim", claimId);
+      socket.emit("leave:role", "doctor");
+      // socket.emit("leave:role", "staff");
+    };
+  }, [claimId]);
+
+  useSocket(async (payload) => {
+    const list = await FetchAllFormStatusApproved();
+    setOrder(list);
+  });
 
   useEffect(() => {
     // if (didFetch.current) return; // check flag ก่อน
@@ -77,7 +97,13 @@ export default function useHook() {
   }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
 
   useEffect(() => {
-    if (!openModalViewOPD && !openModalViewIPD && !openModalUnApprove) return;
+    if (
+      !openModalViewOPD &&
+      !openModalViewIPD &&
+      !openModalApprove &&
+      !openModalUnApprove
+    )
+      return;
     if (!claimId) return;
     const fetchDataView = async () => {
       const data = await pullClaimData(claimId, setClaimData);
@@ -85,7 +111,13 @@ export default function useHook() {
     };
 
     fetchDataView();
-  }, [openModalViewOPD, openModalViewIPD, openModalUnApprove, selectID]);
+  }, [
+    openModalViewOPD,
+    openModalViewIPD,
+    openModalApprove,
+    openModalUnApprove,
+    selectID,
+  ]);
 
   useEffect(() => {
     if (!previewPdfModal) return;
@@ -207,6 +239,10 @@ export default function useHook() {
     setOpenModalIPD,
     openModalOPD,
     setOpenModalOPD,
+    openModalViewIPD,
+    setOpenModalViewIPD,
+    openModalViewOPD,
+    setOpenModalViewOPD,
     order,
     patData,
     setHn,
@@ -255,5 +291,7 @@ export default function useHook() {
     setPreviewPdfModal,
     base64PdfOpd,
     loading,
+    openModalApprove,
+    setOpenModalApprove,
   };
 }

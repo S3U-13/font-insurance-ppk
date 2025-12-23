@@ -194,6 +194,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
       "underlyingCondition",
       patData?.underlyingcondition || null
     );
+    form.setFieldValue("physicalExam", patData?.physicalExam || null);
     form.setFieldValue("planOfTreatment", patData?.treatment || null);
     form.setFieldValue("claimId", claimId || null);
     form.setFieldValue(

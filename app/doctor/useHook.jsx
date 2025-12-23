@@ -29,7 +29,7 @@ export default function useHook() {
   const [claimData, setClaimData] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   const [statusFilter, setStatusFilter] = useState(
-    new Set(["pending", "draft", "unapproved"])
+    new Set(["pending", "draft", "unapproved", "s_unapproved"])
   );
   const [formFilter, setFormFilter] = useState(new Set(["OPD", "IPD"]));
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -59,10 +59,12 @@ export default function useHook() {
   useEffect(() => {
     socket.emit("join:claim", claimId);
     socket.emit("join:role", "doctor"); // หรือ role ของ user
+    socket.emit("join:role", "staff"); // หรือ role ของ user
 
     return () => {
       socket.emit("leave:claim", claimId);
       socket.emit("leave:role", "doctor");
+      socket.emit("join:role", "staff"); // หรือ role ของ user
     };
   }, [claimId]);
   // 🔹 subscribe socket event
@@ -123,6 +125,7 @@ export default function useHook() {
     { uid: "pending", name: "Pending" },
     { uid: "draft", name: "Draft" },
     { uid: "unapproved", name: "Unapproved" },
+    { uid: "s_unapproved", name: "Staff Unapproved" },
   ];
   const forms = [
     { uid: "OPD", name: "OPD" },

@@ -41,12 +41,12 @@ export default function Sidebar({ isOpen }) {
       label: [
         {
           label_id: 1,
-          label_name: "INSURANCE FORM CREATE",
+          label_name: "INSURANCE CLAIM CREATE",
           link: "/doctor",
         },
         {
           label_id: 2,
-          label_name: "INSURANCE FORM SUCCESS",
+          label_name: "INSURANCE CLAIM APPROVED",
           link: "/doctor/insurance_form/success",
         },
       ],
@@ -96,7 +96,7 @@ export default function Sidebar({ isOpen }) {
       label: [
         {
           label_id: 4,
-          label_name: "INSURANCE FORM CREATE",
+          label_name: "ICLAIM STAFF APPROVE",
           link: "/staff",
         },
         // {
@@ -218,7 +218,7 @@ export default function Sidebar({ isOpen }) {
       >
         <div className="flex flex-col gap-4 h-full">
           <h1 className="text-center font-bold text-black dark:text-white">
-            Side Bar
+            PPK PAPER
           </h1>
 
           <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl   border border-divider">

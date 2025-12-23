@@ -468,7 +468,7 @@ export default function FormOPD({
                   label="Place"
                   size="sm"
                   variant="bordered"
-                  value={field.state.value || ""}
+                  value={field.state.value ?? ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
               )}

@@ -16,7 +16,8 @@ export default function page({ isOpen, onClose, claimData }) {
     formatAddress,
     formatThaiDateNoTime,
     formatTimeNoDate,
-  } = useHook();
+    matchedChoices,
+  } = useHook({ claimData });
   return (
     <div>
       <Modal
@@ -281,14 +282,18 @@ export default function page({ isOpen, onClose, claimData }) {
                           {claimData?.hospitalForm?.physicalExam || ""}
                         </span>
                       </p>
-                      <p className="flex items-center gap-2 text-sm">
+                      <div className=" gap-2 text-sm">
                         <span className="font-bold">
                           6. Is the illness related to (please tick ☒ if yes) :
                         </span>{" "}
-                        <span>
-                          {claimData?.hospitalForm?.relatedConditionIds}
-                        </span>
-                      </p>
+                        {matchedChoices.map((item) => (
+                          <div className="px-4" key={item.id}>
+                            <p>
+                              {item.id}. {item.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                       <p className="flex items-center gap-2 text-sm">
                         <span className="font-bold">
                           7. Underlying condition :
@@ -311,12 +316,13 @@ export default function page({ isOpen, onClose, claimData }) {
                           {claimData?.hospitalForm?.investigations || ""}
                         </span>
                       </p>
-                      <p className="flex items-center gap-2 text-sm">
-                        <span className="font-bold">10. Treatment :</span>
-                        <span>
+
+                      <span className="font-bold text-sm">10. Treatment :</span>
+                      <div className="border border-divider px-6 py-4 rounded-2xl">
+                        <span className="whitespace-pre-wrap  text-sm">
                           {claimData?.hospitalForm?.planOfTreatment || ""}
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </section>
                 </div>

@@ -18,6 +18,10 @@ export default function SplineArea() {
     if (!chartRef.current || !resolvedTheme) return;
 
     const options = {
+      theme: {
+        mode: resolvedTheme, // ✅ dark / light
+      },
+
       fill: {
         type: "gradient",
         gradient: {
@@ -26,6 +30,7 @@ export default function SplineArea() {
           opacityTo: 0.05,
         },
       },
+      
       title: {
         text: "(chart example)",
         align: "center", // 'left' | 'center' | 'right'

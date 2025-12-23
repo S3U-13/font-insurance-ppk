@@ -260,7 +260,7 @@ export default function useHook({
     );
     form.setFieldValue(
       "accidentPlace",
-      claimData?.hospitalForm?.accidentPlace || null
+      claimData?.hospitalForm?.accidentPlace || ""
     );
     form.setFieldValue(
       "physicalExam",

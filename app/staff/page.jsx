@@ -20,9 +20,10 @@ import {
   DropdownTrigger,
 } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
-
-// import ModalUnApprove from "./modal-unapprove/page";
-// import ModalPreviewPdf from "../preview-pdf/page";
+import ModalViewOPD from "../doctor/insurance_form/view_opd/page";
+import ModalUnApprove from "../doctor/insurance_form/success/modal-unapprove/page";
+import ModalPreviewPdf from "../doctor/insurance_form/preview-pdf/page";
+import ModalApprove from "../doctor/insurance_form/modal-approve/page";
 import { Eye, FileText, XCircle } from "@deemlol/next-icons";
 
 export default function page() {
@@ -31,6 +32,10 @@ export default function page() {
     setOpenModalIPD,
     openModalOPD,
     setOpenModalOPD,
+    openModalViewIPD,
+    setOpenModalViewIPD,
+    openModalViewOPD,
+    setOpenModalViewOPD,
     order,
     patData,
     setHn,
@@ -77,6 +82,8 @@ export default function page() {
     setPreviewPdfModal,
     base64PdfOpd,
     loading,
+    openModalApprove,
+    setOpenModalApprove,
   } = useHook();
   const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
 
@@ -86,11 +93,28 @@ export default function page() {
   );
   return (
     <div className="space-y-6 mt-6">
-      {/* <ModalPreviewPdf
+      <ModalViewOPD
+        claimData={claimData}
+        isOpen={openModalViewOPD}
+        onClose={() => setOpenModalViewOPD(false)}
+      />
+      <ModalPreviewPdf
         base64PdfOpd={base64PdfOpd}
         isOpen={previewPdfModal}
         loading={loading}
         onClose={() => setPreviewPdfModal(false)}
+      />
+      <ModalApprove
+        claimId={claimId}
+        claimData={claimData}
+        changeStatus={changeStatus}
+        isOpen={openModalApprove}
+        onClose={() => {
+          setOpenModalApprove(false);
+          FetchAllFormStatusApproved()
+            .then((data) => setOrder(data || []))
+            .catch(console.error);
+        }}
       />
       <ModalUnApprove
         changeStatus={changeStatus}
@@ -103,7 +127,7 @@ export default function page() {
             .then((data) => setOrder(data || []))
             .catch(console.error);
         }}
-      /> */}
+      />
       <h1 className="text-center text-xl">
         <strong>Hospital PPK Insurance Form</strong>
       </h1>
@@ -217,9 +241,7 @@ export default function page() {
 
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total{" "}
-            {filteredItems.filter((item) => item.status === "approved").length}{" "}
-            records
+            Total {filteredItems.filter((item) => item.id).length} records
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -280,115 +302,136 @@ export default function page() {
             <TableColumn className="text-center">APPROVE</TableColumn>
           </TableHeader>
           <TableBody emptyContent={"ไม่มีข้อมูล"}>
-            {sortedItems
-              ?.filter((order) => order.status === "approved")
-              .map((item, index) => (
-                <TableRow key={item.id}>
-                  {headerColumns.map((col) => (
-                    <TableCell key={col.uid}>
-                      {col.uid === "id" && item?.id}
-                      {col.uid === "form_type" && item?.claimType}{" "}
-                      {col.uid === "hn" && item?.patientId}
-                      {col.uid === "name" &&
-                        `${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}
-                    </TableCell>
-                  ))}
-
-                  <TableCell className="text-center">
-                    <Chip
-                      className="p-2"
-                      color="success"
-                      endContent={
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="size-5.5"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
-                      variant="flat"
-                    >
-                      ดำเนินการสำเร็จ
-                    </Chip>
+            {sortedItems?.map((item, index) => (
+              <TableRow key={item.id}>
+                {headerColumns.map((col) => (
+                  <TableCell key={col.uid}>
+                    {col.uid === "id" && item?.id}
+                    {col.uid === "form_type" && item?.claimType}{" "}
+                    {col.uid === "hn" && item?.patientId}
+                    {col.uid === "name" &&
+                      `${item?.patient?.prename}${item?.patient?.firstname} ${item?.patient?.lastname}`}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex justify-center gap-2 items-center">
+                ))}
+
+                <TableCell className="text-center">
+                  <Chip
+                    className="p-2"
+                    color="success"
+                    endContent={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="size-5.5"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    }
+                    variant="flat"
+                  >
+                    ดำเนินการสำเร็จ
+                  </Chip>
+                </TableCell>
+                <TableCell>
+                  <div className="flex justify-center gap-2 items-center">
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      color="default"
+                      variant="flat"
+                      onPress={() => {
+                        setClaimId(item.id);
+                        setOpenModalViewOPD(true);
+                      }}
+                    >
+                      <Eye size={20} />
+                    </Button>
+                    {item.claimType === "OPD" ? (
                       <Button
                         isIconOnly
                         size="sm"
                         color="default"
                         variant="flat"
+                        as="a"
+                        onPress={() => {
+                          setClaimId(item.id);
+                          setPreviewPdfModal(true);
+                        }}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="size-4.5 rounded-md"
-                        >
-                          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <FileText size={20} />
                       </Button>
-                      {item.claimType === "OPD" ? (
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          color="default"
-                          variant="flat"
-                          as="a"
-                          onPress={() => {
-                            setClaimId(item.id);
-                            setPreviewPdfModal(true);
-                          }}
-                        >
-                          <FileText size={20} />
-                        </Button>
-                      ) : item.claimType === "IPD" ? (
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          color="default"
-                          variant="flat"
-                          as="a"
-                          onPress={() => {
-                            setClaimId(item.id);
-                            setPreviewPdfModal(true);
-                          }}
-                        >
-                          <FileText size={20} />
-                        </Button>
-                      ) : null}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex justify-center gap-2 items-center">
+                    ) : item.claimType === "IPD" ? (
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        color="default"
+                        variant="flat"
+                        as="a"
+                        onPress={() => {
+                          setClaimId(item.id);
+                          setPreviewPdfModal(true);
+                        }}
+                      >
+                        <FileText size={20} />
+                      </Button>
+                    ) : null}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex justify-center gap-2 items-center">
+                    {item.status === "approved" ? (
+                      <Button
+                        color="primary"
+                        size="sm"
+                        variant="flat"
+                        // onPress={() => handleApprove(item.id, "approve")}
+                        onPress={() => {
+                          setOpenModalApprove(true);
+                          setChangeStatus("staffapprove");
+                          setClaimId(item.id);
+                        }}
+                      >
+                        Approve
+                      </Button>
+                    ) : item.status === "s_approved" ? (
                       <Button
                         color="danger"
                         size="sm"
                         variant="flat"
+                        // onPress={() => handleApprove(item.id, "approve")}
                         onPress={() => {
                           setOpenModalUnApprove(true);
-                          setChangeStatus("unapprove");
+                          setChangeStatus("staffunapprove");
                           setClaimId(item.id);
                         }}
-                        // onPress={() => handleUnApprove(item.id, "unapprove")}
                       >
-                        Unapproved
+                        UnApprove
                       </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    ) : item.status === "s_unapproved" ? (
+                      <Button
+                        color="default"
+                        isDisabled
+                        size="sm"
+                        variant="solid"
+                        // onPress={() => handleApprove(item.id, "approve")}
+                        onPress={() => {
+                          setOpenModalApprove(true);
+                          setChangeStatus("staffunapprove");
+                          setClaimId(item.id);
+                        }}
+                      >
+                        รอการเเก้ไขข้อมูล
+                      </Button>
+                    ) : null}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <div className="flex justify-end ">

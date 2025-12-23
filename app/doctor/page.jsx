@@ -455,6 +455,15 @@ export default function page() {
                     >
                       unapproved
                     </Chip>
+                  ) : item.status === "s_unapproved" ? (
+                    <Chip
+                      className="p-1"
+                      color="warning"
+                      endContent={<XCircle size={20} />}
+                      variant="flat"
+                    >
+                      staff unapproved
+                    </Chip>
                   ) : null}
                 </TableCell>
                 <TableCell>
@@ -527,7 +536,7 @@ export default function page() {
                           </Button>
                         ) : null}
                       </div>
-                    ) : item.status === "unapproved" ? (
+                    ) : ["unapproved", "s_unapproved"].includes(item.status) ? (
                       <div>
                         {item.claimType === "OPD" ? (
                           <Button
@@ -577,7 +586,7 @@ export default function page() {
                         </Button>
                       </>
                     )}
-                    {item.status === "unapproved" && (
+                    {["unapproved", "s_unapproved"].includes(item.status) && (
                       <Button
                         isIconOnly
                         size="sm"
@@ -595,7 +604,9 @@ export default function page() {
                 </TableCell>
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">
-                    {item.status === "draft" ? (
+                    {["draft", "unapproved", "s_unapproved"].includes(
+                      item.status
+                    ) && (
                       <Button
                         color="primary"
                         size="sm"
@@ -609,21 +620,7 @@ export default function page() {
                       >
                         Approve
                       </Button>
-                    ) : item.status === "unapproved" ? (
-                      <Button
-                        color="primary"
-                        size="sm"
-                        variant="flat"
-                        // onPress={() => handleApprove(item.id, "approve")}
-                        onPress={() => {
-                          setOpenModalApprove(true);
-                          setChangeStatus("approve");
-                          setClaimId(item.id);
-                        }}
-                      >
-                        Approve
-                      </Button>
-                    ) : null}
+                    )}
                   </div>
                 </TableCell>
               </TableRow>
