@@ -2,40 +2,8 @@
 import React from "react";
 
 export default function useHook({ claimData }) {
-  const keyRelated = claimData?.hospitalForm?.relatedConditionIds ?? [];
-  const sortedIds = [...keyRelated].sort((a, b) => a - b);
-
-  const choice2 = [
-    {
-      id: 1,
-      value:
-        "Pregnancy / Childbirth / Infertility / Caesarean section / Miscarriage",
-    },
-    {
-      id: 2,
-      value: "Nervous / Mental / Emotional / Sleeping disorder",
-    },
-    {
-      id: 3,
-      value: "Cosmetic reason / Dental care / Refractive errors correction",
-    },
-    {
-      id: 4,
-      value: "Congenital / Hereditary disease",
-    },
-    {
-      id: 5,
-      value: "Influence of Drugs / Alcohol",
-    },
-    {
-      id: 6,
-      value: "AIDS",
-    },
-  ];
-
-  const matchedChoices = sortedIds
-    .map((id) => choice2.find((item) => item.id === id))
-    .filter(Boolean);
+  const keyRelated = claimData?.hospitalForm?.relatedConditionName ?? [];
+  const sortedIds = [...keyRelated].sort((a, b) => a.id - b.id);
 
   const formatThaiDateNoTime = (isoString) => {
     if (!isoString || isoString === "-") return "-";
@@ -123,6 +91,6 @@ export default function useHook({ claimData }) {
     calculateAge,
     formatAddress,
     formatTimeNoDate,
-    matchedChoices,
+    sortedIds,
   };
 }

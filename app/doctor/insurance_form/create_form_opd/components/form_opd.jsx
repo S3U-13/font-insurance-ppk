@@ -4,8 +4,8 @@ import { DatePicker } from "@heroui/date-picker";
 import { Input, Textarea } from "@heroui/input";
 import { Radio, RadioGroup } from "@heroui/radio";
 import { Select, SelectItem } from "@heroui/select";
-import { div } from "framer-motion/client";
-import React from "react";
+import { Snippet } from "@heroui/snippet";
+import React, { useState, useRef } from "react";
 import {
   parseDate,
   getLocalTimeZone,
@@ -14,7 +14,8 @@ import {
 import { DateInput, TimeInput } from "@heroui/date-input";
 import ModalDoctorSignature from "../doctor-signature/page";
 import { Button } from "@heroui/button";
-import { Edit3 } from "@deemlol/next-icons";
+import { useTheme } from "next-themes";
+import { Edit3, Check, Copy } from "@deemlol/next-icons";
 
 export default function FormOPD({
   sex,
@@ -41,6 +42,24 @@ export default function FormOPD({
   signatureDoctor,
   setSignatureDoctor,
 }) {
+  const textRef = useRef(null);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!textRef.current) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(textRef.current);
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div>
       <ModalDoctorSignature
@@ -430,7 +449,7 @@ export default function FormOPD({
           <div className="grid grid-cols-12 gap-4 items-end">
             <div className="col-span-4 flex items-center gap-2">
               {/* Date */}
-              <DateInput
+              <DatePicker
                 label="Date of accident"
                 size="sm"
                 variant="bordered"
@@ -569,7 +588,36 @@ export default function FormOPD({
         {/* Section 10: Treatment */}
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-white">10.Treatment</h3>
+          <div className="border border-divider px-4 py-2 rounded-lg">
+            <p className="text-md font-bold">treatment ppk11</p>
+            <div>
+              <div ref={textRef}>
+                <p className="text-sm font-bold">การสั่งยา</p>
 
+                {patData?.drug.map((item, index) => (
+                  <p key={index} className="text-xs">
+                    {item.servicename} สั่งยา {item.requestqty} เม็ด จ่ายยา{" "}
+                    {item.serviceqty} เม็ด
+                  </p>
+                ))}
+
+                <p className="text-sm font-bold">treatment</p>
+                <p className="text-xs whitespace-pre-wrap">
+                  {patData?.treatment || ""}
+                </p>
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  className="mt-3"
+                  size="sm"
+                  variant="flat"
+                  onPress={handleCopy}
+                >
+                  {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
+                </Button>
+              </div>
+            </div>
+          </div>
           <form.Field name="planOfTreatment">
             {(field) => (
               <Textarea
@@ -587,6 +635,7 @@ export default function FormOPD({
           <h3 className="font-semibold  dark:text-white">
             11.Doctor Signature
           </h3>
+
           <div className="flex justify-between border border-divider rounded-xl p-4">
             <div className="space-y-2">
               <form.Field name="signatureCheck">

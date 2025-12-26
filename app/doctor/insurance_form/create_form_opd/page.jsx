@@ -17,6 +17,7 @@ export default function page({
   patData,
   setPatData,
   claimId,
+  modalRef,
 }) {
   const {
     sex,
@@ -41,6 +42,7 @@ export default function page({
     handleSaveSignatureDoctor,
     signatureDoctor,
     setSignatureDoctor,
+
   } = useHook({ patData, setPatData, onClose, claimId });
 
   return (
@@ -55,7 +57,7 @@ export default function page({
           footer: "border-t border-divider",
         }}
       >
-        <ModalContent>
+        <ModalContent ref={modalRef}>
           {(onClose) => (
             <form
               onSubmit={(e) => {
@@ -96,16 +98,17 @@ export default function page({
                   handleSaveSignatureDoctor={handleSaveSignatureDoctor}
                   signatureDoctor={signatureDoctor}
                   setSignatureDoctor={setSignatureDoctor}
+      
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="default" variant="flat" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" type="submit" isDisabled={isSubmitting}>
                   {isSubmitting
                     ? "กำลังบันทึก..." // ขณะส่งข้อมูล
-                    : "ยืนยัน"}
+                    : "บันทึก"}
                 </Button>
               </ModalFooter>
             </form>

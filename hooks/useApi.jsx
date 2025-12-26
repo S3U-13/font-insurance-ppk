@@ -60,7 +60,12 @@ export const useApiRequest = () => {
     );
   };
   const FetchAllFormStatusApproved = async (token = null) => {
-    return await apiRequest("/api/claims?status=approved,s_approved,s_unapproved", "GET", null, token);
+    return await apiRequest(
+      "/api/claims?status=approved,s_approved,s_unapproved",
+      "GET",
+      null,
+      token
+    );
   };
 
   const pullDataIpd = async (hn, visitId, token = null) => {
@@ -108,14 +113,14 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const pullClaimData = async (claimId, setClaimData, token = null) => {
+  const pullClaimData = async (claimId, token = null) => {
     try {
       const data = await apiRequest(`/api/claims/${claimId}`, "GET", token);
-      setClaimData(data || null);
-      return data;
+
+      return data ?? null;
     } catch (err) {
       console.error("pullData error:", err);
-      setClaimData(null);
+
       return null;
     }
   };

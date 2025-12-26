@@ -5,6 +5,14 @@ import { Button } from "@heroui/button";
 import { useAuth } from "../context/AuthContext";
 import { Badge } from "@heroui/badge";
 import { Avatar, AvatarGroup, AvatarIcon } from "@heroui/avatar";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from "@heroui/dropdown";
+import { Bell } from "@deemlol/next-icons";
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -47,7 +55,8 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <div className="text-xs">
           <p>
-            <strong>DocName:</strong> {user?.doctorsalutation || ""}{user.name}
+            <strong>DocName:</strong> {user?.doctorsalutation || ""}
+            {user.name}
           </p>
           <div className="flex items-center gap-2">
             <p>
@@ -58,36 +67,78 @@ export default function Navbar() {
             </p>
           </div>
         </div>
-        <Badge
-          color="success"
-          content=""
-          placement="bottom-right"
-          shape="circle"
-          showOutline={true}
+        <Dropdown
+          placement="bottom-start"
+          classNames={{
+            base: "before:bg-default-200", // change arrow background
+            content:
+              "py-2 px-1 border border-default-200 bg-linear-to-br from-white to-default-200 dark:from-default-50 dark:to-black",
+          }}
         >
-          {user?.role === "doctor" ? (
-            <Avatar
-              isBordered
-              color="success"
-              radius="full"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBJ1cM6gCghQwI5w0jX7hHIFMUqPicfZTwpQ&s"
-            />
-          ) : user?.role === "staff" ? (
-            <Avatar
-              isBordered
-              color="success"
-              radius="full"
-              src="https://www.tech101.in/wp-content/uploads/2018/07/blank-profile-picture.png"
-            />
-          ) : user?.role === "admin" ? (
-            <Avatar
-              isBordered
-              color="success"
-              radius="full"
-              src="https://media.tenor.com/I9qt03YKkjQAAAAe/monkey-thinking.png"
-            />
-          ) : null}
-        </Badge>
+          <DropdownTrigger>
+            {user?.role === "doctor" ? (
+              <Avatar
+                isBordered
+                as="button"
+                color="success"
+                radius="full"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBJ1cM6gCghQwI5w0jX7hHIFMUqPicfZTwpQ&s"
+              />
+            ) : user?.role === "staff" ? (
+              <Avatar
+                isBordered
+                as="button"
+                color="success"
+                radius="full"
+                src="https://www.tech101.in/wp-content/uploads/2018/07/blank-profile-picture.png"
+              />
+            ) : user?.role === "admin" ? (
+              <Avatar
+                isBordered
+                as="button"
+                color="success"
+                radius="full"
+                src="https://media.tenor.com/I9qt03YKkjQAAAAe/monkey-thinking.png"
+              />
+            ) : null}
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Static Actions" variant="faded">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-bold">
+                {" "}
+                {user?.doctorsalutation || ""}
+                {user.name}
+              </p>
+              <p className="font-bold">@{user.username}</p>
+              <p className="font-bold">Role : {user.role}</p>
+            </DropdownItem>
+            <DropdownItem key="upload">Upload Signature</DropdownItem>
+        
+          </DropdownMenu>
+        </Dropdown>
+        {/* <Badge color="danger" content="99+" shape="circle">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                isIconOnly
+                aria-label="more than 99 notifications"
+                radius="full"
+                variant="flat"
+                size="sm"
+              >
+                <Bell size={24} />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              <DropdownItem key="new">New file</DropdownItem>
+              <DropdownItem key="copy">Copy link</DropdownItem>
+              <DropdownItem key="edit">Edit file</DropdownItem>
+              <DropdownItem key="delete" className="text-danger" color="danger">
+                Delete file
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </Badge> */}
       </div>
     </div>
   );

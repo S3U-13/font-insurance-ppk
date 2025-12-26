@@ -31,13 +31,6 @@ export default function useHook() {
     // บันทึก user/token เข้า context
     login(data);
 
-    addToast({
-      title: "สำเร็จ",
-      description: "เข้าสู่ระบบสำเร็จ",
-      color: "success",
-      variant: "flat",
-    });
-
     // redirect ตาม role
     if (data.data.user?.role === "doctor") {
       router.push("/doctor/");

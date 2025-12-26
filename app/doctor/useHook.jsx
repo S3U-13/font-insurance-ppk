@@ -13,6 +13,7 @@ export default function useHook() {
   const { pullDataOpd, pullDataIpd, pullClaimData, FetchAllForm } =
     useApiRequest();
   const didFetch = useRef(false); // 🔑 flag ป้องกันเบิ้ล
+  const modalRef = useRef(null);
   const [openModalIPD, setOpenModalIPD] = useState(false);
   const [openModalOPD, setOpenModalOPD] = useState(false);
   const [openModalEditIPD, setOpenModalEditIPD] = useState(false);
@@ -74,27 +75,46 @@ export default function useHook() {
   });
 
   useEffect(() => {
-    // if (didFetch.current) return; // check flag ก่อน
-    // didFetch.current = true;
-    if (!openModalOPD && !openModalIPD) return;
+    if (
+      !openModalOPD &&
+      !openModalIPD &&
+      !openModalEditOPD &&
+      !openModalEditIPD
+    )
+      return;
     if (!hn && !patReg && !visitId) return;
-    if (openModalOPD) {
-      const fetchData = async () => {
-        const data = await pullDataOpd(hn, patReg);
-        setPatData(data);
-      };
 
-      fetchData();
-    }
-    if (openModalIPD) {
-      const fetchData = async () => {
-        const data = await pullDataIpd(hn, visitId);
-        setPatData(data);
-      };
+    const fetchData = async () => {
+      let data = null;
 
-      fetchData();
-    }
-  }, [openModalOPD, openModalIPD, hn, patReg, visitId]);
+      if (openModalOPD) {
+        data = await pullDataOpd(hn, patReg);
+      }
+      if (openModalIPD) {
+        data = await pullDataIpd(hn, visitId);
+      }
+      if (openModalEditOPD) {
+        data = await pullDataOpd(hn, patReg);
+      }
+      if (openModalEditIPD) {
+        data = await pullDataIpd(hn, visitId);
+      }
+      if (data) {
+        setPatData(data);
+      }
+    };
+    fetchData();
+  }, [
+    openModalOPD,
+    openModalIPD,
+    openModalEditOPD,
+    openModalEditIPD,
+    hn,
+    patReg,
+    visitId,
+  ]);
+
+  console.log(patData);
 
   useEffect(() => {
     if (
@@ -105,10 +125,16 @@ export default function useHook() {
       !openModalApprove
     )
       return;
+
     if (!claimId) return;
+
+    // 🔒 ป้องกัน fetch ซ้ำ
+
     const fetchDataView = async () => {
-      const data = await pullClaimData(claimId, setClaimData);
-      setClaimData(data);
+      const data = await pullClaimData(claimId);
+      if (data) {
+        setClaimData(data);
+      }
     };
 
     fetchDataView();
@@ -139,10 +165,14 @@ export default function useHook() {
     if (filterValue) {
       const keyword = filterValue.toLowerCase();
 
-      filtered = filtered.filter((item) =>
-        String(item.patientId || "")
-          .toLowerCase()
-          .includes(keyword)
+      filtered = filtered.filter(
+        (item) =>
+          String(item.patientId || "")
+            .toLowerCase()
+            .includes(keyword) ||
+          String(`${item?.patient?.firstname} ${item?.patient?.lastname}` || "")
+            .toLowerCase()
+            .includes(keyword)
       );
     }
     if (statusFilter.size > 0) {
@@ -275,5 +305,6 @@ export default function useHook() {
     setChangeStatus,
     openModalApprove,
     setOpenModalApprove,
+    modalRef,
   };
 }

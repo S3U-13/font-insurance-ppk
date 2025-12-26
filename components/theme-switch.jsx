@@ -8,8 +8,6 @@ import { useIsSSR } from "@react-aria/ssr";
 import clsx from "clsx";
 
 import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
-import { Button } from "@heroui/button";
-import { button } from "@heroui/theme";
 
 export const ThemeSwitch = ({ className, classNames }) => {
   const { theme, setTheme } = useTheme();

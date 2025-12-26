@@ -13,7 +13,7 @@ import useHook from "./useHook";
 import PartA from "./components/part_a";
 import PartB from "./components/part_b";
 
-export default function page({ isOpen, onClose, patData }) {
+export default function page({ isOpen, onClose, patData, modalRef }) {
   const {
     sex,
     choice1,
@@ -45,7 +45,7 @@ export default function page({ isOpen, onClose, patData }) {
           footer: "border-t border-divider",
         }}
       >
-        <ModalContent>
+        <ModalContent ref={modalRef}>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-center">
@@ -121,11 +121,11 @@ export default function page({ isOpen, onClose, patData }) {
                 </Tabs>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="default" variant="flat" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Action
+                  บันทึก
                 </Button>
               </ModalFooter>
             </>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useApiRequest } from "../../../../hooks/useApi";
 import { useForm } from "@tanstack/react-form";
 import { Time } from "@internationalized/date";
@@ -177,9 +177,17 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     },
   });
 
+  const drugText = `
+การสั่งยา
+${patData?.drug
+  ?.map(
+    (item) =>
+      `${item.servicename} สั่งยา ${item.requestqty} เม็ด จ่ายยา ${item.serviceqty} เม็ด`
+  )
+  .join("\n")}`;
+
   useEffect(() => {
     if (!patData) return;
-    if (!claimId) return;
 
     // ตัวอย่าง: ใช้ค่าจาก patData.map
     form.setFieldValue("patientId", patData?.pat?.hn || null);
@@ -195,7 +203,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
       patData?.underlyingcondition || null
     );
     form.setFieldValue("physicalExam", patData?.physicalExam || null);
-    form.setFieldValue("planOfTreatment", patData?.treatment || null);
+    form.setFieldValue("planOfTreatment", drugText || null);
     form.setFieldValue("claimId", claimId || null);
     form.setFieldValue(
       "provisionalDx",

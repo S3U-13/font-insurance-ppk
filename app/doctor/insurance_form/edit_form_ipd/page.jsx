@@ -123,11 +123,11 @@ export default function page({ isOpen, onClose, claimData }) {
                 </Tabs>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="default" variant="flat" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Action
+                  บันทึก
                 </Button>
               </ModalFooter>
             </>

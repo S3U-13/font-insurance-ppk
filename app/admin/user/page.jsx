@@ -25,6 +25,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@heroui/dropdown";
+import { Switch } from "@heroui/switch";
 import { Edit, Eye, FileText, XCircle } from "@deemlol/next-icons";
 
 export default function page() {
@@ -336,9 +337,15 @@ export default function page() {
                 </TableCell>
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">
-                    <Button isIconOnly size="sm" color="default" variant="flat">
+                    {/* <Button isIconOnly size="sm" color="default" variant="flat">
                       <Edit size={20} />
-                    </Button>
+                    </Button> */}
+
+                    <Switch
+                      defaultSelected={item.active === "Y"}
+                      aria-label="Automatic updates"
+                      size="sm"
+                    />
                   </div>
                 </TableCell>
               </TableRow>

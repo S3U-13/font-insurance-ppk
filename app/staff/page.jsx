@@ -24,7 +24,7 @@ import ModalViewOPD from "../doctor/insurance_form/view_opd/page";
 import ModalUnApprove from "../doctor/insurance_form/success/modal-unapprove/page";
 import ModalPreviewPdf from "../doctor/insurance_form/preview-pdf/page";
 import ModalApprove from "../doctor/insurance_form/modal-approve/page";
-import { Eye, FileText, XCircle } from "@deemlol/next-icons";
+import { Eye, FileText, XCircle, CheckCircle } from "@deemlol/next-icons";
 
 export default function page() {
   const {
@@ -315,27 +315,25 @@ export default function page() {
                 ))}
 
                 <TableCell className="text-center">
-                  <Chip
-                    className="p-2"
-                    color="success"
-                    endContent={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="size-5.5"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    }
-                    variant="flat"
-                  >
-                    ดำเนินการสำเร็จ
-                  </Chip>
+                  {item.status === "approved" ? (
+                    <Chip
+                      className="p-2"
+                      color="default"
+                      endContent={<CheckCircle size={20} />}
+                      variant="flat"
+                    >
+                      ทางเเพทย์ได้ทำการยื่นเรื่องเเล้ว
+                    </Chip>
+                  ) : item.status === "s_approved" ? (
+                    <Chip
+                      className="p-2"
+                      color="primary"
+                      endContent={<CheckCircle size={20} />}
+                      variant="flat"
+                    >
+                      รอส่งข้อมูลขึ้น IClaim
+                    </Chip>
+                  ) : null}
                 </TableCell>
                 <TableCell>
                   <div className="flex justify-center gap-2 items-center">

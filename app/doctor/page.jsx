@@ -83,6 +83,7 @@ export default function page() {
     setChangeStatus,
     openModalApprove,
     setOpenModalApprove,
+    modalRef,
   } = useHook();
 
   return (
@@ -90,6 +91,7 @@ export default function page() {
       <ModalIPD
         patData={patData}
         isOpen={openModalIPD}
+        modalRef={modalRef}
         onClose={() => {
           setOpenModalIPD(false);
           FetchAllForm()
@@ -102,6 +104,7 @@ export default function page() {
         setPatData={setPatData}
         isOpen={openModalOPD}
         claimId={claimId}
+        modalRef={modalRef}
         onClose={() => {
           setOpenModalOPD(false);
           FetchAllForm()
@@ -112,12 +115,15 @@ export default function page() {
       <ModalViewOPD
         claimData={claimData}
         isOpen={openModalViewOPD}
+        modalRef={modalRef}
         onClose={() => setOpenModalViewOPD(false)}
       />
 
       <ModalEditIPD
+        patData={patData}
         claimData={claimData}
         isOpen={openModalEditIPD}
+        modalRef={modalRef}
         onClose={() => {
           setOpenModalEditIPD(false);
           FetchAllForm()
@@ -126,10 +132,12 @@ export default function page() {
         }}
       />
       <ModalEditOPD
+        patData={patData}
         selectID={selectID}
         claimData={claimData}
         setClaimData={setClaimData}
         isOpen={openModalEditOPD}
+        modalRef={modalRef}
         onClose={() => {
           setOpenModalEditOPD(false);
           FetchAllForm()
@@ -142,6 +150,7 @@ export default function page() {
         claimData={claimData}
         changeStatus={changeStatus}
         isOpen={openModalApprove}
+        modalRef={modalRef}
         onClose={() => {
           setOpenModalApprove(false);
           FetchAllForm()
@@ -405,21 +414,8 @@ export default function page() {
                   {item.status === "pending" ? (
                     <Chip
                       className="p-1"
-                      color="primary"
-                      endContent={
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="size-5.5"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      }
+                      color="default"
+                      endContent={<XCircle size={20} />}
                       variant="flat"
                     >
                       ยังไม่ได้กรอกข้อมูล
@@ -444,7 +440,7 @@ export default function page() {
                       }
                       variant="flat"
                     >
-                      รอดำเนินการ
+                      รอดำเนินการกด approve
                     </Chip>
                   ) : item.status === "unapproved" ? (
                     <Chip
@@ -453,7 +449,7 @@ export default function page() {
                       endContent={<XCircle size={20} />}
                       variant="flat"
                     >
-                      unapproved
+                      ยกเลิกรายการ
                     </Chip>
                   ) : item.status === "s_unapproved" ? (
                     <Chip
@@ -462,7 +458,7 @@ export default function page() {
                       endContent={<XCircle size={20} />}
                       variant="flat"
                     >
-                      staff unapproved
+                      ทางประกันยกเลิกรายการ
                     </Chip>
                   ) : null}
                 </TableCell>
@@ -480,7 +476,7 @@ export default function page() {
                               setHn(item.patientId);
                               setVisitId("");
                               setPatReg(item.patregId);
-                              setClaimId(item.id);
+                              // setClaimId(item.id);
                               setOpenModalOPD(true);
                             }}
                           >
@@ -513,6 +509,9 @@ export default function page() {
                             color="default"
                             variant="flat"
                             onPress={() => {
+                              setHn(item.patientId);
+                              setVisitId("");
+                              setPatReg(item.patregId);
                               setClaimId(item.id);
                               setSelectID(item?.hospitalForm?.id);
                               setOpenModalEditOPD(true);
@@ -527,6 +526,9 @@ export default function page() {
                             color="default"
                             variant="flat"
                             onPress={() => {
+                              setHn(item.patientId);
+                              setPatReg("");
+                              setVisitId(item.visitId);
                               setClaimId(item.id);
                               setSelectID(item?.hospitalForm?.id);
                               setOpenModalEditIPD(true);

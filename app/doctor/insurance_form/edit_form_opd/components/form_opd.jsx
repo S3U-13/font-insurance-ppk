@@ -5,7 +5,7 @@ import { Input, Textarea } from "@heroui/input";
 import { Radio, RadioGroup } from "@heroui/radio";
 import { Select, SelectItem } from "@heroui/select";
 import { div } from "framer-motion/client";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@heroui/button";
 import {
   parseDate,
@@ -39,7 +39,26 @@ export default function FormOPD({
   handleSaveSignatureDoctor,
   signatureDoctor,
   setSignatureDoctor,
+  patData,
 }) {
+  console.log(patData);
+  const textRef = useRef(null);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!textRef.current) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(textRef.current);
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   return (
     <div>
       <ModalDoctorSignature
@@ -301,7 +320,7 @@ export default function FormOPD({
                 label="vital sign id :"
                 size="sm"
                 variant="bordered"
-                type="text"
+                type="hidden"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -443,7 +462,7 @@ export default function FormOPD({
           <div className="grid grid-cols-12 gap-4 items-end">
             <div className="col-span-4 flex items-center gap-2">
               {/* Date */}
-              <DateInput
+              <DatePicker
                 label="Date of accident"
                 size="sm"
                 variant="bordered"
@@ -582,7 +601,37 @@ export default function FormOPD({
         {/* Section 10: Treatment */}
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-gray-200">10.Treatment</h3>
+          <div className="border border-divider px-4 py-2 rounded-lg">
+            <p className="text-md font-bold">treatment ppk11</p>
+            <div>
+              <div ref={textRef}>
+                <p className="text-sm font-bold">การสั่งยา</p>
 
+                {patData?.drug.map((item, index) => (
+                  <p key={index} className="text-xs">
+                    ยา {item.servicename} สั่งยา {item.requestqty} เม็ด จ่ายยา{" "}
+                    {item.serviceqty} เม็ด
+                  </p>
+                ))}
+
+                <p className="text-sm font-bold">treatment</p>
+                <p className="text-xs whitespace-pre-wrap">
+                  {patData?.treatment}
+                </p>
+              </div>
+
+              <div className="flex justify-end">
+                <Button
+                  className="mt-3"
+                  size="sm"
+                  variant="flat"
+                  onPress={handleCopy}
+                >
+                  {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
+                </Button>
+              </div>
+            </div>
+          </div>
           <form.Field name="planOfTreatment">
             {(field) => (
               <Textarea

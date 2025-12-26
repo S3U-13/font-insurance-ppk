@@ -100,10 +100,16 @@ export default function useHook() {
     if (filterValue) {
       const keyword = filterValue.toLowerCase();
 
-      filtered = filtered.filter((item) =>
-        String(item.id || "")
-          .toLowerCase()
-          .includes(keyword)
+      filtered = filtered.filter(
+        (item) =>
+          String(item.username || "")
+            .toLowerCase()
+            .includes(keyword) ||
+          String(
+            `${item.app_person.firstname} ${item.app_person.lastname}` || ""
+          )
+            .toLowerCase()
+            .includes(keyword)
       );
     }
     if (statusFilter.size > 0) {
