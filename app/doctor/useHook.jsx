@@ -112,9 +112,8 @@ export default function useHook() {
     hn,
     patReg,
     visitId,
+    claimId,
   ]);
-
-  console.log(patData);
 
   useEffect(() => {
     if (

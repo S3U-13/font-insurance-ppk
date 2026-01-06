@@ -476,7 +476,7 @@ export default function page() {
                               setHn(item.patientId);
                               setVisitId("");
                               setPatReg(item.patregId);
-                              // setClaimId(item.id);
+                              setClaimId(item.id);
                               setOpenModalOPD(true);
                             }}
                           >

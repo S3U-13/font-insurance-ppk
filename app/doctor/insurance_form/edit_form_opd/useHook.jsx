@@ -284,11 +284,11 @@ export default function useHook({
     );
     form.setFieldValue(
       "investigations",
-      claimData?.hospitalForm?.investigations || null
+      claimData?.hospitalForm?.investigations || ""
     );
     form.setFieldValue(
       "planOfTreatment",
-      claimData?.hospitalForm?.planOfTreatment || null
+      claimData?.hospitalForm?.planOfTreatment || ""
     );
   }, [claimData]);
 

@@ -41,7 +41,6 @@ export default function FormOPD({
   setSignatureDoctor,
   patData,
 }) {
-  console.log(patData);
   const textRef = useRef(null);
 
   const [copied, setCopied] = useState(false);
@@ -59,6 +58,42 @@ export default function FormOPD({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+  const textRef2 = useRef(null);
+
+  const [copied2, setCopied2] = useState(false);
+
+  const handleCopy2 = () => {
+    if (!textRef2.current) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(textRef2.current);
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    setCopied2(true);
+    setTimeout(() => setCopied2(false), 2000);
+  };
+
+  const formatThaiDateTime = (isoString) => {
+    if (!isoString || isoString === "-") return "-";
+
+    const date = new Date(isoString);
+
+    if (isNaN(date)) return "-"; // กัน error ตรงนี้สำคัญ!
+
+    return new Intl.DateTimeFormat("th-TH", {
+      timeZone: "Asia/Bangkok",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  };
+
   return (
     <div>
       <ModalDoctorSignature
@@ -297,7 +332,7 @@ export default function FormOPD({
                 size="sm"
                 variant="bordered"
                 type="hidden"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -321,7 +356,7 @@ export default function FormOPD({
                 size="sm"
                 variant="bordered"
                 type="hidden"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -427,7 +462,7 @@ export default function FormOPD({
                 label="Chief complaint and duration"
                 size="sm"
                 variant="bordered"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -446,7 +481,7 @@ export default function FormOPD({
                 className="w-full"
                 label="Present illness or cause of injury"
                 variant="bordered"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -508,7 +543,7 @@ export default function FormOPD({
                 label="Physical exam"
                 size="sm"
                 variant="bordered"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -527,7 +562,7 @@ export default function FormOPD({
                 label="Is the illness related to:"
                 className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
                 size="sm"
-                value={field.state.value || []}
+                value={field.state.value ?? []}
                 onChange={(values) => field.handleChange(values)}
               >
                 {choice2.map((c2) => (
@@ -555,7 +590,7 @@ export default function FormOPD({
                 label="Underlying condition"
                 size="sm"
                 variant="bordered"
-                value={field.state.value || ""}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -572,7 +607,7 @@ export default function FormOPD({
                 label="Diagnosis"
                 size="sm"
                 variant="bordered"
-                value={field.state.value}
+                value={field.state.value ?? ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
@@ -584,66 +619,117 @@ export default function FormOPD({
           <h3 className="font-semibold  dark:text-gray-200">
             9. Investigation & Result
           </h3>
-          <form.Field name="investigations">
-            {(field) => (
-              <Input
-                className="w-full"
-                label="Investigation & Result (Lab, EKG, X-ray, etc.)"
-                size="sm"
-                variant="bordered"
-                value={field.state.value || ""}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-            )}
-          </form.Field>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="border border-divider px-4 py-2 rounded-lg">
+              <p className="text-md font-bold">Investigation & Result ppk11</p>
+              <div>
+                <div ref={textRef}>
+                  <p className="text-sm font-bold mt-2">lab</p>
+                  {patData?.labReports.map((item, index) => (
+                    <div key={index} className="text-xs space-y-1">
+                      <p>
+                        {index + 1}.service name : {item.servicename}
+                      </p>
+                      <p>ตรวจ {item.item.itemname}</p>
+                      <p>ตรวจ {item.subitem.subitemdesc}</p>
+                      <p>
+                        ค่ามาตราฐาน {item.normalvalue} {item.unitresult}
+                      </p>
+                      <p>
+                        ผล {item.valuecode} {item.unitresult}
+                      </p>
+                      <p>
+                        ผลออกวันที่ : {formatThaiDateTime(item.resultdatetime)}
+                      </p>
+                    </div>
+                  ))}
+                  <p className="text-sm font-bold mt-2">X-ray</p>
+                  {patData?.xrayReports.map((item, index) => (
+                    <div key={index} className="text-xs ">
+                      <p>ยืนยันโดย : {item.approver_name || "-"}</p>
+                      <p>ผลการ X-ray : {item.report_text}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    className="mt-3"
+                    size="sm"
+                    variant="flat"
+                    onPress={handleCopy}
+                  >
+                    {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <form.Field name="investigations">
+              {(field) => (
+                <Textarea
+                  className="w-full"
+                  classNames={{ label: "text-md font-bold" }}
+                  label="Investigation & Result (Lab, EKG, X-ray, etc.)"
+                  radius="sm"
+                  variant="bordered"
+                  maxRows={31}
+                  value={field.state.value ?? ""}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
+          </div>
         </div>
 
         {/* Section 10: Treatment */}
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-gray-200">10.Treatment</h3>
-          <div className="border border-divider px-4 py-2 rounded-lg">
-            <p className="text-md font-bold">treatment ppk11</p>
-            <div>
-              <div ref={textRef}>
-                <p className="text-sm font-bold">การสั่งยา</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="border border-divider px-4 py-2 rounded-lg">
+              <p className="text-md font-bold">treatment ppk11</p>
+              <div>
+                <div ref={textRef2}>
+                  <p className="text-sm font-bold">การสั่งยา</p>
 
-                {patData?.drug.map((item, index) => (
-                  <p key={index} className="text-xs">
-                    ยา {item.servicename} สั่งยา {item.requestqty} เม็ด จ่ายยา{" "}
-                    {item.serviceqty} เม็ด
+                  {patData?.drug.map((item, index) => (
+                    <p key={index} className="text-xs">
+                      {item.servicename} สั่งยา {item.requestqty}{" "}
+                      {item.routeUnit.thainame} จ่ายยา {item.serviceqty}{" "}
+                      {item.routeUnit.thainame}
+                    </p>
+                  ))}
+
+                  <p className="text-sm font-bold">treatment</p>
+                  <p className="text-xs whitespace-pre-wrap">
+                    {patData?.treatment || ""}
                   </p>
-                ))}
-
-                <p className="text-sm font-bold">treatment</p>
-                <p className="text-xs whitespace-pre-wrap">
-                  {patData?.treatment}
-                </p>
-              </div>
-
-              <div className="flex justify-end">
-                <Button
-                  className="mt-3"
-                  size="sm"
-                  variant="flat"
-                  onPress={handleCopy}
-                >
-                  {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
-                </Button>
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    className="mt-3"
+                    size="sm"
+                    variant="flat"
+                    onPress={handleCopy2}
+                  >
+                    {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
+                  </Button>
+                </div>
               </div>
             </div>
+            <form.Field name="planOfTreatment">
+              {(field) => (
+                <Textarea
+                  className="w-full"
+                  classNames={{ label: "text-xl font-bold" }}
+                  label="Treatment"
+                  size="sm"
+                  variant="bordered"
+                  maxRows={31}
+                  value={field.state.value || ""}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              )}
+            </form.Field>
           </div>
-          <form.Field name="planOfTreatment">
-            {(field) => (
-              <Textarea
-                className="w-full"
-                label="Treatment"
-                size="sm"
-                variant="bordered"
-                value={field.state.value || ""}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-            )}
-          </form.Field>
         </div>
         <div className="space-y-4  ">
           <h3 className="font-semibold  dark:text-gray-200">

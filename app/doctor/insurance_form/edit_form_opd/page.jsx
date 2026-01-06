@@ -49,9 +49,9 @@ export default function page({
       <Modal
         isOpen={isOpen}
         onOpenChange={onClose}
-        size="5xl"
+        size="full"
         classNames={{
-          body: "max-h-[calc(80vh-50px)] overflow-y-scroll",
+          body: "max-h-[calc(90vh-40px)] overflow-y-scroll",
           header: "border-b border-divider",
           footer: "border-t border-divider",
         }}
