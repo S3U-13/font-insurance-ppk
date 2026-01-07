@@ -42,7 +42,6 @@ export default function page({
     handleSaveSignatureDoctor,
     signatureDoctor,
     setSignatureDoctor,
-
   } = useHook({ patData, setPatData, onClose, claimId });
 
   return (
@@ -52,9 +51,11 @@ export default function page({
         onOpenChange={onClose}
         size="full"
         classNames={{
-          body: "max-h-[calc(90vh-40px)] overflow-y-scroll",
-          header: "border-b border-divider",
-          footer: "border-t border-divider",
+          body: "max-h-[calc(90vh-40px)] overflow-y-scroll bg-[#edf7f7] dark:bg-[#0e0e11]",
+          header:
+            "border-b border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#0e0e11]",
+          footer:
+            "border-t border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#0e0e11]",
         }}
       >
         <ModalContent ref={modalRef}>
@@ -98,7 +99,6 @@ export default function page({
                   handleSaveSignatureDoctor={handleSaveSignatureDoctor}
                   signatureDoctor={signatureDoctor}
                   setSignatureDoctor={setSignatureDoctor}
-      
                 />
               </ModalBody>
               <ModalFooter>

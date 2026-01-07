@@ -1,18 +1,9 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useApiRequest = () => {
-  const apiRequest = async (
-    endpoint,
-    method = "GET",
-    body = null,
-    token = null
-  ) => {
+  const apiRequest = async (endpoint, method = "GET", body = null) => {
     // 1️⃣ สร้าง headers
     const headers = { "Content-Type": "application/json" };
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
     const options = {
       method,
       headers,
@@ -51,32 +42,23 @@ export const useApiRequest = () => {
   };
 
   // ดึงข้อมูลฟอร์มทั้งหมด → cookie จะถูกส่งให้ server
-  const FetchAllForm = async (token = null) => {
+  const FetchAllForm = async () => {
     return await apiRequest(
       "/api/claims?status=pending,draft,unapproved,s_unapproved",
-      "GET",
-      null,
-      token
+      "GET"
     );
   };
-  const FetchAllFormStatusApproved = async (token = null) => {
+  const FetchAllFormStatusApproved = async () => {
     return await apiRequest(
       "/api/claims?status=approved,s_approved,s_unapproved",
-      "GET",
-      null,
-      token
+      "GET"
     );
   };
 
-  const pullDataIpd = async (hn, visitId, token = null) => {
+  const pullDataIpd = async (hn, visitId) => {
     try {
       const payload = { hn, visitId };
-      const data = await apiRequest(
-        "/hospital-forms/get",
-        "POST",
-        payload,
-        token
-      );
+      const data = await apiRequest("/hospital-forms/get", "POST", payload);
       return data ?? null;
     } catch (err) {
       console.error("pullDataIpd error:", err);
@@ -84,14 +66,13 @@ export const useApiRequest = () => {
     }
   };
 
-  const pullDataOpd = async (hn, patReg, token = null) => {
+  const pullDataOpd = async (hn, patReg) => {
     try {
       const payload = { hn, patReg };
       const data = await apiRequest(
         "/hospital-forms/get",
         "POST",
         payload,
-        token
       );
       return data ?? null;
     } catch (err) {
@@ -99,13 +80,12 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const pdfOpd = async (claimId, token = null) => {
+  const pdfOpd = async (claimId) => {
     try {
       // const payload = { claimId };
       const data = await apiRequest(
         `/api/claims/${claimId}/opd-pdf`,
         "POST",
-        token
       );
       return data ?? null;
     } catch (error) {
@@ -113,9 +93,9 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const pullClaimData = async (claimId, token = null) => {
+  const pullClaimData = async (claimId) => {
     try {
-      const data = await apiRequest(`/api/claims/${claimId}`, "GET", token);
+      const data = await apiRequest(`/api/claims/${claimId}`, "GET");
 
       return data ?? null;
     } catch (err) {
@@ -125,22 +105,22 @@ export const useApiRequest = () => {
     }
   };
 
-  const CreateOrderInsuranceOPD = async (value, token = null) => {
+  const CreateOrderInsuranceOPD = async (value, ) => {
     try {
-      const data = await apiRequest("/hospital-forms", "POST", value, token);
+      const data = await apiRequest("/hospital-forms", "POST", value, );
       return data;
     } catch (err) {
       console.error("CreateOrderInsuranceOPD error:", err);
       return null;
     }
   };
-  const EditOrderInsuranceOPD = async (value, hosClaimId, token = null) => {
+  const EditOrderInsuranceOPD = async (value, hosClaimId, ) => {
     try {
       const data = await apiRequest(
         `/hospital-forms/${hosClaimId}`,
         "PUT",
         value,
-        token
+       
       );
       return data;
     } catch (err) {
@@ -148,21 +128,20 @@ export const useApiRequest = () => {
     }
   };
 
-  const FetchUsers = async (token = null) => {
+  const FetchUsers = async () => {
     try {
-      return await apiRequest("/api/users", "GET", token);
+      return await apiRequest("/api/users", "GET");
     } catch (err) {
       console.error("fetch users error:", err);
       return null;
     }
   };
 
-  const ChangeStatus = async (claimId, changeStatus, token = null) => {
+  const ChangeStatus = async (claimId, changeStatus) => {
     try {
       const data = await apiRequest(
         `/api/claims/${claimId}/${changeStatus}`,
-        "POST",
-        token
+        "POST"
       );
       return data;
     } catch (err) {
@@ -170,12 +149,11 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const StaffChangeStatus = async (claimId, changeStatus, token = null) => {
+  const StaffChangeStatus = async (claimId, changeStatus) => {
     try {
       const data = await apiRequest(
         `/api/claims/${claimId}/${changeStatus}`,
-        "POST",
-        token
+        "POST"
       );
       return data;
     } catch (err) {

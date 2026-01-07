@@ -115,10 +115,10 @@ export default function FormOPD({
       <p>
         <strong>Part A</strong>
       </p>
-      <div className="mt-2 border border-divider rounded-xl p-4 space-y-4">
+      <div className="mt-2 border border-[#b0dddf] dark:border-divider  bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
         <div className="grid grid-cols-10 gap-2 items-center">
           <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
-            <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+            <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full"></span>
             สำหรับผู้เอาประกัน
           </h2>
           <Input
@@ -126,14 +126,21 @@ export default function FormOPD({
             label="ชื่อ-นามสกุล"
             value={`${patData?.pat?.prename || ""}${patData?.pat?.firstname || ""} ${patData?.pat?.lastname || ""}`}
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             disabled
           />
           <Select
             className="col-span-1"
             label="เพศ"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              base: "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126] rounded-lg",
+            }}
             disabled
             selectedKeys={
               patData?.pat?.sex ? new Set([String(patData.pat.sex)]) : new Set()
@@ -163,7 +170,11 @@ export default function FormOPD({
             label="เลขประจำตัวประชาชน"
             size="sm"
             value={patData?.pat?.citizencardno || ""}
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             disabled
           />
           <form.Field name="patientId">
@@ -172,7 +183,11 @@ export default function FormOPD({
                 className="col-span-2"
                 label="HN"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 disabled
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -186,7 +201,11 @@ export default function FormOPD({
             className="col-span-3"
             label="วัน/เดือน/ปีเกิด"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={formatThaiDateNoTime(patData?.pat?.birthdatetime || "")}
           />
 
@@ -194,7 +213,11 @@ export default function FormOPD({
             className="col-span-1"
             label="อายุ"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             disabled
             value={`${calculateAge(patData?.pat?.birthdatetime).years || ""} ปี`}
           />
@@ -203,7 +226,11 @@ export default function FormOPD({
             className="col-span-1"
             label="เดือน"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={`${calculateAge(patData?.pat?.birthdatetime).months || ""} เดือน`}
             disabled
           />
@@ -212,7 +239,11 @@ export default function FormOPD({
             className="col-span-3"
             label="อาชีพ"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={patData?.pat?.occupationName || ""}
             disabled
           />
@@ -222,7 +253,11 @@ export default function FormOPD({
             className="col-span-2"
             label="โทรศัพท์มือถือ"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={patData?.pat?.pat_address[0]?.phone ?? "-"}
             disabled
           />
@@ -230,7 +265,11 @@ export default function FormOPD({
             className="col-span-2"
             label="โทรศัพท์บ้าน"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             disabled
           />
 
@@ -238,7 +277,11 @@ export default function FormOPD({
             className="col-span-4"
             label="อีเมล"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={patData?.pat?.pat_address[0]?.email ?? "-"}
             disabled
           />
@@ -248,15 +291,19 @@ export default function FormOPD({
             className="col-span-8"
             label="ที่อยู่ปัจจุบัน"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
             value={formatAddress(patData?.pat?.pat_address)}
             disabled
           />
         </div>
       </div>
-      <div className="mt-6 border border-divider rounded-xl p-4 space-y-4">
+      <div className="mt-6 border border-[#b0dddf] dark:border-divider  bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
         <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
-          <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
+          <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full"></span>
           กรมธรรม์เลขที่
         </h2>
         <div className="grid grid-cols-12 gap-2 items-center">
@@ -264,7 +311,11 @@ export default function FormOPD({
             className="col-span-12"
             label="กรมธรรม์เลขที่"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
           />
           <div className="col-span-5 flex items-center gap-2">
             <p className="col-span-4">มีกรมธรรม์บริษัทประกันอื่น ๆ หรือไม่</p>
@@ -286,33 +337,49 @@ export default function FormOPD({
             className="col-span-4"
             label="บริษัท :"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
           />
           <Input
             className="col-span-3"
             label="กรมธรรม์เลขที่ :"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
           />
           <div className="col-span-5"></div>
           <Input
             className="col-span-4"
             label="บริษัท :"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
           />
           <Input
             className="col-span-3"
             label="กรมธรรม์เลขที่ :"
             size="sm"
-            variant="bordered"
+            variant="flat"
+            classNames={{
+              inputWrapper:
+                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+            }}
           />
         </div>
       </div>
 
-      <div className="mt-6 border border-divider rounded-2xl p-6 space-y-8  shadow-sm">
+      <div className="mt-6 border border-[#b0dddf] dark:border-divider  bg-[#d8efef] dark:bg-[#18181B] rounded-2xl p-6 space-y-8  shadow-sm">
         <h2 className="text-gray-800 dark:text-gray-100 font-bold text-lg flex items-center gap-3">
-          <span className="w-1.5 h-6 bg-violet-500 rounded-full"></span>
+          <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full"></span>
           For Hospital
         </h2>
 
@@ -327,7 +394,11 @@ export default function FormOPD({
               <Input
                 label="Visit id :"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 type="hidden"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -339,7 +410,11 @@ export default function FormOPD({
               <Input
                 label="claim id :"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 type="hidden"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -351,7 +426,11 @@ export default function FormOPD({
               <Input
                 label="vital sign id :"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 type="hidden"
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -364,7 +443,11 @@ export default function FormOPD({
               className="col-span-2"
               label="Visit date"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.visitdatetime
                   ? parseDate(patData?.visitdatetime.split("T")[0])
@@ -376,7 +459,11 @@ export default function FormOPD({
               className="col-span-2"
               label="Time"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.visitdatetime
                   ? convertISOToTime(patData.visitdatetime)
@@ -389,7 +476,11 @@ export default function FormOPD({
               className="col-span-2"
               label="T (Temp)"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.vitalsign?.[0]?.temperature
                   ? `${patData.vitalsign[0]?.temperature} °C`
@@ -402,7 +493,11 @@ export default function FormOPD({
               className="col-span-2"
               label="P (Pulse)"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.vitalsign?.[0]?.pulse
                   ? `${patData.vitalsign[0].pulse} bpm`
@@ -415,7 +510,11 @@ export default function FormOPD({
               className="col-span-2"
               label="R (Resp.)"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.vitalsign?.[0]?.respiration
                   ? `${patData.vitalsign[0].respiration} /min`
@@ -428,7 +527,11 @@ export default function FormOPD({
               className="col-span-2"
               label="BP"
               size="sm"
-              variant="bordered"
+              variant="flat"
+              classNames={{
+                inputWrapper:
+                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+              }}
               value={
                 patData?.vitalsign?.[0]?.bp_systolic &&
                 patData?.vitalsign?.[0]?.bp_diastolic
@@ -450,7 +553,11 @@ export default function FormOPD({
                 className="w-full"
                 label="Chief complaint and duration"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -467,7 +574,11 @@ export default function FormOPD({
               <Textarea
                 className="w-full"
                 label="Present illness or cause of injury"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -487,7 +598,11 @@ export default function FormOPD({
               <DatePicker
                 label="Date of accident"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={accidentDate}
                 onChange={handleAccidentDateChange}
               />
@@ -496,7 +611,11 @@ export default function FormOPD({
               <TimeInput
                 label="Time of accident"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={accidentTime}
                 onChange={handleAccidentTimeChange}
               />
@@ -508,7 +627,11 @@ export default function FormOPD({
                   className="col-span-8"
                   label="Place"
                   size="sm"
-                  variant="bordered"
+                  variant="flat"
+                  classNames={{
+                    inputWrapper:
+                      "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                  }}
                   value={field.state.value ?? ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
@@ -529,7 +652,11 @@ export default function FormOPD({
                 className="w-full"
                 label="Physical exam"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -547,7 +674,7 @@ export default function FormOPD({
             {(field) => (
               <CheckboxGroup
                 label="Is the illness related to:"
-                className="px-4 py-3 border border-divider rounded-xl bg-gray-50 dark:bg-[#1c1c1f]"
+                className="px-4 py-3 border border-[#b0dddf] dark:border-divider rounded-lg bg-[#f2fbf9] dark:bg-[#1c1c1f] "
                 size="sm"
                 value={field.state.value || []}
                 onChange={(values) => field.handleChange(values)}
@@ -576,7 +703,11 @@ export default function FormOPD({
                 className="w-full"
                 label="Underlying condition"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={field.state.value || ""}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -593,7 +724,11 @@ export default function FormOPD({
                 className="w-full"
                 label="Diagnosis"
                 size="sm"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -607,7 +742,7 @@ export default function FormOPD({
             9. Investigation & Result
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <div className="border border-divider px-4 py-2 rounded-lg">
+            <div className="border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] px-4 py-2 rounded-lg">
               <p className="text-md font-bold">Investigation & Result ppk11</p>
               <div>
                 <div ref={textRef}>
@@ -625,7 +760,9 @@ export default function FormOPD({
                       <p>
                         ผล {item.valuecode} {item.unitresult}
                       </p>
-                      <p>ผลออกวันที่ : {formatThaiDateTime(item.resultdatetime)}</p>
+                      <p>
+                        ผลออกวันที่ : {formatThaiDateTime(item.resultdatetime)}
+                      </p>
                     </div>
                   ))}
                   <p className="text-sm font-bold mt-2">X-ray</p>
@@ -641,6 +778,10 @@ export default function FormOPD({
                     className="mt-3"
                     size="sm"
                     variant="flat"
+                    classNames={{
+                      inputWrapper:
+                        "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                    }}
                     onPress={handleCopy}
                   >
                     {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
@@ -652,10 +793,14 @@ export default function FormOPD({
               {(field) => (
                 <Textarea
                   className="w-full"
-                  classNames={{ label: "text-md font-bold" }}
+                  classNames={{
+                    label: "text-md font-bold",
+                    inputWrapper:
+                      "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                  }}
                   label="Investigation & Result (Lab, EKG, X-ray, etc.)"
                   radius="sm"
-                  variant="bordered"
+                  variant="flat"
                   maxRows={31}
                   value={field.state.value || ""}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -668,7 +813,7 @@ export default function FormOPD({
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-white">10.Treatment</h3>
           <div className="grid grid-cols-2 gap-4">
-            <div className="border border-divider px-4 py-2 rounded-lg">
+            <div className="border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] px-4 py-2 rounded-lg">
               <p className="text-md font-bold">treatment ppk11</p>
               <div>
                 <div ref={textRef2}>
@@ -692,9 +837,13 @@ export default function FormOPD({
                     className="mt-3"
                     size="sm"
                     variant="flat"
+                    classNames={{
+                      inputWrapper:
+                        "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                    }}
                     onPress={handleCopy2}
                   >
-                    {copied ? "คลุมดำเเล้ว" : "คลุมดำ"}
+                    {copied2 ? "คลุมดำเเล้ว" : "คลุมดำ"}
                   </Button>
                 </div>
               </div>
@@ -703,10 +852,14 @@ export default function FormOPD({
               {(field) => (
                 <Textarea
                   className="w-full"
-                  classNames={{ label: "text-xl font-bold" }}
+                  classNames={{
+                    label: "text-xl font-bold",
+                    inputWrapper:
+                      "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                  }}
                   label="Treatment"
                   size="sm"
-                  variant="bordered"
+                  variant="flat"
                   maxRows={31}
                   value={field.state.value || ""}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -720,11 +873,12 @@ export default function FormOPD({
             11.Doctor Signature
           </h3>
 
-          <div className="flex justify-between border border-divider rounded-xl p-4">
+          <div className="flex justify-between items-start border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
             <div className="space-y-2">
               <form.Field name="signatureCheck">
                 {(field) => (
                   <RadioGroup
+                    className="mt-2"
                     label="ต้องการใช้ลายเซ็นในระบบหรือไม่"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -737,7 +891,11 @@ export default function FormOPD({
                         {String(s.id) === "1" && field.state.value === "1" && (
                           <Input
                             label="Doctor signature"
-                            variant="bordered"
+                            variant="flat"
+                            classNames={{
+                              inputWrapper:
+                                "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                            }}
                             size="sm"
                           />
                         )}
@@ -761,6 +919,10 @@ export default function FormOPD({
                               isIconOnly
                               color="secondary"
                               variant="flat"
+                              classNames={{
+                                inputWrapper:
+                                  "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                              }}
                               onPress={() => setOpenSignDoctor(true)}
                             >
                               <Edit3 className="size-5" />
@@ -775,7 +937,11 @@ export default function FormOPD({
 
               <Input
                 label="Physician's name"
-                variant="bordered"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
                 size="sm"
                 value={`${user.doctorsalutation} ${user.name}`}
                 disabled
@@ -783,12 +949,36 @@ export default function FormOPD({
               />
             </div>
             <div className="space-y-2 pt-8">
-              <Input label="Medical license No." variant="bordered" size="sm" />
+              <Input
+                label="Medical license No."
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
+                size="sm"
+              />
 
-              <DateInput label="DATE" variant="bordered" size="sm" />
+              <DateInput
+                label="DATE"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
+                size="sm"
+              />
             </div>
             <div className="space-y-2 pt-8">
-              <Input label="Specialty" variant="bordered" size="sm" />
+              <Input
+                label="Specialty"
+                variant="flat"
+                classNames={{
+                  inputWrapper:
+                    "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
+                }}
+                size="sm"
+              />
             </div>
           </div>
         </div>

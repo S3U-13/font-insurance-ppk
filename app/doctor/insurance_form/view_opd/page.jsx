@@ -65,7 +65,7 @@ export default function page({ isOpen, onClose, claimData }) {
                     <p className="text-md font-bold col-span-2">
                       ผู้เอาประกันภัย :{" "}
                     </p>
-                    <div className="grid grid-cols-2 gap-2 mt-3 bg-gray-100 rounded-lg px-4 py-2">
+                    <div className="grid grid-cols-2 gap-2 mt-3 bg-gray-100 dark:bg-[#0e0e11] rounded-lg px-4 py-2">
                       <p className="flex items-center gap-2  text-sm ">
                         <span className="font-bold">ชื่อ-นามสกุล :</span>{" "}
                         <span>{`${claimData?.his?.patient?.prename}${claimData?.his?.patient?.firstname} ${claimData?.his?.patient?.lastname}`}</span>
@@ -296,7 +296,7 @@ export default function page({ isOpen, onClose, claimData }) {
                         </span>
                       </p>
                       <div className="text-sm">
-                        <div className="px-4 py-2 bg-gray-50 border border-divider rounded-lg mt-2 space-y-1">
+                        <div className="px-4 py-2 bg-gray-50 dark:bg-[#0e0e11] border border-divider rounded-lg mt-2 space-y-1">
                           <span className="font-bold text-md">
                             Is the illness related to (please tick ☒ if yes) :
                           </span>{" "}
@@ -330,7 +330,7 @@ export default function page({ isOpen, onClose, claimData }) {
                         </span>
                       </p>
 
-                      <div className="bg-gray-50 border border-divider px-4 py-2 rounded-lg mt-2">
+                      <div className="bg-gray-50 dark:bg-[#0e0e11] border border-divider px-4 py-2 rounded-lg mt-2">
                         <p className="font-bold text-md pb-2">Treatment</p>
                         <p className="whitespace-pre-wrap text-sm">
                           {claimData?.hospitalForm?.planOfTreatment || ""}

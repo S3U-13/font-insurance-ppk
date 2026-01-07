@@ -113,17 +113,18 @@ export default function page() {
       /> */}
 
       <h1 className="text-center text-xl">
-        <strong>Hospital PPK Insurance Form</strong>
+        <strong>USER MANAGE</strong>
       </h1>
 
-      <div className="p-4 space-y-2 border border-divider rounded-xl bg-gray-100 dark:bg-[#0e0e11]">
+      <div className="p-4 space-y-2 border border-[#b0dddf] dark:border-divider rounded-xl bg-[#d8efef] dark:bg-[#0e0e11]">
         <div className="flex justify-between gap-2 items-center">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[30rem] h-10",
               mainWrapper: "h-full",
               input: "text-small",
-              inputWrapper: "h-full font-normal text-default-500 ",
+              inputWrapper:
+                "h-full font-normal text-default-500 dark:text-white bg-[#edf7f7] border border-[#b0dddf] dark:bg-[#212126] dark:border-[#212126]",
             }}
             placeholder="Type to search..."
             size="sm"
@@ -148,10 +149,10 @@ export default function page() {
             type="search"
           />
           <div className="flex items-center gap-2">
-            <Dropdown>
+            <Dropdown className="bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]">
               <DropdownTrigger>
                 <Button
-                  className="capitalize"
+                  className="capitalize bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]"
                   variant="flat"
                   endContent={
                     <svg
@@ -183,10 +184,10 @@ export default function page() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Dropdown>
+            <Dropdown className="bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]">
               <DropdownTrigger>
                 <Button
-                  className="capitalize"
+                  className="capitalize bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]"
                   variant="flat"
                   endContent={
                     <svg
@@ -246,9 +247,10 @@ export default function page() {
         <Table
           aria-label="Example static collection table"
           classNames={{
-            th: "p-4",
-            td: "px-4 py-3.5 border-b border-divider pt-1",
+            th: "p-4 bg-[#d8efef] dark:bg-[#27272A] text-gray-700 dark:text-white ",
+            td: "px-4 py-3.5 border-b border-[#b0dddf] dark:border-divider pt-1",
             base: "max-h-[calc(80vh-150px)]",
+            wrapper: "bg-[#edf7f7] dark:bg-[#18181B]",
           }}
         >
           <TableHeader>

@@ -19,12 +19,14 @@ const apiRequest = async (
     });
 
     const data = await res.json().catch(() => ({}));
+
     if (res.status >= 200 && res.status < 300) {
       addToast({
         title: "สำเร็จ",
         description: "เข้าสู่ระบบสำเร็จ",
         color: "success",
         variant: "flat",
+        promise: new Promise((resolve) => setTimeout(resolve, 2000)),
       });
     }
     if (res.status === 400) {

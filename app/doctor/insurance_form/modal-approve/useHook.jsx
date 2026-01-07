@@ -6,6 +6,7 @@ import { addToast } from "@heroui/toast";
 export default function useHook({ onClose }) {
   const { ChangeStatus } = useApiRequest();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleApprove = async (claimId, changeStatus) => {
     if (!changeStatus || !claimId) return;
@@ -22,6 +23,12 @@ export default function useHook({ onClose }) {
           description: "ยืนยันสำเร็จ",
           color: "success",
           variant: "flat",
+          promise: new Promise((resolve) =>
+            setTimeout(() => {
+              setLoading(false);
+              resolve(true);
+            }, 1500)
+          ),
         });
       } else if (!data) {
         addToast({

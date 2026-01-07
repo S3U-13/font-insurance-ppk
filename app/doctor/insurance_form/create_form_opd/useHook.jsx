@@ -117,6 +117,7 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     });
   };
 
+  const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (value) => {
     if (isSubmitting) return;
@@ -131,6 +132,13 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
           description: "เพิ่มข้อมูลสำเร็จ",
           color: "success",
           variant: "flat",
+
+          promise: new Promise((resolve) =>
+            setTimeout(() => {
+              setLoading(false);
+              resolve(true);
+            }, 1500)
+          ),
         });
       }
     } catch (err) {

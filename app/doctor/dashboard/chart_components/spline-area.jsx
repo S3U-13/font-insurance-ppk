@@ -12,7 +12,7 @@ export default function SplineArea() {
 
   const colors = isDark ? ["#60a5fa", "#34d399"] : ["#60a5fa", "#34d399"];
   const textColor = isDark ? "#e5e7eb" : "#1f2937";
-  const gridColor = isDark ? "#18181b" : "#f9fafb";
+  const gridColor = isDark ? "#18181b" : "#edf7f7";
 
   useEffect(() => {
     if (!chartRef.current || !resolvedTheme) return;
@@ -30,7 +30,7 @@ export default function SplineArea() {
           opacityTo: 0.05,
         },
       },
-      
+
       title: {
         text: "(chart example)",
         align: "center", // 'left' | 'center' | 'right'
@@ -81,7 +81,18 @@ export default function SplineArea() {
         enabled: false,
       },
       grid: {
+        strokeDashArray: 4,
         show: true,
+        xaxis: {
+          lines: {
+            show: true, // ❌ ไม่เอาเส้นตั้ง
+          },
+        },
+        yaxis: {
+          lines: {
+            show: false, // ✅ เอาเส้นนอน
+          },
+        },
       },
       stroke: {
         curve: "smooth",

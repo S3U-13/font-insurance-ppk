@@ -15,7 +15,7 @@ export default function ColumnChart() {
     ? ["#60a5fa", "#34d399", "#fbbf24"]
     : ["#60a5fa", "#34d399", "#fbbf24"];
   const textColor = isDark ? "#e5e7eb" : "#1f2937";
-  const gridColor = isDark ? "#18181b" : "#f9fafb";
+  const gridColor = isDark ? "#18181b" : "#edf7f7";
 
   useEffect(() => {
     if (!chartRef.current || !resolvedTheme) return;

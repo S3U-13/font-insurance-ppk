@@ -30,7 +30,7 @@ export default function Sidebar({ isOpen }) {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-4.5 text-neutral-600"
+          className="size-4.5 text-black dark:text-white"
         >
           <path
             strokeLinecap="round"
@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen }) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-4.5 text-neutral-600"
+          className="size-4.5 text-black dark:text-white"
         >
           <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
         </svg>
@@ -85,7 +85,7 @@ export default function Sidebar({ isOpen }) {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-4.5 text-neutral-600"
+          className="size-4.5 text-black dark:text-white"
         >
           <path
             strokeLinecap="round"
@@ -116,7 +116,7 @@ export default function Sidebar({ isOpen }) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-4.5 text-neutral-600"
+          className="size-4.5 text-black dark:text-white"
         >
           <path
             fillRule="evenodd"
@@ -160,7 +160,7 @@ export default function Sidebar({ isOpen }) {
     //       xmlns="http://www.w3.org/2000/svg"
     //       viewBox="0 0 24 24"
     //       fill="currentColor"
-    //       className="size-4.5 text-neutral-600"
+    //       className="size-4.5 text-black dark:text-white"
     //     >
     //       <path
     //         fillRule="evenodd"
@@ -226,25 +226,30 @@ export default function Sidebar({ isOpen }) {
   return (
     <div className="">
       <div
-        className={`fixed top-0 left-0 h-full w-78 shadow-md p-4 pt-8 transition-transform duration-300 z-20 border border-divider bg-gray-100 dark:bg-[#0e0e11] ${
+        className={`fixed top-0 left-0 h-full w-78 shadow-md p-4 pt-8 transition-transform duration-300 z-20 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#0e0e11] ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col gap-4 h-full">
-          <h1 className="text-center font-bold text-black dark:text-white">
+          
+          <h1 className="text-center font-bold text-black  dark:text-white">
             PPK PAPER
           </h1>
 
-          <div className="w-full h-200 bg-gray-50 dark:bg-[#18181b] mx-auto mt-4 rounded-xl   border border-divider">
+          <div className="w-full h-200 bg-[#edf7f7] dark:bg-[#18181b] mx-auto mt-4 rounded-xl border border-[#b0dddf] dark:border-divider">
             <ScrollShadow hideScrollBar className="space-y-2 w-full h-full p-4">
               {" "}
               {menu.map((item) => (
-                <Accordion key={item?.id} variant="shadow">
+                <Accordion
+                  key={item?.id}
+                  variant="shadow"
+                  className="dark:bg-[#27272A]"
+                >
                   <AccordionItem
                     aria-label={item.name}
-                    classNames={{ content: "grid grid-cols-1 gap-1" }}
+                    classNames={{ content: "space-y-1" }}
                     title={
-                      <p className="text-xs flex items-center justify-between">
+                      <p className="text-xs flex items-center justify-between text-black dark:text-white">
                         {item.name} {item.icon}
                       </p>
                     }
@@ -273,8 +278,8 @@ export default function Sidebar({ isOpen }) {
                               }
                               className={
                                 isActive
-                                  ? "text-xs bg-gray-100 dark:bg-[#0e0e11] border border-divider rounded-lg p-1.5 flex items-center justify-between"
-                                  : "text-xs hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between"
+                                  ? "text-xs bg-[#edf7f7] dark:bg-[#0e0e11] border border-[#b0dddf] dark:border-divider rounded-lg p-1.5 flex items-center justify-between"
+                                  : "text-xs hover:bg-[#edf7f7] dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between"
                               }
                             >
                               {item_label.label_name}
@@ -286,7 +291,7 @@ export default function Sidebar({ isOpen }) {
                   </AccordionItem>
                 </Accordion>
               ))}
-              <Accordion variant="shadow">
+              <Accordion variant="shadow" className="dark:bg-[#27272A]">
                 <AccordionItem
                   aria-label="SETTING"
                   classNames={{ content: "grid grid-cols-1 gap-1" }}
@@ -297,7 +302,7 @@ export default function Sidebar({ isOpen }) {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="size-4.5 text-neutral-600"
+                        className="size-4.5 text-black dark:text-white"
                       >
                         <path
                           fillRule="evenodd"
@@ -309,7 +314,7 @@ export default function Sidebar({ isOpen }) {
                   }
                 >
                   <div>
-                    <div className="hover:bg-gray-100 dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between">
+                    <div className="hover:bg-[#edf7f7] dark:hover:bg-[#0e0e11] rounded-lg p-1.5 flex items-center justify-between">
                       {" "}
                       <ThemeSwitch
                         theme={currentTheme} // ส่งค่า theme เข้าไป

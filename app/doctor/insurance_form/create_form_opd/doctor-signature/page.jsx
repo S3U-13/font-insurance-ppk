@@ -17,7 +17,7 @@ export default function page({ isOpen, onClose, onSave }) {
 
   return (
     <div>
-      <Modal isOpen={isOpen} onOpenChange={onClose} placement="center">
+      <Modal isOpen={isOpen} onOpenChange={onClose} placement="center" >
         <ModalContent>
           {(onClose) => (
             <>

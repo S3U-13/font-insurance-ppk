@@ -18,10 +18,11 @@ export default function Navbar() {
   const { user } = useAuth();
   const { openDrawer, setOpenDrawer } = useDrawer();
   return (
-    <div className="h-18 w-full p-6 border border-divider rounded-lg flex items-center justify-between px-4 bg-gray-100 dark:bg-[#0e0e11]">
+    <div className="h-18 w-full p-6 border border-[#b0dddf] dark:border-divider rounded-lg flex items-center justify-between px-4 bg-[#d8efef] dark:bg-[#0e0e11]">
       <Button
         size="md"
-        variant="solid"
+        variant="flat"
+        className="bg-[#edf7f7] dark:bg-[#27272a] border border-[#b0dddf] dark:border-[#212126]"
         onPress={() => {
           openDrawer === true ? setOpenDrawer(false) : setOpenDrawer(true);
         }}
@@ -113,7 +114,6 @@ export default function Navbar() {
               <p className="font-bold">Role : {user.role}</p>
             </DropdownItem>
             <DropdownItem key="upload">Upload Signature</DropdownItem>
-        
           </DropdownMenu>
         </Dropdown>
         {/* <Badge color="danger" content="99+" shape="circle">

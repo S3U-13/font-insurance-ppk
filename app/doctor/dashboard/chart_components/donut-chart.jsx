@@ -15,7 +15,7 @@ export default function DonutChart() {
     ? ["#60a5fa", "#34d399", "#fbbf24", "#ff9c45", "#ff4845"]
     : ["#60a5fa", "#34d399", "#fbbf24", "#ff9c45", "#ff4845"];
   const textColor = isDark ? "#e5e7eb" : "#1f2937";
-  const gridColor = isDark ? "#18181b" : "#f9fafb";
+  const gridColor = isDark ? "#18181b" : "#edf7f7";
 
   useEffect(() => {
     if (!chartRef.current || !resolvedTheme) return;
