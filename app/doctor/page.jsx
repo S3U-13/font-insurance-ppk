@@ -132,7 +132,6 @@ export default function page() {
         }}
       />
       <ModalEditOPD
-        patData={patData}
         selectID={selectID}
         claimData={claimData}
         setClaimData={setClaimData}
@@ -513,9 +512,6 @@ export default function page() {
                             color="default"
                             variant="flat"
                             onPress={() => {
-                              setHn(item.patientId);
-                              setVisitId("");
-                              setPatReg(item.patregId);
                               setClaimId(item.id);
                               setSelectID(item?.hospitalForm?.id);
                               setOpenModalEditOPD(true);
@@ -530,9 +526,6 @@ export default function page() {
                             color="default"
                             variant="flat"
                             onPress={() => {
-                              setHn(item.patientId);
-                              setPatReg("");
-                              setVisitId(item.visitId);
                               setClaimId(item.id);
                               setSelectID(item?.hospitalForm?.id);
                               setOpenModalEditIPD(true);

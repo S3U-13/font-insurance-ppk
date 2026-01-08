@@ -1,10 +1,12 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { connectSocket } from "@/sockets/connectSocket";
+import { useApiRequest } from "@/hooks/useApi";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const { logoutAPI, checkToken } = useApiRequest();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -34,10 +36,44 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(data.data.user));
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const logout = async () => {
+    try {
+      await logoutAPI();
+    } catch (e) {
+      console.error("logout failed", e);
+    } finally {
+      setUser(null);
+      localStorage.removeItem("user");
+    }
   };
+
+  const checkTokenTimeout = async () => {
+    try {
+      const res = await checkToken();
+      const data = await res.json();
+
+      if (!res.ok) {
+        return false;
+      }
+
+      return data;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const result = await checkTokenTimeout();
+      console.log("result:", result);
+
+      if (result === "false") {
+        logout(); // clear state + redirect
+      }
+    }, 5 * 1000); // เช็คทุก 1 นาที
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading }}>

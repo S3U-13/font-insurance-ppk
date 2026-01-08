@@ -86,10 +86,10 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     accidentDateTime: null,
     accidentPlace: "",
     underlyingCondition: "",
-    provisionalDx: "",
+    diagnosis: "",
     adjRW: "",
     manageOPDNote: "",
-    planOfTreatment: "",
+    treatment: "",
     investigations: "",
     relatedConditions: [],
     signatureCheck: null,
@@ -162,9 +162,9 @@ export default function useHook({ patData, setPatData, onClose, claimId }) {
     accidentDateTime: z.string().nullable(),
     accidentPlace: z.string().optional(),
     underlyingCondition: z.string().optional(),
-    provisionalDx: z.string().optional(),
+    diagnosis: z.string().optional(),
     adjRW: z.string().optional(),
-    planOfTreatment: z.string().optional(),
+    treatment: z.string().optional(),
     investigations: z.string().optional(),
     relatedConditions: z.array(z.coerce.number()).nullable(),
   });
@@ -211,10 +211,10 @@ ${patData?.drug
       patData?.underlyingcondition || null
     );
     form.setFieldValue("physicalExam", patData?.physicalExam || null);
-    form.setFieldValue("planOfTreatment", drugText || null);
+    form.setFieldValue("treatment", drugText || null);
     form.setFieldValue("claimId", claimId || null);
     form.setFieldValue(
-      "provisionalDx",
+      "diagnosis",
       patData?.diagnosis?.[0]?.diagtext || ""
     );
     // form.setFieldValue("signatureCheck", "1");

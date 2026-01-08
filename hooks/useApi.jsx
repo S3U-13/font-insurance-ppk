@@ -69,11 +69,7 @@ export const useApiRequest = () => {
   const pullDataOpd = async (hn, patReg) => {
     try {
       const payload = { hn, patReg };
-      const data = await apiRequest(
-        "/hospital-forms/get",
-        "POST",
-        payload,
-      );
+      const data = await apiRequest("/hospital-forms/get", "POST", payload);
       return data ?? null;
     } catch (err) {
       console.error("pullDataOpd error:", err);
@@ -83,10 +79,7 @@ export const useApiRequest = () => {
   const pdfOpd = async (claimId) => {
     try {
       // const payload = { claimId };
-      const data = await apiRequest(
-        `/api/claims/${claimId}/opd-pdf`,
-        "POST",
-      );
+      const data = await apiRequest(`/api/claims/${claimId}/opd-pdf`, "POST");
       return data ?? null;
     } catch (error) {
       console.error("base64 error:", error);
@@ -105,22 +98,21 @@ export const useApiRequest = () => {
     }
   };
 
-  const CreateOrderInsuranceOPD = async (value, ) => {
+  const CreateOrderInsuranceOPD = async (value) => {
     try {
-      const data = await apiRequest("/hospital-forms", "POST", value, );
+      const data = await apiRequest("/hospital-forms", "POST", value);
       return data;
     } catch (err) {
       console.error("CreateOrderInsuranceOPD error:", err);
       return null;
     }
   };
-  const EditOrderInsuranceOPD = async (value, hosClaimId, ) => {
+  const EditOrderInsuranceOPD = async (value, hosClaimId) => {
     try {
       const data = await apiRequest(
         `/hospital-forms/${hosClaimId}`,
         "PUT",
-        value,
-       
+        value
       );
       return data;
     } catch (err) {
@@ -161,6 +153,8 @@ export const useApiRequest = () => {
       return null;
     }
   };
+  const logoutAPI = () => apiRequest("/auth/logout", "POST");
+  const checkToken = () => apiRequest("/auth/tokenexp", "GET");
 
   return {
     CreateOrderInsuranceOPD,
@@ -174,5 +168,7 @@ export const useApiRequest = () => {
     FetchAllFormStatusApproved,
     ChangeStatus,
     StaffChangeStatus,
+    logoutAPI,
+    checkToken,
   };
 };

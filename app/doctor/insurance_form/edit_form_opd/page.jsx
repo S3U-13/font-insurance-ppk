@@ -18,7 +18,6 @@ export default function page({
   selectID,
   setClaimData,
   modalRef,
-  patData,
 }) {
   const {
     sex,
@@ -97,8 +96,6 @@ export default function page({
                   setOpenSignDoctor={setOpenSignDoctor}
                   handleSaveSignatureDoctor={handleSaveSignatureDoctor}
                   signatureDoctor={signatureDoctor}
-                  setSignatureDoctor={setSignatureDoctor}
-                  patData={patData}
                 />
               </ModalBody>
               <ModalFooter>

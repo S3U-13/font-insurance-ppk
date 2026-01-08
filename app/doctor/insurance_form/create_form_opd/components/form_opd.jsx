@@ -96,7 +96,7 @@ export default function FormOPD({
   };
 
   return (
-    <div>
+    <div className="px-40 pb-6">
       <ModalDoctorSignature
         isOpen={openSignDoctor}
         onClose={() => {
@@ -718,7 +718,7 @@ export default function FormOPD({
         {/* Section 8: Diagnosis */}
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-white">8. Diagnosis</h3>
-          <form.Field name="provisionalDx">
+          <form.Field name="diagnosis">
             {(field) => (
               <Input
                 className="w-full"
@@ -848,7 +848,7 @@ export default function FormOPD({
                 </div>
               </div>
             </div>
-            <form.Field name="planOfTreatment">
+            <form.Field name="treatment">
               {(field) => (
                 <Textarea
                   className="w-full"
@@ -873,12 +873,12 @@ export default function FormOPD({
             11.Doctor Signature
           </h3>
 
-          <div className="flex justify-between items-start border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
+          <div className="flex justify-none gap-8 items-start border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
             <div className="space-y-2">
               <form.Field name="signatureCheck">
                 {(field) => (
                   <RadioGroup
-                    className="mt-2"
+                    className=""
                     label="ต้องการใช้ลายเซ็นในระบบหรือไม่"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}

@@ -39,7 +39,6 @@ export default function FormOPD({
   handleSaveSignatureDoctor,
   signatureDoctor,
   setSignatureDoctor,
-  patData,
 }) {
   const textRef = useRef(null);
 
@@ -95,7 +94,7 @@ export default function FormOPD({
   };
 
   return (
-    <div>
+    <div className="px-40 pb-6">
       <ModalDoctorSignature
         isOpen={openSignDoctor}
         onClose={() => {
@@ -114,7 +113,7 @@ export default function FormOPD({
       <p>
         <strong>Part A</strong>
       </p>
-      <div className="mt-2 border border-[#b0dddf] dark:border-divider  bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
+      <div className="mt-2 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
         <div className="grid grid-cols-10 gap-2 items-center">
           <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
             <span className="w-1 h-5 bg-violet-500 rounded-full"></span>
@@ -731,7 +730,7 @@ export default function FormOPD({
         {/* Section 8: Diagnosis */}
         <div className="space-y-4">
           <h3 className="font-semibold  dark:text-gray-200">8. Diagnosis</h3>
-          <form.Field name="provisionalDx">
+          <form.Field name="diagnosis">
             {(field) => (
               <Input
                 className="w-full"
@@ -760,7 +759,7 @@ export default function FormOPD({
               <div>
                 <div ref={textRef}>
                   <p className="text-sm font-bold mt-2">lab</p>
-                  {patData?.labReports.map((item, index) => (
+                  {claimData?.rawdata?.labReports.map((item, index) => (
                     <div key={index} className="text-xs space-y-1">
                       <p>
                         {index + 1}.service name : {item.servicename}
@@ -779,7 +778,7 @@ export default function FormOPD({
                     </div>
                   ))}
                   <p className="text-sm font-bold mt-2">X-ray</p>
-                  {patData?.xrayReports.map((item, index) => (
+                  {claimData?.rawdata?.xrayReports.map((item, index) => (
                     <div key={index} className="text-xs ">
                       <p>ยืนยันโดย : {item.approver_name || "-"}</p>
                       <p>ผลการ X-ray : {item.report_text}</p>
@@ -829,9 +828,9 @@ export default function FormOPD({
                 <div ref={textRef2}>
                   <p className="text-sm font-bold">การสั่งยา</p>
 
-                  {patData?.drug.map((item, index) => (
+                  {claimData?.rawdata?.drugs.map((item, index) => (
                     <p key={index} className="text-xs">
-                      {item.servicename} สั่งยา {item.requestqty}{" "}
+                      {index + 1}.{item.servicename} สั่งยา {item.requestqty}{" "}
                       {item.routeUnit.thainame} จ่ายยา {item.serviceqty}{" "}
                       {item.routeUnit.thainame}
                     </p>
@@ -839,7 +838,7 @@ export default function FormOPD({
 
                   <p className="text-sm font-bold">treatment</p>
                   <p className="text-xs whitespace-pre-wrap">
-                    {patData?.treatment || ""}
+                    {claimData?.rawdata?.treatment || ""}
                   </p>
                 </div>
                 <div className="flex justify-end">
@@ -854,7 +853,7 @@ export default function FormOPD({
                 </div>
               </div>
             </div>
-            <form.Field name="planOfTreatment">
+            <form.Field name="treatment">
               {(field) => (
                 <Textarea
                   className="w-full"
@@ -878,7 +877,7 @@ export default function FormOPD({
           <h3 className="font-semibold  dark:text-gray-200">
             11.Doctor Signature
           </h3>
-          <div className="flex justify-between items-start border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
+          <div className="flex justify-none gap-8 border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
             <div className="space-y-2">
               <form.Field name="signatureCheck">
                 {(field) => (

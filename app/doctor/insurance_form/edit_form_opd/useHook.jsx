@@ -92,10 +92,10 @@ export default function useHook({
     accidentDateTime: null,
     accidentPlace: "",
     underlyingCondition: "",
-    provisionalDx: "",
+    diagnosis: "",
     adjRW: "",
     manageOPDNote: "",
-    planOfTreatment: "",
+    treatment: "",
     investigations: "",
     relatedConditions: [],
   });
@@ -124,6 +124,7 @@ export default function useHook({
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleSubmit = async (value) => {
     if (isSubmitting) return;
@@ -141,6 +142,12 @@ export default function useHook({
           description: "เพิ่มข้อมูลสำเร็จ",
           color: "success",
           variant: "flat",
+          promise: new Promise((resolve) =>
+            setTimeout(() => {
+              setLoading(false);
+              resolve(true);
+            }, 1500)
+          ),
         });
       } else if (!data) {
         addToast({
@@ -178,9 +185,9 @@ export default function useHook({
     accidentDateTime: z.string().nullable(),
     accidentPlace: z.string().optional(),
     underlyingCondition: z.string().optional(),
-    provisionalDx: z.string().optional(),
+    diagnosis: z.string().optional(),
     adjRW: z.string().optional(),
-    planOfTreatment: z.string().optional(),
+    treatment: z.string().optional(),
     investigations: z.string().optional(),
     relatedConditions: z.array(z.coerce.number()).nullable(),
   });
@@ -278,18 +285,12 @@ export default function useHook({
     );
 
     form.setFieldValue("claimId", claimData.id || null);
-    form.setFieldValue(
-      "provisionalDx",
-      claimData?.hospitalForm?.provisionalDx || ""
-    );
+    form.setFieldValue("diagnosis", claimData?.hospitalForm?.diagnosis || "");
     form.setFieldValue(
       "investigations",
       claimData?.hospitalForm?.investigations || ""
     );
-    form.setFieldValue(
-      "planOfTreatment",
-      claimData?.hospitalForm?.planOfTreatment || ""
-    );
+    form.setFieldValue("treatment", claimData?.hospitalForm?.treatment || "");
   }, [claimData]);
 
   // โหลดค่า accidentDateTime จาก backend (จาก patData)
