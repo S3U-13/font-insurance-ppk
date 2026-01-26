@@ -2,6 +2,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { connectSocket } from "@/sockets/connectSocket";
 import { useApiRequest } from "@/hooks/useApi";
+import { useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -9,14 +11,20 @@ export const AuthProvider = ({ children }) => {
   const { logoutAPI, checkToken } = useApiRequest();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  const ROLE_REDIRECT = {
+    doctor: "/doctor",
+    staff: "/staff",
+  };
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
 
     if (savedUser) {
       try {
-        const parsedUser = JSON.parse(savedUser);
-        setUser(parsedUser);
+        setUser(JSON.parse(savedUser));
       } catch {
         localStorage.removeItem("user");
       }
@@ -27,13 +35,41 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (user?.role) {
-      connectSocket(user.role);
+      connectSocket(user?.role);
     }
   }, [user?.role]);
 
+  useEffect(() => {
+    checkToken()
+      .then((res) => {
+        if (res?.status === "VALID") {
+          const redirectPath = ROLE_REDIRECT[res.user.role];
+          setUser(res.user);
+          localStorage.setItem("user", JSON.stringify(res.user));
+          const isLoginPage = pathname === "/";
+          const claimId = searchParams.get("claimid");
+          const hn = searchParams.get("hn");
+          const patregId = searchParams.get("patregId");
+          if (isLoginPage && redirectPath) {
+            if (hn && patregId) {
+              router.replace(
+                `${redirectPath}?claimid=${claimId}&hn=${hn}&patregId=${patregId}`,
+              );
+            } else {
+              router.replace(redirectPath);
+            }
+          }
+        } else {
+          setUser(null);
+          localStorage.removeItem("user");
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   const login = (data) => {
-    setUser(data.data.user);
-    localStorage.setItem("user", JSON.stringify(data.data.user));
+    setUser(data.user);
+    localStorage.setItem("user", JSON.stringify(data.user));
   };
 
   const logout = async () => {
@@ -50,14 +86,16 @@ export const AuthProvider = ({ children }) => {
   const checkTokenTimeout = async () => {
     try {
       const res = await checkToken();
-      const data = await res.json();
+      // const data = await res.json();
 
-      if (!res.ok) {
+      if (!res.status == 200) {
         return false;
       }
 
-      return data;
+      return res;
     } catch (err) {
+      console.log(err);
+
       return false;
     }
   };
@@ -65,12 +103,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(async () => {
       const result = await checkTokenTimeout();
-      console.log("result:", result);
 
-      if (result === "false") {
+      if (result.success !== true) {
         logout(); // clear state + redirect
       }
-    }, 5 * 1000); // เช็คทุก 1 นาที
+    }, 60 * 1000); // เช็คทุก 1 นาที
 
     return () => clearInterval(interval);
   }, []);

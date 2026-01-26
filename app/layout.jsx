@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
         )}
       >
         <AuthProvider>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <div className="">
               <main>{children}</main>
             </div>

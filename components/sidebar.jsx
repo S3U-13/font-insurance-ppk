@@ -42,14 +42,14 @@ export default function Sidebar({ isOpen }) {
       label: [
         {
           label_id: 1,
-          label_name: "INSURANCE CLAIM CREATE",
+          label_name: "INSURANCE CLAIM ",
           link: "/doctor",
         },
-        {
-          label_id: 2,
-          label_name: "INSURANCE CLAIM APPROVED",
-          link: "/doctor/insurance_form/success",
-        },
+        // {
+        //   label_id: 2,
+        //   label_name: "INSURANCE CLAIM APPROVED",
+        //   link: "/doctor/insurance_form/success",
+        // },
       ],
     },
     {
@@ -226,7 +226,7 @@ export default function Sidebar({ isOpen }) {
   return (
     <div className="">
       <div
-        className={`fixed top-0 left-0 h-full w-78 shadow-md p-4 pt-8 transition-transform duration-300 z-20 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#0e0e11] ${
+        className={`fixed top-0 left-0 h-full w-78 shadow-md p-4 pt-8 transition-transform duration-300 z-20 dark:border dark:border-divider bg-[#d8efef] dark:bg-[#0e0e11] ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -236,7 +236,7 @@ export default function Sidebar({ isOpen }) {
             PPK PAPER
           </h1>
 
-          <div className="w-full h-200 bg-[#edf7f7] dark:bg-[#18181b] mx-auto mt-4 rounded-xl border border-[#b0dddf] dark:border-divider">
+          <div className="w-full h-200 bg-[#edf7f7] dark:bg-[#18181b] mx-auto mt-4 rounded-xl dark:border dark:border-divider">
             <ScrollShadow hideScrollBar className="space-y-2 w-full h-full p-4">
               {" "}
               {menu.map((item) => (

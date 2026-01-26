@@ -6,7 +6,7 @@ const apiRequest = async (
   endpoint,
   method = "GET",
   body = null,
-  token = null
+  token = null,
 ) => {
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -19,34 +19,7 @@ const apiRequest = async (
     });
 
     const data = await res.json().catch(() => ({}));
-
-    if (res.status >= 200 && res.status < 300) {
-      addToast({
-        title: "สำเร็จ",
-        description: "เข้าสู่ระบบสำเร็จ",
-        color: "success",
-        variant: "flat",
-        promise: new Promise((resolve) => setTimeout(resolve, 2000)),
-      });
-    }
-    if (res.status === 400) {
-      addToast({
-        title: "ไม่สำเร็จ",
-        description: "กรุณากรอก user password",
-        color: "danger",
-        variant: "flat",
-      });
-      return null; // ❌ ไม่ throw
-    }
-    if (res.status === 401) {
-      addToast({
-        title: "ไม่สำเร็จ",
-        description: " user หรือ password ไม่ถูกต้อง",
-        color: "danger",
-        variant: "flat",
-      });
-      return null; // ❌ ไม่ throw
-    }
+    
     if (res.status === 503) {
       addToast({
         title: "เซิร์ฟเวอร์ไม่พร้อมใช้งาน",
@@ -72,5 +45,7 @@ const apiRequest = async (
 // ใช้กับ login
 const loginAPI = (username, password) =>
   apiRequest("/auth/login", "POST", { username, password });
+const ActivateUser = (citizencardno) =>
+  apiRequest("/api/users", "POST", { citizencardno });
 
-export { loginAPI, apiRequest };
+export { loginAPI, apiRequest, ActivateUser };

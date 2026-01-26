@@ -43,16 +43,10 @@ export const useApiRequest = () => {
 
   // ดึงข้อมูลฟอร์มทั้งหมด → cookie จะถูกส่งให้ server
   const FetchAllForm = async () => {
-    return await apiRequest(
-      "/api/claims?status=pending,draft,unapproved,s_unapproved",
-      "GET"
-    );
+    return await apiRequest("/api/claims", "GET");
   };
   const FetchAllFormStatusApproved = async () => {
-    return await apiRequest(
-      "/api/claims?status=approved,s_approved,s_unapproved",
-      "GET"
-    );
+    return await apiRequest("/api/claims?status=draft", "GET");
   };
 
   const pullDataIpd = async (hn, visitId) => {
@@ -112,7 +106,7 @@ export const useApiRequest = () => {
       const data = await apiRequest(
         `/hospital-forms/${hosClaimId}`,
         "PUT",
-        value
+        value,
       );
       return data;
     } catch (err) {
@@ -133,7 +127,7 @@ export const useApiRequest = () => {
     try {
       const data = await apiRequest(
         `/api/claims/${claimId}/${changeStatus}`,
-        "POST"
+        "POST",
       );
       return data;
     } catch (err) {
@@ -145,7 +139,7 @@ export const useApiRequest = () => {
     try {
       const data = await apiRequest(
         `/api/claims/${claimId}/${changeStatus}`,
-        "POST"
+        "POST",
       );
       return data;
     } catch (err) {
@@ -154,7 +148,7 @@ export const useApiRequest = () => {
     }
   };
   const logoutAPI = () => apiRequest("/auth/logout", "POST");
-  const checkToken = () => apiRequest("/auth/tokenexp", "GET");
+  const checkToken = () => apiRequest("/auth/checktoken", "GET");
 
   return {
     CreateOrderInsuranceOPD,

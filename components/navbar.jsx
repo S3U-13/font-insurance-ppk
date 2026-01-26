@@ -18,11 +18,11 @@ export default function Navbar() {
   const { user } = useAuth();
   const { openDrawer, setOpenDrawer } = useDrawer();
   return (
-    <div className="h-18 w-full p-6 border border-[#b0dddf] dark:border-divider rounded-lg flex items-center justify-between px-4 bg-[#d8efef] dark:bg-[#0e0e11]">
+    <div className="h-18 w-full p-6 dark:border  dark:border-divider rounded-lg flex items-center justify-between px-4 bg-[#d8efef] dark:bg-[#0e0e11]">
       <Button
         size="md"
         variant="flat"
-        className="bg-[#edf7f7] dark:bg-[#27272a] border border-[#b0dddf] dark:border-[#212126]"
+        className="bg-[#edf7f7] dark:bg-[#27272a] dark:border dark:border-[#212126]"
         onPress={() => {
           openDrawer === true ? setOpenDrawer(false) : setOpenDrawer(true);
         }}

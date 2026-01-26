@@ -23,20 +23,47 @@ export default function useHook() {
     e.preventDefault();
 
     // เรียก API
-    const data = await loginAPI(field.username, field.password);
+    const { data, res } = await loginAPI(field.username, field.password);
 
     // ❌ ถ้า login ไม่ผ่าน → api จะ return null → ห้าม login()
+    login(data);
     if (!data) return;
 
     // บันทึก user/token เข้า context
-    login(data);
 
+    if (res.status >= 200 && res.status < 300) {
+      addToast({
+        title: "สำเร็จ",
+        description: "เข้าสู่ระบบสำเร็จ",
+        color: "success",
+        variant: "flat",
+        promise: new Promise((resolve) => setTimeout(resolve, 2000)),
+      });
+    }
+    if (res.status === 400) {
+      addToast({
+        title: "ไม่สำเร็จ",
+        description: "กรุณากรอก user password",
+        color: "danger",
+        variant: "flat",
+      });
+      return null; // ❌ ไม่ throw
+    }
+    if (res.status === 401) {
+      addToast({
+        title: "ไม่สำเร็จ",
+        description: " user หรือ password ไม่ถูกต้อง",
+        color: "danger",
+        variant: "flat",
+      });
+      return null; // ❌ ไม่ throw
+    }
     // redirect ตาม role
-    if (data.data.user?.role === "doctor") {
+    if (data.user?.role === "doctor") {
       router.push("/doctor/");
-    } else if (data.data.user?.role === "staff") {
+    } else if (data.user?.role === "staff") {
       router.push("/staff/");
-    } else if (data.data.user?.role === "admin") {
+    } else if (data.user?.role === "admin") {
       router.push("/admin/user/");
     }
     // else router.push("/dashboard_admin");

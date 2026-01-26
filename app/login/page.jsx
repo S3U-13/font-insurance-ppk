@@ -73,7 +73,7 @@ export default function page({ isOpen, onClose }) {
   return (
     <div
       className={`fixed top-0 right-0 h-full w-full md:w-1/2 
-    bg-gradient-to-b from-[#8B5CF6]/20 via-white/60 to-white/80
+    bg-gradient-to-b from-green-500/5 via-white/60 to-white/80
     dark:from-[#5B21B6]/30 dark:via-gray-900/40 dark:to-gray-900/60
     backdrop-blur-2xl shadow-2xl
     border-l border-white/40 dark:border-purple-900/40
@@ -85,14 +85,14 @@ export default function page({ isOpen, onClose }) {
       <button
         onClick={onClose}
         className=" p-1 rounded-full 
-      bg-white/80 dark:bg-gray-900/70 shadow-lg border border-purple-200/50
+      bg-white/80 dark:bg-gray-900/80 shadow-lg border border-purple-200/50
       hover:bg-white hover:scale-105 transition"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-8 text-purple-600 dark:text-purple-300"
+          className="size-8 text-[#1DD2A2]"
         >
           <path
             fillRule="evenodd"
@@ -127,20 +127,15 @@ export default function page({ isOpen, onClose }) {
           <div
             className="space-y-4 w-[380px] 
       bg-white/50 dark:bg-gray-900/60 
-      border border-purple-200/40 dark:border-purple-900/40 
-      rounded-2xl p-8 shadow-xl backdrop-blur-xl
+      dark:border  dark:border-purple-900/40 
+      rounded-2xl p-8 shadow-2xl backdrop-blur-xl
       relative z-10"
           >
-            <h1
-              className="text-3xl font-extrabold bg-gradient-to-r 
-      from-purple-600 to-indigo-500 bg-clip-text text-transparent"
-            >
-              Welcome Back
-            </h1>
+            <h1 className="text-3xl font-extrabold text-[#1DD2A2]">Welcome</h1>
 
             <p className="text-gray-700 dark:text-gray-300">
               เข้าสู่ระบบ{" "}
-              <span className="font-semibold text-purple-600">
+              <span className="font-semibold font-extrabold text-[#1DD2A2]">
                 PPK Paperless
               </span>
             </p>
@@ -150,14 +145,11 @@ export default function page({ isOpen, onClose }) {
               label="User Name"
               placeholder="Enter your user name"
               type="text"
-              variant="bordered"
-              classNames={{
-                inputWrapper:
-                  "border-purple-300/60 hover:border-purple-400 transition",
-              }}
+              variant="underlined"
               name="username"
               value={field.username}
               onChange={handleChange}
+              classNames={{ inputWrapper: "border-b border-[#1DD2A2]" }}
             />
 
             <Input
@@ -169,34 +161,29 @@ export default function page({ isOpen, onClose }) {
                   onClick={toggleVisibility}
                 >
                   {isVisible ? (
-                    <EyeSlashFilledIcon className="text-2xl text-purple-400" />
+                    <EyeSlashFilledIcon className="text-2xl text-gray-400" />
                   ) : (
-                    <EyeFilledIcon className="text-2xl text-purple-400" />
+                    <EyeFilledIcon className="text-2xl text-gray-400" />
                   )}
                 </button>
               }
+              classNames={{ inputWrapper: "border-b border-[#1DD2A2]" }}
               label="Password"
               placeholder="Enter your password"
               type={isVisible ? "text" : "password"}
-              variant="bordered"
-              classNames={{
-                inputWrapper:
-                  "border-purple-300/60 hover:border-purple-400 transition",
-              }}
+              variant="underlined"
               name="password"
               value={field.password}
               onChange={handleChange}
             />
 
-            <Checkbox color="secondary">Remember me</Checkbox>
+            <Checkbox color="default">Remember me</Checkbox>
 
             <Button
               type="submit"
               color="secondary"
               className="w-full py-6 text-base font-semibold 
-        bg-gradient-to-r from-purple-600 to-indigo-500 
-        shadow-[0_5px_25px_rgba(140,107,255,0.45)]
-        hover:shadow-[0_5px_30px_rgba(140,107,255,0.65)]
+        bg-[#1DD2A2] 
         text-white rounded-xl mt-4"
             >
               Login
