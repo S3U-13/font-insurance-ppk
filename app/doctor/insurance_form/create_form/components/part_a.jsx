@@ -1065,7 +1065,7 @@ export default function FormOPD({
           </h3>
           <div className="flex justify-none gap-8 items-start border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
             <div className="space-y-2">
-              <form.Field name="partA.signatureCheck">
+              {/* <form.Field name="partA.signatureCheck">
                 {(field) => (
                   <RadioGroup
                     className=""
@@ -1123,7 +1123,7 @@ export default function FormOPD({
                     ))}
                   </RadioGroup>
                 )}
-              </form.Field>
+              </form.Field> */}
 
               <Input
                 label="Physician's name"
@@ -1138,8 +1138,8 @@ export default function FormOPD({
                 readOnly
               />
             </div>
-            <div className="space-y-2 pt-8">
-              <Input
+            <div className="space-y-2">
+              {/* <Input
                 label="Medical license No."
                 variant="flat"
                 classNames={{
@@ -1147,7 +1147,7 @@ export default function FormOPD({
                     "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
                 }}
                 size="sm"
-              />
+              /> */}
 
               <DatePicker
                 label="DATE"
@@ -1163,7 +1163,7 @@ export default function FormOPD({
                 }}
               />
             </div>
-            <div className="space-y-2 pt-8">
+            {/* <div className="space-y-2 pt-8">
               <Input
                 label="Specialty"
                 variant="flat"
@@ -1173,7 +1173,7 @@ export default function FormOPD({
                 }}
                 size="sm"
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="space-y-4">

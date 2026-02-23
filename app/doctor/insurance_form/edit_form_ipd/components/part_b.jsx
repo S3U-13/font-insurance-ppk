@@ -69,7 +69,7 @@ export default function page({
   return (
     <div className="space-y-6 px-40 pb-6">
       <h1 className="text-md text-center font-bold">Medical certification</h1>
-      <div className="border border-divider p-4 rounded-xl ">
+      <div className="mt-2 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
         <h2 className=" font-semibold text-base flex items-center gap-2 mb-4 col-span-10">
           <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full"></span>
           สำหรับผู้เอาประกัน
@@ -217,7 +217,7 @@ export default function page({
       </div>
 
       <div className="grid grid-cols-8 gap-2 items-center">
-        <div className="col-span-4 border border-divider p-4 space-y-2 rounded-xl h-full">
+        <div className="col-span-4 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4 h-full">
           <h2 className=" text-base flex items-center gap-2 mb-4">
             <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full"></span>
             1. For Illness
@@ -270,7 +270,7 @@ export default function page({
             )}
           </form.Field>
         </div>
-        <div className="col-span-4 border border-divider p-4 space-y-2 rounded-xl grid grid-cols-3 gap-2">
+        <div className="col-span-4 border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4 grid grid-cols-3 gap-2">
           <h2 className=" text-base flex items-center gap-2 mb-4 col-span-3">
             <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full "></span>
             2. For Injury
@@ -426,7 +426,7 @@ export default function page({
           </form.Field>
         </div>
       </div>
-      <div className="grid grid-cols-8 gap-2 items-center border border-divider rounded-xl  p-4 space-y-2">
+      <div className="grid grid-cols-8 gap-2 items-center border border-[#b0dddf] dark:border-divider bg-[#d8efef] dark:bg-[#18181B] rounded-xl p-4 space-y-4">
         <h2 className=" text-base flex items-center gap-2  col-span-8">
           <span className="w-1 h-5 bg-[#27a59b]  dark:bg-violet-500 rounded-full "></span>
           3. Did the patient need to be admitted to hospital?

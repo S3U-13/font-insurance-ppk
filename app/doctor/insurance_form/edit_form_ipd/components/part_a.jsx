@@ -957,7 +957,7 @@ export default function page({
           </h3>
           <div className="flex justify-none gap-8 border border-[#b0dddf] dark:border-divider bg-[#f2fbf9] dark:bg-[#1c1c1f] rounded-xl p-4">
             <div className="space-y-2">
-              <form.Field name="signatureCheck">
+              {/* <form.Field name="signatureCheck">
                 {(field) => (
                   <RadioGroup
                     label="ต้องการใช้ลายเซ็นในระบบหรือไม่"
@@ -1010,7 +1010,7 @@ export default function page({
                     ))}
                   </RadioGroup>
                 )}
-              </form.Field>
+              </form.Field> */}
 
               <Input
                 label="Physician's name"
@@ -1025,8 +1025,8 @@ export default function page({
                 readOnly
               />
             </div>
-            <div className="space-y-2 pt-8">
-              <Input
+            <div className="space-y-2">
+              {/* <Input
                 label="Medical license No."
                 variant="flat"
                 classNames={{
@@ -1034,7 +1034,7 @@ export default function page({
                     "bg-[#edf7f7] dark:bg-[#212126] border border-[#b0dddf] dark:border-[#212126]",
                 }}
                 size="sm"
-              />
+              /> */}
 
               <DatePicker
                 label="DATE"
@@ -1050,7 +1050,7 @@ export default function page({
                 }}
               />
             </div>
-            <div className="space-y-2 pt-8">
+            {/* <div className="space-y-2 pt-8">
               <Input
                 label="Specialty"
                 variant="flat"
@@ -1060,7 +1060,7 @@ export default function page({
                 }}
                 size="sm"
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="space-y-4">
