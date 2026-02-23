@@ -3,8 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { connectSocket } from "@/sockets/connectSocket";
 import { useApiRequest } from "@/hooks/useApi";
 import { useRouter, usePathname } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -13,8 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   const ROLE_REDIRECT = {
     doctor: "/doctor",
     staff: "/staff",
@@ -47,17 +43,17 @@ export const AuthProvider = ({ children }) => {
           setUser(res.user);
           localStorage.setItem("user", JSON.stringify(res.user));
           const isLoginPage = pathname === "/";
-          const claimId = searchParams.get("claimid");
-          const hn = searchParams.get("hn");
-          const patregId = searchParams.get("patregId");
+          // const claimId = searchParams.get("claimid");
+          // const hn = searchParams.get("hn");
+          // const patregId = searchParams.get("patregId");
           if (isLoginPage && redirectPath) {
-            if (hn && patregId) {
-              router.replace(
-                `${redirectPath}?claimid=${claimId}&hn=${hn}&patregId=${patregId}`,
-              );
-            } else {
+            // if (hn && patregId) {
+            //   router.replace(
+            //     `${redirectPath}?claimid=${claimId}&hn=${hn}&patregId=${patregId}`,
+            //   );
+            // } else {
               router.replace(redirectPath);
-            }
+            // }
           }
         } else {
           setUser(null);
@@ -107,7 +103,7 @@ export const AuthProvider = ({ children }) => {
       if (result.success !== true) {
         logout(); // clear state + redirect
       }
-    }, 60 * 1000); // เช็คทุก 1 นาที
+    }, 60 * 30 * 1000); // เช็คทุก 1 นาที
 
     return () => clearInterval(interval);
   }, []);

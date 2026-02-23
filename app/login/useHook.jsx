@@ -1,18 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginAPI } from "@/utils/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { addToast } from "@heroui/toast";
 
 export default function useHook() {
-  const router = useRouter();
   const { login } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [field, setField] = useState({
     username: "",
     password: "",
   });
+
+  // 🔹 เก็บ callback query จาก HIS ไว้ก่อน login
+  useEffect(() => {
+    // if (pathname !== "/") return;
+
+    const claimid = searchParams.get("claimid");
+    const hn = searchParams.get("hn");
+    const patregId = searchParams.get("patregId");
+
+    if (hn && patregId && claimid) {
+      sessionStorage.setItem(
+        "callbackQuery",
+        JSON.stringify({ hn, patregId, claimid }),
+      );
+    }
+  }, [searchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,14 +39,12 @@ export default function useHook() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // เรียก API
     const { data, res } = await loginAPI(field.username, field.password);
 
-    // ❌ ถ้า login ไม่ผ่าน → api จะ return null → ห้าม login()
-    login(data);
     if (!data) return;
 
-    // บันทึก user/token เข้า context
+    // ✅ login ผ่าน → เก็บ auth state
+    login(data);
 
     if (res.status >= 200 && res.status < 300) {
       addToast({
@@ -37,7 +52,7 @@ export default function useHook() {
         description: "เข้าสู่ระบบสำเร็จ",
         color: "success",
         variant: "flat",
-        promise: new Promise((resolve) => setTimeout(resolve, 2000)),
+        promise: new Promise((resolve) => setTimeout(resolve, 1200)),
       });
     }
     if (res.status === 400) {
@@ -47,26 +62,43 @@ export default function useHook() {
         color: "danger",
         variant: "flat",
       });
-      return null; // ❌ ไม่ throw
     }
+
     if (res.status === 401) {
       addToast({
         title: "ไม่สำเร็จ",
-        description: " user หรือ password ไม่ถูกต้อง",
+        description: "user หรือ password ไม่ถูกต้อง",
         color: "danger",
         variant: "flat",
       });
-      return null; // ❌ ไม่ throw
+      return;
     }
-    // redirect ตาม role
+
+    // 🔹 ดึง callback query ที่เก็บไว้
+    let redirectQuery = "";
+    const callbackQuery = sessionStorage.getItem("callbackQuery");
+
+    if (callbackQuery) {
+      const { hn, patregId, claimid } = JSON.parse(callbackQuery);
+      redirectQuery = `?claimid=${claimid}&hn=${hn}&patregId=${patregId}`;
+    }
+
+    // 🔁 redirect ตาม role (role-first pattern)
     if (data.user?.role === "doctor") {
-      router.push("/doctor/");
-    } else if (data.user?.role === "staff") {
-      router.push("/staff/");
-    } else if (data.user?.role === "admin") {
-      router.push("/admin/user/");
+      router.replace(`/doctor`);
+      console.log(redirectQuery);
+      return;
     }
-    // else router.push("/dashboard_admin");
+
+    if (data.user?.role === "staff") {
+      router.replace("/staff");
+      return;
+    }
+
+    if (data.user?.role === "admin") {
+      router.replace("/admin/user");
+      return;
+    }
   };
 
   return {

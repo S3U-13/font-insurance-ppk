@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ProtectedRoute({ children, role }) {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
 
   const router = useRouter();
   useEffect(() => {
@@ -13,6 +13,7 @@ export default function ProtectedRoute({ children, role }) {
 
     // ❌ ผู้ใช้ไม่ได้ login
     if (!user) {
+      logout();
       router.replace("/");
       return;
     }

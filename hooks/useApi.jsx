@@ -1,9 +1,14 @@
+import { addToast } from "@heroui/toast";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useApiRequest = () => {
   const apiRequest = async (endpoint, method = "GET", body = null) => {
     // 1️⃣ สร้าง headers
-    const headers = { "Content-Type": "application/json" };
+    const secretKeyApi = process.env.NEXT_PUBLIC_SECRETKEYAPI;
+    const headers = {
+      "Content-Type": "application/json",
+      "x-api-secret": secretKeyApi,
+    };
     const options = {
       method,
       headers,
@@ -31,6 +36,15 @@ export const useApiRequest = () => {
       // log status code ถ้า error
       if (!res.ok) {
         console.warn(`API ${method} ${endpoint} returned status ${res.status}`);
+        if (res.status === 409) {
+          addToast({
+            title: "เตือน",
+            description: data.error,
+            color: "warning",
+            variant: "flat",
+          });
+        }
+
         return null;
       }
 
@@ -80,6 +94,32 @@ export const useApiRequest = () => {
       return null;
     }
   };
+  const pdfIpdPartA = async (claimId) => {
+    try {
+      // const payload = { claimId };
+      const data = await apiRequest(
+        `/api/claims/${claimId}/ipd-pdf`,
+        "POST",
+      );
+      return data ?? null;
+    } catch (error) {
+      console.error("base64 error:", error);
+      return null;
+    }
+  };
+  const pdfIpdPartB = async (claimId) => {
+    try {
+      // const payload = { claimId };
+      const data = await apiRequest(
+        `/api/claims/${claimId}/ipd-pdf-partB`,
+        "POST",
+      );
+      return data ?? null;
+    } catch (error) {
+      console.error("base64 error:", error);
+      return null;
+    }
+  };
   const pullClaimData = async (claimId) => {
     try {
       const data = await apiRequest(`/api/claims/${claimId}`, "GET");
@@ -91,8 +131,28 @@ export const useApiRequest = () => {
       return null;
     }
   };
+  const pullClaimPartBData = async (claimId) => {
+    try {
+      const data = await apiRequest(
+        `/discharge-certification-forms/${claimId}/discharge-certification`,
+        "GET",
+      );
 
-  const CreateOrderInsuranceOPD = async (value) => {
+      return data ?? null;
+    } catch (err) {
+      console.error("pullData error:", err);
+
+      return null;
+    }
+  };
+
+  const FetchDiag = async (claimId) =>
+    apiRequest(
+      `/discharge-certification-forms/${claimId}/discharge-certification/his`,
+      "GET",
+    );
+
+  const CreateOrderInsurancePartA = async (value) => {
     try {
       const data = await apiRequest("/hospital-forms", "POST", value);
       return data;
@@ -101,7 +161,20 @@ export const useApiRequest = () => {
       return null;
     }
   };
-  const EditOrderInsuranceOPD = async (value, hosClaimId) => {
+  const CreateOrderInsurancePartB = async (value, claimId) => {
+    try {
+      const data = await apiRequest(
+        `/discharge-certification-forms/${claimId}/discharge-certification`,
+        "POST",
+        value,
+      );
+      return data;
+    } catch (err) {
+      console.error("CreateOrderInsuranceOPD error:", err);
+      return null;
+    }
+  };
+  const EditOrderInsurancePartA = async (value, hosClaimId) => {
     try {
       const data = await apiRequest(
         `/hospital-forms/${hosClaimId}`,
@@ -111,6 +184,20 @@ export const useApiRequest = () => {
       return data;
     } catch (err) {
       console.error("EditOrderInsuranceOPD error:", err);
+    }
+  };
+
+  const EditOrderInsurancePartB = async (value, claimId) => {
+    try {
+      const data = await apiRequest(
+        `/discharge-certification-forms/${claimId}/discharge-certification`,
+        "PATCH",
+        value,
+      );
+      return data;
+    } catch (err) {
+      console.error("CreateOrderInsuranceOPD error:", err);
+      return null;
     }
   };
 
@@ -150,19 +237,37 @@ export const useApiRequest = () => {
   const logoutAPI = () => apiRequest("/auth/logout", "POST");
   const checkToken = () => apiRequest("/auth/checktoken", "GET");
 
+  const searchPatient = (hn) =>
+    apiRequest(`/api/claims/visits-for-claim?hn=${hn}`, "GET");
+
+  const getPatRegByVisit = (visitId) =>
+    apiRequest(`/api/claims/getpatreg/${visitId}`, "GET");
+
+  const addPatient = (hn, regId) =>
+    apiRequest(`/api/claims/from-his-web?hn=${hn}&patregId=${regId}`, "GET");
+
   return {
-    CreateOrderInsuranceOPD,
+    CreateOrderInsurancePartA,
+    CreateOrderInsurancePartB,
     pullDataIpd,
     pullDataOpd,
     pullClaimData,
     FetchAllForm,
     pdfOpd,
+    pdfIpdPartA,
+    pdfIpdPartB,
     FetchUsers,
-    EditOrderInsuranceOPD,
     FetchAllFormStatusApproved,
     ChangeStatus,
     StaffChangeStatus,
     logoutAPI,
     checkToken,
+    pullClaimPartBData,
+    searchPatient,
+    getPatRegByVisit,
+    addPatient,
+    EditOrderInsurancePartA,
+    EditOrderInsurancePartB,
+    FetchDiag,
   };
 };

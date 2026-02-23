@@ -3,17 +3,22 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    const isDocker = process.env.NODE_ENV === "production";
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"], // แนะนำป้องกัน error บางเครื่อง
+      executablePath: isDocker ? "/usr/bin/chromium" : undefined, // ให้ local ใช้ chrome ปกติ
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
 
     // โหลดหน้า UI ของคุณ
-    await page.goto("http://localhost:3004/print/pdf-form-insurance-ppk/opd", {
-      waitUntil: "networkidle0",
-    });
+    await page.goto(
+      "http://172.16.46.34:4006/print/pdf-form-insurance-ppk/opd",
+      {
+        waitUntil: "networkidle0",
+      },
+    );
 
     const pdfBuffer = await page.pdf({
       format: "A4",
